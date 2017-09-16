@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.AttendDetailInfoMapper">
+	<!-- 考勤详情映射 -->
+	<resultMap type="com.sd.farmework.pojo.AttendDetailInfo" id="selectAttendMap">
+		<id column="att_detail_id" property="att_detail_id" />
+		<result column="employee_no" property="employee_no" />
+		<result column="employee_name" property="employee_name" />
+		<result column="sign_time" property="sign_time" />
+		<result column="sign_back_time" property="sign_back_time" />
+		<result column="num" property="num" />
+		<result column="lacknum" property="lacknum" />
+		<result column="status" property="status" />
+
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+
+	<!-- 查询当月考勤情况,及分页 -->
+	<select id="selectMonthAttend" parameterType="com.sd.farmework.pojo.AttendDetailInfo"
+		resultMap="selectAttendMap">
+		SELECT ss.employee_id,ss.employee_name ,ss.num,mm.lacknum
+		FROM
+		(SELECT
+		COUNT(att_detail_id) num,employee_id,employee_name FROM
+		crm_attendance_detail AS cat
+		WHERE cat.sign_time IS NOT NULL AND
+		cat.sign_back_time IS NOT NULL
+		and cat.sign_time like
+		CONCAT('%','${sign_time}','%' )
+
+		<if test="employee_name != null and employee_name != ''">
+			AND employee_name like CONCAT('%','${employee_name}','%' )
+		</if>
+		GROUP BY employee_name)AS ss
+		LEFT JOIN
+		(SELECT COUNT(att_detail_id)
+		lacknum,employee_id,employee_name FROM
+		crm_attendance_detail AS cas
+		WHERE cas.sign_time IS NULL OR cas.sign_back_time IS NULL
+		and
+		cas.sign_time like CONCAT('%','${sign_time}','%' )
+		<if test="employee_name != null and employee_name != ''">
+			AND employee_name like CONCAT('%','${employee_name}','%' )
+		</if>
+		GROUP BY employee_name)AS mm
+		ON mm.employee_name=ss.employee_name
+		LIMIT
+		#{startRecod},#{pageSize}
+	</select>
+	<!-- 查询行数 -->
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.AttendDetailInfo"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM (SELECT ss.employee_id,ss.employee_name
+		,ss.num,mm.lacknum
+		FROM
+		(SELECT COUNT(att_detail_id)
+		num,employee_id,employee_name FROM
+		crm_attendance_detail AS cat
+		WHERE
+		cat.sign_time IS NOT NULL AND cat.sign_back_time IS NOT NULL
+		and
+		cat.sign_time like CONCAT('%','${sign_time}','%' )
+		<if test="employee_name != null and employee_name != ''">
+			AND employee_name like CONCAT('%','${employee_name}','%' )
+		</if>
+		GROUP BY employee_name)AS ss
+		LEFT JOIN
+		(SELECT COUNT(att_detail_id)
+		lacknum,employee_id,employee_name FROM
+		crm_attendance_detail AS cas
+		WHERE cas.sign_time IS NULL OR cas.sign_back_time IS NULL
+		and
+		cas.sign_time like CONCAT('%','${sign_time}','%' )
+		<if test="employee_name != null and employee_name != ''">
+			AND employee_name like CONCAT('%','${employee_name}','%' )
+		</if>
+		GROUP BY employee_name)AS mm
+		ON mm.employee_name=ss.employee_name) AS
+		cc
+	</select>
+
+	<!-- 查询当月详情，按员工编号 -->
+	<select id="selectMonthAttendDetail" parameterType="com.sd.farmework.pojo.AttendDetailInfo"
+		resultMap="selectAttendMap">
+		select *
+		from crm_attendance_detail
+		where
+		employee_id=#{employee_id}
+		and sign_time like
+		CONCAT('%','${sign_time}','%' )
+		LIMIT #{startRecod},#{pageSize}
+	</select>
+	<!-- 查询当月详情，按员工编号的总条数 -->
+	<select id="queryCountDetail" parameterType="com.sd.farmework.pojo.AttendDetailInfo"
+		resultType="java.lang.Integer">
+		select count(*)
+		from crm_attendance_detail
+		where
+		employee_id=#{employee_id}
+		and sign_time like
+		CONCAT('%','${sign_time}','%' )
+	</select>
+
+
+	<!-- 根据员工编号查询当月签到时间，工资设置做准备 -->
+	<select id="querySignTimeByNo" parameterType="com.sd.farmework.pojo.AttendDetailInfo"
+		resultMap="selectAttendMap">
+		select
+		sign_time
+		from crm_attendance_detail
+		where
+		employee_no=#{employee_no}
+		and sign_time like
+		CONCAT('%','${sign_time}','%' )
+	</select>
+</mapper>

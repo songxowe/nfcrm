@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span>模板详情</strong></div>
+  <div class="body-content">
+    <div class="form-x" > 
+      <#list temp as list>
+      <div style="text-align: center;">
+        <div class="label">
+          <label>${list.key_name}：</label>
+        </div>
+      </div>
+      </#list>
+      <br>
+      <div class="form-group">
+		<div style="text-align: center;">
+			<a class="button bg-main icon-check-square-o" href="/NfCrm/template/selectTemplate.do">返回</a>
+		</div>
+    </div>
+  </div>
+</div>
+
+</body></html>

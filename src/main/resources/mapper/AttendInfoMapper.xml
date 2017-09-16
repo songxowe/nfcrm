@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.AttendInfoMapper">
+	<!-- 主表的映射map -->
+	<resultMap type="com.sd.farmework.pojo.AttendInfo" id="attendMap">
+		<id column="atte_id" property="atte_id" />
+		<result column="employee_no" property="employee_no" />
+		<result column="employee_id" property="employee_id" />
+		<result column="employee_name" property="employee_name" />
+		<result column="punch_time" property="punch_time" />
+		<result column="status" property="status" />
+
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+	<!-- 详情的映射map -->
+	<resultMap type="com.sd.farmework.pojo.AttendDetailInfo" id="attenddetailMap">
+		<id column="att_detail_id" property="att_detail_id" />
+		<result column="employee_no" property="employee_no" />
+		<result column="employee_id" property="employee_id" />
+		<result column="employee_name" property="employee_name" />
+		<result column="sign_time" property="sign_time" />
+		<result column="sign_back_time" property="sign_back_time" />
+		<result column="status" property="status" />
+
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+
+
+
+	<resultMap type="com.sd.farmework.pojo.UserInfo" id="AttendUserMap">
+		<id column="user_id" property="user_id" />
+		<result column="user_name" property="user_name" />
+		<result column="employee_id" property="employee_id" />
+		<result column="user_no" property="user_no" />
+		<result column="account_no" property="account_no" />
+		<result column="user_pwd" property="user_pwd" />
+		<result column="employ_time" property="employ_time" />
+		<result column="user_group" property="user_group" />
+		<result column="remark" property="remark" />
+		<result column="status" property="status" />
+
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+
+	</resultMap>
+
+	<!-- 签到 插入到主表 -->
+	<insert id="insert" parameterType="com.sd.farmework.pojo.AttendInfo">
+		insert into
+		crm_eployee_attendance set
+		employee_no=#{employee_no},
+		employee_id=#{employee_id},
+		employee_name=#{employee_name},
+		punch_time=#{punch_time},
+		create_time=NOW(),
+		create_user_id=#{createUserId},
+		create_user_name=#{createUserName}
+	</insert>
+	<!-- 签到 插入到子表 -->
+	<insert id="inserttodetail" parameterType="com.sd.farmework.pojo.AttendDetailInfo">
+		insert into
+		crm_attendance_detail set
+		employee_no=#{employee_no},
+		employee_id=#{employee_id},
+		employee_name=#{employee_name},
+		sign_time=#{sign_time},
+		create_time=NOW(),
+		create_user_id=#{createUserId},
+		create_user_name=#{createUserName}
+	</insert>
+	<!-- 判断条件，确保每天只能签到一次 -->
+	<select id="attendnumer" parameterType="com.sd.farmework.pojo.AttendDetailInfo"
+		resultType="Integer">
+		select count(*) from crm_attendance_detail where
+		employee_id=#{employee_id} AND cast(sign_time as date) &gt;= curdate()
+	</select>
+	<!-- 查询主表中员工的记录数（作为判断条件） -->
+	<select id="attendrecord" parameterType="com.sd.farmework.pojo.AttendInfo"
+		resultType="Integer">
+		select count(*) from crm_eployee_attendance where
+		employee_id=#{employee_id}
+	</select>
+	<!-- 签退 修改签退时间 -->
+	<update id="update" parameterType="com.sd.farmework.pojo.AttendDetailInfo">
+		update crm_attendance_detail
+		set sign_back_time=NOW() where employee_no=#{employee_no} and
+		cast(sign_time as date) = curdate()
+	</update>
+	<select id="querytorequest" parameterType="com.sd.farmework.pojo.AttendDetailInfo"
+		resultMap="attenddetailMap">
+		select att_detail_id,
+		employee_no,
+		sign_time,
+		sign_back_time,
+		status,
+		create_time,create_user_id,create_user_name,last_update_time,last_update_user_id,last_update_user_name
+		from
+		crm_attendance_detail where employee_no=#{employee_no} AND
+		cast(sign_time as date) =
+		curdate()
+	</select>
+	<!-- 更新主表中的打卡时间 -->
+	<update id="updatepunchtime" parameterType="com.sd.farmework.pojo.AttendInfo">
+		update
+		crm_eployee_attendance set punch_time=NOW() WHERE
+		employee_no=#{employee_no}
+	</update>
+
+
+
+	<!-- 以上为签到和签退所用到的方法 -->
+
+
+
+	<!-- 查询考勤所用到的方法↓ -->
+	<!-- 查询主表中总记录数 -->
+	<select id="queryatttendcount" resultType="Integer">
+		select count(*) from crm_eployee_attendance where 1=1
+
+		<if test="employee_no!= null and employee_no != ''">
+			AND employee_no like CONCAT('%','${employee_no}','%' )
+		</if>
+		<if test="employee_name!= null and employee_name != ''">
+			AND employee_name like CONCAT('%','${employee_name}','%' )
+		</if>
+		<if test="punch_time!= null and punch_time != ''">
+			AND punch_time like CONCAT('%','${punch_time}','%' )
+		</if>
+	</select>
+	<!-- 查询主表全部数据 -->
+	<select id="queryall" parameterType="com.sd.farmework.pojo.AttendInfo"
+		resultMap="attendMap">
+		select atte_id,
+		employee_no,
+		employee_name,
+		punch_time,
+		status,create_time,
+		create_user_id,create_user_name,last_update_time,last_update_user_id,last_update_user_name
+		from crm_eployee_attendance where 1=1
+		<if test="employee_no!= null and employee_no != ''">
+			AND employee_no like CONCAT('%','${employee_no}','%' )
+		</if>
+		<if test="employee_name!= null and employee_name != ''">
+			AND employee_name like CONCAT('%','${employee_name}','%' )
+		</if>
+		<if test="punch_time!= null and punch_time != ''">
+			AND punch_time like CONCAT('%','${punch_time}','%' )
+		</if>
+		GROUP BY punch_time DESC
+		LIMIT #{startRecod},#{pageSize}
+	</select>
+	<!-- ============================================================================ -->
+	<!-- ========================查询子表详细信息所有的到方法================================= -->
+
+	<!-- 查询子表中某个员工的考勤总数 -->
+	<select id="selectdetailcount" parameterType="com.sd.farmework.pojo.AttendDetailInfo"
+		resultType="Integer">
+		select count(*) from crm_attendance_detail where
+		employee_no=#{employee_no}
+		<if test="sign_time!= null and sign_time != ''">
+			AND sign_time like CONCAT('%','${sign_time}','%' )
+		</if>
+	</select>
+	<!-- 根据员工ID查询出子表中所有员工的考勤数据 -->
+	<select id="queryallById" parameterType="com.sd.farmework.pojo.AttendDetailInfo"
+		resultMap="attenddetailMap">
+		select att_detail_id,
+		employee_no,
+		sign_time,
+		sign_back_time,
+		status,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name
+		from crm_attendance_detail
+		where 1=1
+		<if test="employee_no!= null and employee_no != ''">
+			AND employee_no like CONCAT('%','${employee_no}','%' )
+		</if>
+		<if test="sign_time!= null and sign_time != ''">
+			AND sign_time like CONCAT('%','${sign_time}','%' )
+		</if>
+		GROUP BY sign_time DESC
+		LIMIT #{startRecod},#{pageSize}
+	</select>
+	<!-- ========================================================================================== -->
+
+	<!-- fanlifeng -->
+	<!-- 查询当日考勤情况,带分页 -->
+	<select id="selectDayAttend" parameterType="com.sd.farmework.pojo.AttendInfo"
+		resultMap="attendMap" resultType="com.sd.farmework.pojo.AttendInfo">
+		select atte_id,
+		employee_no,
+		employee_name,
+		punch_time,status
+		from
+		crm_eployee_attendance
+		where 1=1
+		AND cast(punch_time as date) &gt;=
+		curdate()
+
+		<if test="employee_no != null and employee_no != ''">
+			AND employee_no like CONCAT('%','${employee_no}','%' )
+		</if>
+		<if test="employee_name != null and employee_name != ''">
+			AND employee_name like CONCAT('%','${employee_name}','%' )
+		</if>
+		LIMIT #{startRecod},#{pageSize}
+	</select>
+
+	<!-- 查询行数 -->
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.AttendInfo"
+		resultType="java.lang.Integer">
+		select count(*)
+		from crm_eployee_attendance
+		where
+		1=1
+		AND punch_time like
+		CONCAT('%','${punch_time}','%' )
+		<if test="employee_no != null and employee_no != ''">
+			AND employee_no like CONCAT('%','${employee_no}','%' )
+		</if>
+		<if test="employee_name != null and employee_name != ''">
+			AND employee_name like CONCAT('%','${employee_name}','%' )
+		</if>
+	</select>
+
+
+	<!-- 当日未考勤员工 -->
+	<select id="selectNoDayAttend" parameterType="com.sd.farmework.pojo.AttendInfo"
+		resultMap="AttendUserMap">
+		select b.user_no,b.user_name from(select
+		sys_user_info.user_no,sys_user_info.user_name,
+		crm_eployee_attendance.employee_name,crm_eployee_attendance.punch_time
+		from sys_user_info
+		left join
+		crm_eployee_attendance on
+		sys_user_info.user_no=crm_eployee_attendance.employee_no
+		where
+		punch_time not like CONCAT('%','${punch_time}','%' )
+
+		union all
+
+		select sys_user_info.user_no,sys_user_info.user_name,
+		crm_eployee_attendance.employee_name,crm_eployee_attendance.punch_time
+		from sys_user_info
+		left join
+		crm_eployee_attendance on
+		sys_user_info.user_no=crm_eployee_attendance.employee_no
+		where
+		employee_name is null) b
+		group by b.user_no
+
+		LIMIT
+		#{startRecod},#{pageSize}
+	</select>
+	<!-- 查询未出勤行数 -->
+	<select id="queryNoCount" parameterType="com.sd.farmework.pojo.AttendInfo"
+		resultType="java.lang.Integer">
+		select count(*) c from (select b.user_no,b.user_name
+		from(select sys_user_info.user_no,sys_user_info.user_name,
+		crm_eployee_attendance.employee_name,crm_eployee_attendance.punch_time
+		from sys_user_info
+		left join
+		crm_eployee_attendance on
+		sys_user_info.user_no=crm_eployee_attendance.employee_no
+		where
+		punch_time not like CONCAT('%','${punch_time}','%' )
+
+		union all
+
+		select sys_user_info.user_no,sys_user_info.user_name,
+		crm_eployee_attendance.employee_name,crm_eployee_attendance.punch_time
+		from sys_user_info
+		left join
+		crm_eployee_attendance on
+		sys_user_info.user_no=crm_eployee_attendance.employee_no
+		where
+		employee_name is null) b
+		group by b.user_no) c
+
+	</select>
+
+</mapper>

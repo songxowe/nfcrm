@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.DateDictionaryInfoMapper">
+
+	<resultMap type="com.sd.farmework.pojo.DateDictionaryInfo" id="dateMap">
+
+		<id column="d_id" property="d_id"/>
+		<result column="d_key" property="d_key"/>
+		<result column="d_value" property="d_value"/>
+		<result column="d_type" property="d_type"/>
+		<result column="create_person" property="create_person"/>
+		<result column="function_type" property="function_type"/>
+		<result column="function_type_name" property="function_type_name"/>
+		
+		
+		 		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+	</resultMap>
+	
+	<!-- 查询  -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.DateDictionaryInfo" resultMap="dateMap">
+		select distinct function_type, function_type_name from 
+		crm_dictionary_date
+		where d_type=0
+	</select>
+	
+	<!-- 根据类型查询  -->
+	<select id="queryType" parameterType="com.sd.farmework.pojo.DateDictionaryInfo" resultMap="dateMap">
+		select  d_id,d_key, d_value
+		from 
+		crm_dictionary_date
+		where function_type=#{function_type}
+	</select>
+	<!-- 根据模板中的信息查询字典表中的信息 -->
+	<select id="queryByModelInfo" parameterType="com.sd.farmework.pojo.DateDictionaryInfo" resultMap="dateMap">
+		select  d_key, 
+				d_value,
+		function_type
+		 from 
+		crm_dictionary_date
+		where d_id in(${d_id_string}) and d_type=0
+	</select>
+	
+	<!-- 修改跟进字数 -->
+	<update id="updateNum" parameterType="com.sd.farmework.pojo.DateDictionaryInfo" >
+		update crm_dictionary_date
+		set d_value=#{d_value}
+		where d_type=#{d_type}
+	</update>
+	<!-- 查询倒计时  -->
+	<select id="querycountdown" parameterType="com.sd.farmework.pojo.DateDictionaryInfo" resultMap="dateMap">
+		select d_value from crm_dictionary_date where d_type=2
+	</select>
+	
+	<!-- 查询跟进记录字数  -->
+	<select id="queryloginfo" parameterType="com.sd.farmework.pojo.DateDictionaryInfo" resultMap="dateMap">
+		select d_value from crm_dictionary_date where d_type=1
+	</select>
+</mapper>

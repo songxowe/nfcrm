@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.TeamOrganizationMapper">
+	<resultMap type="com.sd.farmework.pojo.TeamOrganization" id="teamMap">
+		<id column="team_id" property="team_id" />
+		<result column="team_name" property="team_name" />
+		<result column="team_desc" property="team_desc" />
+		<result column="parent_function_id" property="parent_function_id" />
+		<result column="remark" property="remark" />
+		<result column="function_seque" property="function_seque" />
+		<result column="status" property="status" />
+		<result column="node_level" property="node_level" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+	<!-- 部门查询 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.TeamOrganization"
+		resultMap="teamMap">
+		SELECT team_id ,
+		team_name,
+		team_desc,
+		parent_function_id ,
+		remark,
+		function_seque,
+		status,
+		node_level
+		FROM sys_team_organization
+		WHERE parent_function_id=#{parent_function_id} and status="Y"
+	</select>
+	<!-- 部门查询 -->
+	<select id="query" parameterType="com.sd.farmework.pojo.TeamOrganization"
+		resultMap="teamMap">
+		SELECT team_id ,
+		team_name,
+		team_desc,
+		parent_function_id ,
+		remark,
+		function_seque,
+		status,
+		node_level
+		FROM sys_team_organization
+		WHERE team_id=#{team_id}
+	</select>
+	<!-- 角色查询（带分页） -->
+	<select id="queryAllteam" parameterType="com.sd.farmework.pojo.TeamOrganization"
+		resultMap="teamMap">
+		SELECT team_id ,
+		team_name,
+		team_desc,
+		parent_function_id ,
+		remark,
+		function_seque,
+		status,
+		node_level,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name
+		FROM sys_team_organization
+		WHERE parent_function_id=#{parent_function_id}
+		<if test="team_name!= null and team_name != ''"> 
+			   AND team_name like CONCAT('%','${team_name}','%' )  
+		</if>
+		<if test="status!= null and status != ''"> 
+			   AND status like CONCAT('%','${status}','%' )  
+		</if>
+		Limit #{startRecod},#{pageSize}
+	</select>
+	<!-- 角色数量查询 -->
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.TeamOrganization" resultType="Integer">
+		SELECT count(*) FROM sys_team_organization
+		WHERE parent_function_id=#{parent_function_id}
+		<if test="team_name!= null and team_name != ''"> 
+			   AND team_name like CONCAT('%','${team_name}','%' )  
+		</if>
+		<if test="status!= null and status != ''"> 
+			   AND status like CONCAT('%','${status}','%' )  
+		</if>
+	</select>
+	<!-- 新增机构 -->
+	<insert id="add" parameterType="com.sd.farmework.pojo.TeamOrganization">
+		INSERT INTO
+		sys_team_organization(
+		team_name,
+		team_desc,
+		parent_function_id,
+		remark,
+		function_seque,
+		status,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name,
+		node_level
+		)
+		VALUES
+		(
+		#{team_name},
+		#{team_desc},
+		#{parent_function_id},
+		#{remark},
+		#{function_seque},
+		#{status},
+		NOW(),
+		#{createUserId},
+		#{createUserName},
+		NOW(),
+		#{lastUpdateUserId},
+		#{lastUpdateUserName},
+		#{node_level}
+		)
+
+	</insert>
+	<select id="queryById" parameterType="com.sd.farmework.pojo.TeamOrganization"
+		resultMap="teamMap">
+		select 
+		team_id ,
+		team_name,
+		team_desc,
+		parent_function_id ,
+		remark,
+		function_seque,
+		status,
+		node_level
+		from sys_team_organization
+		where team_id=
+		(select parent_function_id
+		from sys_team_organization
+		where team_id=#{team_id})
+	</select>
+	
+	<select id="queryAllList" parameterType="com.sd.farmework.pojo.TeamOrganization"
+		resultMap="teamMap">
+		SELECT team_id ,
+		team_name,
+		team_desc,
+		parent_function_id ,
+		remark,
+		function_seque,
+		status,
+		node_level
+		FROM sys_team_organization
+	</select>
+
+   <select id="queryOrganization" parameterType="com.sd.farmework.pojo.TeamOrganization" resultMap="teamMap">
+       SELECT team_name,team_id FROM sys_team_organization WHERE parent_function_id NOT IN (SELECT team_id FROM sys_team_organization WHERE parent_function_id='0')
+ </select>
+ 
+ <!-- 更新部门 -->
+ <update id="updateteam" parameterType="com.sd.farmework.pojo.TeamOrganization">
+ 	update sys_team_organization set status=#{status},team_name=#{team_name},team_desc=#{team_desc} where team_id=#{team_id}
+ </update>
+</mapper>

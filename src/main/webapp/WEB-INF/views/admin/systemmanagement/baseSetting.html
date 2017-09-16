@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>基础设置</strong></div>
+  <div class="body-content">
+    <div class="form-x" >  
+      <div class="form-group">
+        <div class="label">
+          <label><h2>基础设置</h2></label>
+        </div>
+        
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>跟进记录字数：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" id="num"  name="1" value="${datadic.d_value}" data-validate="required:请输入数字"  />
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button id="submit" class="button bg-main icon-check-square-o" type="submit">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	$("#submit").click(function(){
+		if($("#num").val()==""||$("#num").val()==null){
+			alert("请输入有效参数");
+		}else{
+			var num = $("#num").val();
+			var dtype =$("#num").attr("name");
+			
+			var data = {
+				num:num,
+				dtype:dtype
+			}
+			
+			$.ajax({
+				type: "POST",
+				url: "/NfCrm/dateDictionary/basicset.do",
+				dataType : "json",
+				data:data,
+				success: function(msg){
+					
+					if(msg.code=="ok"){
+						alert("设置成功！");
+						$("#num").attr("value","");
+					}else{
+						alert("设置失败！");
+					}
+				}
+			});
+		}
+		
+	});
+</script>
+</body></html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet"
+	href="/NfCrm/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js/customer/customerlist.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<style type="text/css">
+.oneoffive {
+	float: left;
+	width: 15%;
+}
+
+td {
+	border: solid #ddd;
+	border-width: 0px 1px 1px 0px;
+}
+
+th {
+	background: #efefef
+}
+</style>
+</head>
+<body>
+	<script type="text/javascript">
+function findall(){
+	var min=$("#customer_budget_min").val();
+	var max=$("#customer_budget_max").val();
+	if(min-max>0||isNaN(min-max)){
+		swal("数据格式不正确！");
+	}else{
+		$("#findcustomer").submit();
+	}
+}
+</script>
+	<input type="hidden" value="${loginUser.employee_id}" name="employeeId" />
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong class="icon-reorder">客户信息列表</strong> <a href=""
+				style="float: right; display: none;">添加字段</a>
+		</div>
+		<div class="padding border-bottom">
+			<form id="findcustomer" action="/NfCrm/customer/queryCustomerInfo.do"
+				method="post">
+				<ul class="search" style="padding-left: 10px;">
+					<li>
+						<div class="oneoffive">
+							客户名称 <input name="customer_name" class="input" value=""
+								onchange="changesearch()"
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+						<div class="oneoffive">
+							客户等级 <select name="customer_level" class="input"
+								onchange="changesearch()"
+								style="width: 60%;; line-height: 17px; display: inline-block">
+
+								<option value="">请选择</option>
+								<option value="A">A</option>
+								<option value="B">B</option>
+								<option value="C">C</option>
+
+							</select>
+						</div>
+						<div class="oneoffive">
+							电话号码 <input name="phone" type="text" class="input"
+								onchange="changesearch()" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+						<div class="oneoffive">
+							客户来源 <input name="customer_source" type="text" class="input"
+								onchange="changesearch()" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+						<div class="oneoffive">
+							&nbsp;&nbsp; 归属人 <input name="adscription" type="text"
+								class="input" onchange="changesearch()" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+						<div class="oneoffive">
+							客户类别 <select name="customer_type" class="input"
+								style="width: 60%;; line-height: 17px; display: inline-block"
+								onchange="changesearch()">
+								<option value="">请选择</option>
+								<option value="1">公共客户</option>
+								<option value="2">成交客户</option>
+								<option value="0">带看客户</option>
+							</select>
+						</div>
+						<div class="oneoffive">
+							礼品发放 <input name="gift_date" type="text" class="input"
+								onchange="changesearch()" value=""
+								style="width: 60%; line-height: 17px; display: inline-block" />
+						</div>
+						<div class="oneoffive">
+							项目名称 <input name="pro_name" type="text" class="input"
+								onchange="changesearch()" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+						<div class="oneoffive">
+							客户预算 <input name="customer_budget_min" id="customer_budget_min"
+								type="text" class="input"
+								style="width: 25%;; line-height: 17px; display: inline-block" />
+							<span>—</span> <input name="customer_budget_max"
+								id="customer_budget_max" type="text" class="input"
+								style="width: 25%; line-height: 17px; display: inline-block" />
+						</div>
+						<div class="oneoffive">
+							推荐人数 <input name="recommend_count" type="text" class="input"
+								onchange="changesearch()" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+
+						<div class="oneoffive">
+							录入时间 <input name="input_time" type="text" class="input"
+								onClick="WdatePicker({readOnly:true})" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div> <#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1
+						>
+						<button type="button" class="button border-main icon-search"
+							onclick="findall()">查询</button> </#if> <#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000459")!=-1
+						>
+						<button type="button" class="button border-main icon-search"
+							onclick="exportFile()">导出数据</button> </#if>
+					</li>
+				</ul>
+			</form>
+
+
+		</div>
+		<table class="table table-hover text-center">
+			<tr>
+				<th style="text-align: left; padding-left: 10px;">ID</th>
+				<th>客户等级</th>
+				<th>客户名称</th>
+				<th>客户类别</th>
+				<th>电话号码</th>
+				<th>项目名称</th>
+				<th>开发倒计时</th>
+				<th>客户预算</th>
+				<th>客户来源</th>
+				<th>归属人</th>
+				<th>推荐人姓名</th>
+				<th>礼品发放数</th>
+				<th>录入时间</th>
+				<th width="180px">详情</th>
+			</tr>
+			<tr>
+				<#list customerList as list>
+				<input id="customer_type" value="${list.customer_type}"
+					type="hidden">
+				<td style="text-align: left; padding-left: 10px;"><input
+					type="checkbox" onclick="checkin(this)" id="${list.customer_id}"
+					name="incheck" /> ${list_index+1}</td> <#if list.customer_level=='A'>
+				<td style="color: red; font-weight: bolder;">A</td> </#if> <#if
+				list.customer_level=='B'>
+				<td style="color: blue; font-weight: bolder;">B</td> </#if> <#if
+				list.customer_level=='C'>
+				<td style="color: yellow; font-weight: bolder;">C</td> </#if>
+				<td>${list.customer_name}</td>
+				<td><#if list.customer_type==1>公共客户<#elseif
+					list.customer_type==2>成交客户<#elseif
+					list.customer_type==3>私有客户<#elseif list.customer_type==0>带看客户</#if></td>
+				<td>${list.phone}</td>
+				<td>${list.pro_name}</td>
+				<td>${list.open_countdown}</td>
+				<td>${list.customer_budget_min}到${list.customer_budget_max}（万）</td>
+				<td>${list.customer_source}</td>
+				<td>${list.adscription}</td>
+				<td>${list.recommend_person}</td>
+				<td>${list.gift_count}</td>
+				<td>${list.input_time}</td>
+				<td>
+					<div class="button-group">
+						<#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1
+						> <a class="button border-main"
+							href="/NfCrm/pubcustomer/queryCustomerById.do?customer_id=${list.customer_id}">
+							<span class="icon-edit"></span>编辑
+						</a> </#if> <#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000444")!=-1
+						> <a class="button border-red"
+							href="queryCustomerMsg.do?customer_id=${list.customer_id}"> <span
+							class="icon-trash-o"></span>详情
+						</a> </#if>
+					</div>
+				</td>
+			</tr>
+			</#list>
+			<td style="text-align: left; padding: 19px 0; padding-left: 10px;">
+				<input type="checkbox" onclick="checkall(this)" id="checkall" /> 全选
+			</td>
+			<td colspan="15" style="text-align: left; padding-left: 10px;">
+				<#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000451")!=-1
+				> <a href="javascript:void(0)"
+				class="button border-main padding-left:50px" onclick="change(0)">
+					转带看</a> </#if> <#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000452")!=-1
+				> <a href="javascript:void(0)"
+				class="button border-main padding-left:50px" onclick="change(1)">
+					转公客</a> </#if> <#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000453")!=-1
+				> <a href="javascript:void(0)"
+				class="button border-main padding-left:50px" onclick="change(2)">
+					转成交</a> </#if> <#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000458")!=-1
+				> <a href="javascript:void(0)"
+				class="button border-main padding-left:50px" onclick="change(3)">
+					转私客</a> </#if> <#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000457")!=-1
+				> <a href="javascript:void(0)"
+				class="button border-main padding-left:50px" onclick="report()">
+					报备</a> </#if> <#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000454")!=-1
+				> <a href="javascript:void(0)"
+				class="button border-main padding-left:50px" onclick="gift()">
+					礼品申请</a> </#if>
+			</td>
+
+		</table>
+		<ul class="pagination" id="pagination" style="margin: 0 auto;"></ul>
+	</div>
+
+	<script type="text/javascript">
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="queryCustomerInfo.do?currPage="+num+"&customer_name="+'${obj.customer_name}'
+        		+"&customer_level="+'${obj.customer_level}'
+        		+"&phone="+'${obj.phone}'
+        		+"&customer_source="+'${obj.customer_source}'
+        		+"&adscription="+'${obj.adscription}'
+        		+"&purpose="+'${obj.purpose}'
+        		+"&gift_date="+'${obj.gift_date}'
+        		+"&pro_name="+'${obj.pro_name}'
+        		+"&customer_budget_min="+'${obj.customer_budget_min}'
+        		+"&customer_budget_max="+'${obj.customer_budget_max}'
+        		+"&gift_count="+'${obj.gift_count}'
+        		+"&input_time="+'${obj.input_time}'
+        		+"&customer_type="+'${obj.customer_type}'+"&function_id="+"${function_id}";
+        	}
+        }
+    });
+	</script>
+
+
+
+
+</body>
+</html>

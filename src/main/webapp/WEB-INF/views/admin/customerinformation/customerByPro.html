@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>查询所有项目列表</title>
+    	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/icon.css">
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>		
+</head>
+<body>
+<div style="margin:10px 0;">
+<a href="#" class="easyui-linkbutton" onclick="getSelections()">保存</a>
+</div>
+
+	<table id="list_data" cellspacing="0" cellpadding="0" "idField="itemid" pagination="true" iconCls="icon-save" class="easyui-datagrid"
+	data-options="singleSelect:false,method:'post'" url="/NfCrm/pubcustomer/selectproname.do">
+      <thead> 
+        <tr>  
+           <th field="ck" checkbox="true">全选</th>
+		   <th field="pro_id" width="250">项目序号</th>
+		   <th field="pro_name" width="250">项目名称</th>
+		   <th field="createTime" width="250" align="right">项目时间</th>      	
+	    </tr> 
+      </thead> 
+   </table>  
+ 
+</body>
+</html>
+
+<script type="text/javascript">
+
+//将选中的项目回显到页面
+function getSelections(){
+	var str = "";
+	var rows = $('#list_data').datagrid('getSelections');
+	for(var i=0; i<rows.length; i++){
+		var row = rows[i];
+		if($(window.opener.document.getElementById("pro")).find("input[id='"+row.pro_id+"']").length==0)
+		str+="<input type='checkbox' name='Cpro' id='"+row.pro_id+"' value='"+row.pro_name+"' /><span id="+row.pro_id+">"+row.pro_name+"</span>&nbsp;";
+	}
+	$.messager.alert('Info', "保存成功");
+	$(window.opener.document.getElementById("pro")).append(str);
+	window.close();
+}
+
+ /* $(function(){
+	$('#dlg').dialog('close');
+		 $('#list_data').datagrid({ 
+        iconCls:'icon-edit',//图标 
+        width: 800, 
+        height: '200', 
+        nowrap: false, 
+        striped: true, 
+        border: true, 
+        collapsible:false,//是否可折叠的 
+        fit: true,//自动大小 
+        url:'/NfCrm/customer/selectproname.do', 
+        //sortName: 'code', 
+        //sortOrder: 'desc', 
+        remoteSort:false,  
+        pageSize: 50,//每页显示的记录条数，默认为10 
+        pageList: [50,100,150],//可以设置每页记录条数的列表
+        idField:'user_id', 
+        singleSelect:false,//是否单选 
+        pagination:true,//分页控件 
+        rownumbers:true,//行号 
+        onClickRow: function(index, data) {
+        	var row = $('#list_data').datagrid('getSelected');
+         },
+        toolbar: [{ 
+            text: '保存', 
+            iconCls: 'icon-add', 
+            handler: function() { 
+            	var rows = $('#list_data').datagrid('getSelections');
+            	 var rows = $('#dg').datagrid('getSelections');
+            	if (!rows || rows.length == 0) {
+                	$.messager.alert('提示', '请选择要删除的数据!', 'info');
+                	return;
+                }
+            	
+    			alert(rows);
+            	 
+            	 
+            } 
+        }] 
+    });
+   
+		//设置分页控件 
+	    var p = $('#list_data').datagrid('getPager'); 
+	    $(p).pagination({ 
+	        method : 'POST',
+	        loading:true,
+	        beforePageText: '第',//页数文本框前显示的汉字 
+	        afterPageText: '页    共 {pages} 页', 
+	        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录', 
+	        onBeforeRefresh:function(){
+	            $(this).pagination('loading');
+	            alert('before refresh');
+	            $(this).pagination('loaded');
+	        },
+	        onRefresh:function(){
+	        	   $(this).pagination('loading');
+		            alert('before onRefresh');
+		            $(this).pagination('loaded');
+	        	
+	        }
+	    });  
+	    
+	    $(p).pagination('loading');
+		
+}); */
+
+</script>
+   

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic DataGrid - jQuery EasyUI Demo</title>
+    	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/icon.css">
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+</head>
+<body>
+	<table id="list_data" cellspacing="0" cellpadding="0"> 
+    <thead> 
+        <tr>  
+        	<th data-options="field:'approvenRuleId',width:100" >审批规则编号</th>
+        	<th data-options="field:'approvenRuleName',width:150" >审批规则名称</th>
+          	<th data-options="field:'approvenFunctionId',width:100" >业务类型编号</th>
+        	<th data-options="field:'approvenFunctionName',width:100" >业务类型名称</th>
+	    </tr> 
+    </thead> 
+</table>  
+ 
+</body>
+</html>
+<script type="text/javascript">
+
+	 
+$(function(){
+	$('#dlg').dialog('close');
+		 $('#list_data').datagrid({ 
+        iconCls:'icon-edit',//图标 
+        width: 800, 
+        height: '200', 
+        nowrap: false, 
+        striped: true, 
+        border: true, 
+        collapsible:false,//是否可折叠的 
+        fit: true,//自动大小 
+        url:'/NfCrm/admin/approven/approvenFunctionRuleDataList.do?approvenFunctionId=${approvenFunctionId}', 
+        //sortName: 'code', 
+        //sortOrder: 'desc', 
+        remoteSort:false,  
+        
+        idField:'controllerMethodId', 
+        singleSelect:true,//是否单选 
+        pagination:false,//分页控件 
+        rownumbers:true,//行号 
+        onClickRow: function(index, data) {
+        	var row = $('#list_data').datagrid('getSelected');
+        	window.parent.document.getElementById('bottomframe').src='/NfCrm/admin/approven/approvenFunctionRulePersonList.do?approvenRuleId='+row.approvenRuleId+'&approvenRuleName='+row.approvenRuleName+'&approvenFunctionId='+row.approvenFunctionId+'&approvenFunctionName='+row.approvenFunctionName;
+        }
+      
+    });
+   
+	 
+		
+});
+		
+	</script>
+   

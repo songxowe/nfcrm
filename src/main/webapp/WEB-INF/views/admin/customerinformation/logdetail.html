@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>跟进日志详情</title>
+    	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/icon.css">
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>	
+	<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>	
+<style type="text/css">
+body { margin: 0 auto; padding: 0; width: 570px; font: 75%/120% Arial, Helvetica, sans-serif; }
+a:focus { outline: none; }
+#panel { background: #69C7F7; height: 200px;}
+.slide { margin: 0; padding: 0; border-top: solid 4px #F27613; }
+.btn-slide { background: #F27613 url() no-repeat right -50px;; text-align: center; width: 144px; height: 31px; padding: 10px 10px 0 0; margin: 0 auto; display: block; font: bold 120%/100% Arial, Helvetica, sans-serif; color: #fff; text-decoration: none; }
+.active { background-position: right 12px; }
+</style>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span>跟进日志详情</strong></div>
+  <div class="body-content">
+    <div class="form-x" >   
+     <div class="form-group">
+        <div class="label">
+          <label>跟进项目：</label>
+        </div>
+        <div class="field">
+          <input type="text" disabled="disabled"  class="input tips" style="width:25%; float:left;" value="${loginfo.follow_pro}" />
+        </div>
+      </div>
+         
+      <div class="form-group">
+        <div class="label">
+          <label>跟进时间：</label>
+        </div>
+        <div class="field">
+          <input type="text" disabled="disabled" class="input tips" style="width:25%;" value="${loginfo.follow_time}" />
+          <div class="tips"></div>
+        </div>
+      </div>
+     
+      <div class="form-group">
+        <div class="label">
+          <label>跟进备注：</label>
+        </div>
+        <div class="field">
+          <textarea class="input tips" style="height: 80px;width: 45%;" disabled="disabled" >${loginfo.follow_desc}</textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>跟进截图：</label>
+        </div>
+        <div class="field">
+          <img alt="111" src="${loginfo.follow_img}">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>再次跟进时间：</label>
+        </div>
+        <div class="field">
+          <input type="text" disabled="disabled" class="input tips" style="width:25%;" value="${loginfo.repeat_follow}" />
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="label">
+          <label>再次跟进方案：</label>
+        </div>
+        <div class="field">
+          <textarea class="input tips" style="height: 80px;width: 45%;" >${loginfo.follow_scheme}</textarea>
+        </div>
+      </div>
+    	<div class="form-group">
+        <div class="label">
+          <label>电话记录：</label>
+        </div>
+        <div class="field">
+          3个
+        </div>
+      </div>
+	    
+		<table class="table table-hover text-center" style="width:80%;"
+				align="center">
+				<tr>
+					<th>上传时间</th>
+					<th>状态</th>
+					<th>上传大小</th>
+					<th>上传时长</th>
+					<th></th>
+				</tr>
+				<tr id="open">
+					<td>2016-10-31</td>
+					<td>上传成功</td>
+					<td>1538kb</td>
+					<td>1'32</td>
+					<td><a>播放</a></td>
+				</tr>
+				<tr id="panel" style="display: none;">
+					<td colspan="5"> 
+						<audio controls="controls">  
+	   						<source src="http://www.helloweba.com/demo/html5audio/music.ogg" />
+	   					</audio>
+    				</td>
+				</tr>
+				<tr height="20px">
+				</tr>
+		</table>
+    </div>
+  </div>
+</div>	
+
+<script type="text/javascript" src=""></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#open").click(function(){//当点击黄色块触发silideToggle
+$("#panel").slideToggle("slow");
+$(this).toggleClass("active"); return false;//触发后然后改变小图标方向，css在.active定义的
+});
+});
+</script>
+</body>
+</html>
+
+ <script type="text/javascript">
+
+/* //将选中的项目回显到页面
+function getSelections(){
+	var str = "";
+	var rows = $('#list_data').datagrid('getSelections');
+	for(var i=0; i<rows.length; i++){
+		var row = rows[i];
+		if($(window.opener.document.getElementById("pro")).find("input[id='"+row.pro_id+"']").length==0)
+		str+="<input type='checkbox' name='Cpro' id='"+row.pro_id+"' value='"+row.pro_name+"' /><span id="+row.pro_id+">"+row.pro_name+"</span>&nbsp;";
+	}
+	$.messager.alert('Info', "保存成功");
+	$(window.opener.document.getElementById("pro")).append(str);
+	window.close();
+}  */
+
+ /* $(function(){
+	$('#dlg').dialog('close');
+		 $('#list_data').datagrid({ 
+        iconCls:'icon-edit',//图标 
+        width: 800, 
+        height: '200', 
+        nowrap: false, 
+        striped: true, 
+        border: true, 
+        collapsible:false,//是否可折叠的 
+        fit: true,//自动大小 
+        url:'/NfCrm/customer/selectproname.do?sss=model.ssss', 
+        //sortName: 'code', 
+        //sortOrder: 'desc', 
+        remoteSort:false,  
+        pageSize: 50,//每页显示的记录条数，默认为10 
+        pageList: [50,100,150],//可以设置每页记录条数的列表
+        idField:'user_id', 
+        singleSelect:false,//是否单选 
+        pagination:true,//分页控件 
+        rownumbers:true,//行号 
+        onClickRow: function(index, data) {
+        	var row = $('#list_data').datagrid('getSelected');
+         },
+        toolbar: [{ 
+            text: '保存', 
+            iconCls: 'icon-add', 
+            handler: function() { 
+            	var rows = $('#list_data').datagrid('getSelections');
+            	 var rows = $('#dg').datagrid('getSelections');
+            	if (!rows || rows.length == 0) {
+                	$.messager.alert('提示', '请选择要删除的数据!', 'info');
+                	return;
+                }
+            	
+    			alert(rows);
+            	 
+            	 
+            } 
+        }] 
+    }); */
+   
+		/* //设置分页控件 
+	    var p = $('#list_data').datagrid('getPager'); 
+	    $(p).pagination({ 
+	        method : 'POST',
+	        loading:true,
+	        beforePageText: '第',//页数文本框前显示的汉字 
+	        afterPageText: '页    共 {pages} 页', 
+	        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录', 
+	        onBeforeRefresh:function(){
+	            $(this).pagination('loading');
+	            alert('before refresh');
+	            $(this).pagination('loaded');
+	        },
+	        onRefresh:function(){
+	        	   $(this).pagination('loading');
+		            alert('before onRefresh');
+		            $(this).pagination('loaded');
+	        	
+	        }
+	    });  
+	    
+	    $(p).pagination('loading'); */
+		
+}); 
+
+</script> 
+   

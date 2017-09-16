@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#save").click(function() {
+			var date={
+					oldpwd:$("input[name='oldpwd']").val(),
+					user_pwd:$("input[name='user_pwd']").val(),
+					newpwd2:$("input[name='newpwd2']").val()
+			};
+			$.ajax({
+				type : "GET",
+				url : "/NfCrm/admin/updateUserpwd.do?user_id=${loginUser.user_id}",
+				data : date,
+				success : function(msg) {
+					if (msg == "success") {
+						swal({title: "系统提示",text: "更新密码成功!",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+		        		},
+		        		function(){
+		        			self.location.href="/NfCrm/useradmin/queryUserList.do";
+		        		});
+					} else if (msg == "repeat") {
+						swal({title: "系统提示",text: "请确定两次输入密码的一致性!",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+		        		},
+		        		function(){
+		        			
+		        		});
+					}else if (msg == "passerror") {
+						swal({title: "系统提示",text: "原密码有误!",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+		        		},
+		        		function(){
+		        			
+		        		});
+					}else if (msg == "repeatOpNp") {
+						swal({title: "系统提示",text: "新密码不可以和原密码一样哦!",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+		        		},
+		        		function(){
+		        			
+		        		});
+					}
+				}
+			});
+		});
+	});
+</script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改密码</strong></div>
+  <div class="body-content">
+    <form method="get" class="form-x" action="">
+      <div class="form-group">
+        <div class="label">
+          <label>原密码：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="oldpwd" data-validate="required:请输入正确格式的数据" />
+          <div class="tips"></div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="label">
+          <label>新密码：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="user_pwd" data-validate="required:请输入正确格式的数据" />
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>请再次输入：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="newpwd2" data-validate="required:请输入正确格式的数据" />
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button class="button bg-main icon-check-square-o" id="save" type="button">保存</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body></html>

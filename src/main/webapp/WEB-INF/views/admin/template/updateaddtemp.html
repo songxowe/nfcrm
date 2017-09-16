@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title></title>  
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">编辑模板内容</strong></div>
+    <div class="padding border-bottom">
+      <ul class="search">
+        <li>
+          
+        </li>
+      </ul>
+    </div>
+    <form action="/NfCrm/template/updateTemplate.do" method="post">
+    <table id="tab" class="table table-hover text-center">
+    	<#list temp as list>
+      	<tr>
+      		<td colspan="2">
+      			
+      			<input name="t_id" type="hidden" value="${list.t_id}"/>
+      			模板名称:<input name="template_name" type="text"  class="button " style="padding:5px 15px;" value="${list.template_name}">
+      		</td>
+      	</tr>
+      	</#list>
+      	<#list templist as list>
+      		<input name="t_content_id" type="hidden" value="${list.t_content_id}"/>
+        <tr >
+           <td>
+           	<input type="text" name="key_name" value="${list.key_name}">
+           	<input type="button" value="绑定" name="testChange" class="button border-red" style="padding:5px 15px;" />
+           	
+           	<div id="fade" style="display: none;border:3px solid #eee;width:200px;margin-left: 250px; margin-top: 5px;">
+  				
+  				<select name="select1"  style="width: 100%;" onchange="check1(this.options[this.selectedIndex].value);">
+						<option value="4">绑定</option>
+						
+				</select>
+				<table style="text-align: center;margin-top: 10px;">
+						<tr name="inpu">
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="button" name="btn" value="确定" class="button border-red" style="padding:5px 15px;" /> 
+							</td>
+						</tr>
+				</table>
+  			</div>
+           </td>
+           
+          <td>
+	          <input name="value" type="text" readonly="readonly" value="${list.value}">
+	          <input type="button" value="绑定" name="testChange" class="button border-red" style="padding:5px 15px;" /> 
+	 			<div id="fade" style="display: none;border:3px solid #eee;width:200px;margin-left: 250px; margin-top: 5px;">
+  				
+  				<select name="select1"  style="width: 100%;" onchange="check1(this.options[this.selectedIndex].value);">
+						<option value="4">绑定</option>
+						
+				</select>
+				<table style="text-align: center;margin-top: 10px;">
+						<tr name="inpu">
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="button" name="btn" value="确定" class="button border-red" style="padding:5px 15px;" /> 
+							</td>
+						</tr>
+				</table>
+  			</div>
+	      </td>
+          
+        </tr>
+        </#list>
+        <tr name="cr">
+           <td>
+           	<input type="text" name="key_name">
+           	<input type="button" value="绑定" name="testChange" class="button border-red" style="padding:5px 15px;" />
+           	<div id="fade" style="display: none;border:3px solid #eee;width:200px;margin-left: 250px; margin-top: 5px;">
+  				
+  				<select name="select1"  style="width: 100%;" onchange="check1(this.options[this.selectedIndex].value);">
+						<option value="4">绑定</option>
+						
+				</select>
+				<table style="text-align: center;margin-top: 10px;">
+						<tr name="inpu" >
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="button" name="btn" value="确定" class="button border-red" style="padding:5px 15px;" /> 
+							</td>
+						</tr>
+				</table>
+  			</div>
+           </td>
+          <td>
+          <input name="value" type="text" readonly="readonly" />
+          <input type="button" value="绑定" name="testChange" class="button border-red" style="padding:5px 15px;" /> 
+          
+	 		<div id="fade" style="display: none;border:3px solid #eee;width:200px;margin-left: 250px; margin-top: 5px;">
+  				
+  				<select name="select1"  style="width: 100%;" onchange="check1(this.options[this.selectedIndex].value);">
+						<option value="4">绑定</option>
+						
+				</select>
+				<table style="text-align: center;margin-top: 10px;">
+						<tr name="inpu" >
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="button" name="btn" value="确定" class="button border-red" style="padding:5px 15px;" /> 
+							</td>
+						</tr>
+				</table>
+  			</div>
+	      </td>
+        </tr>
+        
+    </table>
+    
+    <table class="table table-hover text-center">
+        <tr>
+        	<td colspan="2">
+        		<input id="cr" class="button border-red icon-plus" value="+" type="button">
+        	</td>
+        </tr>
+      	<tr>
+          <td colspan="2">
+          <button  class="button border-red" style="padding:5px 15px;"  id="submit"> 
+	        	保存
+	      </button></td>
+        </tr>
+    </table>
+	</form>
+  </div>
+  
+  
+  <div id="fade" class="black_overlay">
+  		
+  </div>
+<script type="text/javascript">
+	
+	$(function() {
+		$("#cr").click(function() {
+			
+			var obj=$("[name='cr']").html();
+			var trHTML="<tr>"+obj+"</tr>";
+			$("[name='tab']").append(trHTML);
+	        
+	       $("#tab").append(trHTML); 
+			
+		   $("[name='btn']").click(function () {  
+		        var str = "";
+		        var items = $("input:checkbox:checked");
+		        for (var i = 0; i < items.length; i++) {
+		        	if((i+1)==items.length){
+		        		str+=items[i].value+"";
+		        	}else{
+		        		str+=items[i].value+","
+		        	}
+				}
+
+		        $(this).parent().parent().parent().parent().parent().parent().children("input[type='text']").val(str);
+		        $(this).parent().parent().parent().parent().parent().hide();
+		    });  
+		    
+		    
+		 	$("input[name='testChange']").click(function () {  
+
+		 		$(this).siblings("div").show();
+		       
+		    }); 
+		});
+	});
+	
+	//select下拉框的改变事件
+	function check1(v){
+		
+		var op=v;
+		
+		var data = {
+			function_type:op
+		}
+		
+		$.ajax({
+			type: "POST",
+			url: "/NfCrm/dateDictionary/selectDateDictionType.do",
+			dataType : "json",
+			data:data,
+			success: function(msg){
+				var datamap=msg.list;//得到json数据赋给datamap
+				$("[name='inpu']").html("");
+				$.each(datamap, function (index, val) {
+			        $("[name='inpu']").append("<td><input name='"+this.d_value+"' type='checkbox' value='"+this.d_key+"'/>"+this.d_key+"</td>");
+			    });
+			}
+		});
+		
+	} 
+	//将后台传输的值插入select下拉框
+	$(document).ready(function(){
+
+	    $.ajax({
+			type: "POST",
+			url: "/NfCrm/dateDictionary/selectDateDiction.do",
+			dataType : "json",
+			success: function(data){
+				var datamap=data.list;//得到json数据赋给datamap
+				
+				$.each(datamap, function (index, val) {
+			        $("[name='select1']").append("<option value='" + this.function_type + "'>" + this.function_type_name + "</option>");
+			    });
+			}
+		});
+	   
+	   	
+	});
+	
+    $("[name='btn']").click(function () {  
+        var str = "";
+        var items = $("input:checkbox:checked");
+        for (var i = 0; i < items.length; i++) {
+        	if((i+1)==items.length){
+        		str+=items[i].value+"";
+        	}else{
+        		str+=items[i].value+","
+        	}
+		}
+        $(this).parent().parent().parent().parent().parent().parent().children("input[type='text']").val(str);
+        $(this).parent().parent().parent().parent().parent().hide();
+    });  
+    
+    
+   
+    
+
+ 	$("input[name='testChange']").click(function () {  
+
+ 		$(this).siblings("div").show();
+       
+    });  
+ 
+	
+		
+	
+</script>
+</body></html>

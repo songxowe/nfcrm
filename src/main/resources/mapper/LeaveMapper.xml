@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.LeaveInfoMapper">
+
+	<!-- 返回的集合类 -->
+	<resultMap type="com.sd.farmework.pojo.LeaveInfo" id="leave-Map">
+		<id property="leave_id" column="LEAVE_ID" />
+		<result property="employee_no" column="EMPLOYEE_NO" />
+		<result property="employee_name" column="EMPLOYEE_NAME" />
+		<result property="leave_start_time" column="LEAVE_START_TIME" />
+		<result property="leave_end_time" column="LEAVE_END_TIME" />
+		<result property="leave_reason" column="LEAVE_REASON" />
+		<result property="status" column="STATUS" />
+		<result property="step" column="STEP" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="createUserId" column="CREATE_USER_ID" />
+		<result property="createUserName" column="CREATE_USER_NAME" />
+		<result property="lastUpdateTime" column="LAST_UPDATE_TIME" />
+		<result property="lastUpdateUserId" column="LAST_UPDATE_USER_ID" />
+		<result property="lastUpdateUserName" column="LAST_UPDATE_USER_NAME" />
+	</resultMap>
+
+	<!-- 新增请假/调休信息 -->
+	<insert id="inserttoleave" parameterType="com.sd.farmework.pojo.LeaveInfo"
+		useGeneratedKeys="true" keyProperty="leave_id">
+		insert into CRM_EMPLOYEE_LEAVE
+		set
+		EMPLOYEE_NAME=#{employee_name},
+		EMPLOYEE_NO=#{employee_no},
+		LEAVE_START_TIME=#{leave_start_time},
+		LEAVE_END_TIME=#{leave_end_time},
+		LEAVE_REASON=#{leave_reason},
+		STATUS=#{status},
+		CREATE_TIME=NOW(),
+		CREATE_USER_ID=#{createUserId},
+		CREATE_USER_NAME=#{createUserName}
+	</insert>
+
+	<!-- 查询请假调休信息 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.LeaveInfo"
+		resultMap="leave-Map">
+		select LEAVE_ID,
+		EMPLOYEE_NO,
+		EMPLOYEE_NAME,
+		LEAVE_START_TIME,
+		LEAVE_END_TIME,
+		LEAVE_REASON,
+		STATUS,
+		STEP,
+		CREATE_TIME
+		from
+		CRM_EMPLOYEE_LEAVE
+		where EMPLOYEE_NO=#{employee_no}
+		<if test="status!= null and status != ''">
+			AND STATUS like CONCAT('%','${status}','%' )
+		</if>
+		<if test="leave_start_time!= null and leave_start_time != ''">
+			AND LEAVE_START_TIME like
+			CONCAT('%','${leave_start_time}','%' )
+		</if>
+		<if test="step!= null and step != ''">
+			AND STEP like CONCAT('%','${step}','%' )
+		</if>
+		order by CREATE_TIME desc
+		LIMIT #{startRecod},#{pageSize}
+	</select>
+
+	<!-- 查询所查信息总条数 -->
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.LeaveInfo"
+		resultType="Integer">
+		select count(*) from CRM_EMPLOYEE_LEAVE where
+		EMPLOYEE_NO=#{employee_no}
+		<if test="status!= null and status != ''">
+			AND STATUS like CONCAT('%','${status}','%' )
+		</if>
+		<if test="step!= null and step != ''">
+			AND STEP like CONCAT('%','${step}','%' )
+		</if>
+		<if test="leave_start_time!= null and leave_start_time != ''">
+			AND LEAVE_START_TIME like
+			CONCAT('%','${leave_start_time}','%' )
+		</if>
+	</select>
+
+	<!-- 审核是否通过 -->
+	<update id="update" parameterType="com.sd.farmework.pojo.LeaveInfo">
+		update CRM_EMPLOYEE_LEAVE set
+		STEP =#{step} where LEAVE_ID
+		=#{leave_id}
+	</update>
+
+</mapper>

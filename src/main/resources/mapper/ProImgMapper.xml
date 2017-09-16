@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.ProImgMapper">
+	<!-- 主表的映射map -->
+	<resultMap type="com.sd.farmework.pojo.ProjectImg" id="proImgMap">
+		<id column="img_id" property="img_id" />
+		<result column="img_type" property="img_type" />
+		<result column="img_source" property="img_source" />
+		<result column="img_remark" property="img_remark" />
+		<result column="img_proid" property="img_proid" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+	<!-- 查询当前项目对应的所有图片 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.ProjectImg"
+		resultMap="proImgMap">
+		select * from crm_proj_img where img_proid=#{img_proid}
+	</select>
+	<!-- 新增当前项目对应的所有图片 -->
+	<insert id="add" parameterType="com.sd.farmework.pojo.ProjectImg" >
+		insert into crm_proj_img SET
+		img_type=#{img_type},img_source=#{img_source},img_remark=#{img_remark},img_proid=#{img_proid},create_time=NOW(),create_user_id=#{createUserId},create_user_name=#{lastUpdateUserName}
+	</insert>
+	<!-- 更新____删除该类型的记录 -->
+	<delete id="deletebyimgid" parameterType="com.sd.farmework.pojo.ProjectImg">
+		delete from crm_proj_img where img_id=#{img_id}
+	</delete>
+</mapper>

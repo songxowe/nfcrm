@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+	<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>	
+<style type="text/css">
+.black_overlay {
+	display: none;
+	width: 30%;
+	border: 2px solid #D6E9F1;
+	z-index: 1002;
+	height: 70%;
+	left: 45%;
+	top: 36%;
+	background-color: #fff;
+	margin-left: -168px;
+	margin-top: -140px;
+	position: fixed;
+	margin-left: -168px;
+	
+}
+#tab{
+	margin: 0px auto;
+}
+</style>
+
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span>发信箱</strong></div>
+  <div class="body-content">
+    <div class="form-x" >   
+    
+     <div class="form-group">
+        <div class="label">
+          <label>收件人：</label>
+        </div>
+        <div class="field" id="pro">
+          <input type="text"  name="" id="recipient" class="input tips" style="width:25%; float:left;"  value=""  />
+          <button name="select1" type="button"  onclick="selectPeople()" class="button bg-blue margin-left"  style="float:left;">
+          		选择收件人
+          </button>
+          <button name="claer" type="button"  onclick="Clears()" class="button bg-blue margin-left"  style="float:left;">
+          		清空
+          </button>
+  		  
+        </div>
+      </div>
+         
+      <div class="form-group">
+        <div class="label">
+          <label>标题：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input" style="width:35%;" id="title" name="title" value="" />
+          <div class="tips"></div>
+        </div>
+      </div>
+     
+      <div class="form-group">
+        <div class="label">
+          <label>内容：</label>
+        </div>
+        <div class="field">
+          <textarea id="content" name="content"></textarea>
+          <div class="tips"></div>
+        </div>
+        
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button id="submit" class="button bg-main icon-check-square-o" type="submit">发送</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	function ContactsOpen(){
+		  var iWidth=600;                          //弹出窗口的宽度; 
+		  var iHeight=510;                         //弹出窗口的高度; 
+		  var iTop = (window.screen.availHeight - 30 - iHeight) / 2; 
+	  //获得窗口的水平位置 
+	  
+	  var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; 
+	  var url="/NfCrm/receivemessage/contacts.do";
+	  /* var url="/NfCrm/log/logDetail.do"; */
+		 window.open(url,"child",'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no'); 
+	}
+	function selectPeople(){
+		ContactsOpen(); 
+	}
+	function Clears(){
+		$("#recipient").val("");
+		$("#recipient").attr("name","");
+	}
+	//===========点击保存
+    $("#submit").click(function () {  
+    	if($("#recipient").val()==null||$("#recipient").val()==""){
+    		swal({title: "系统提示",text: "请选择用户",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+    		})
+    	}else if($("#title").val()==null||$("#title").val()==""){
+    		swal({title: "系统提示",text: "请输入标题",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+    		})
+    	}else if($("#content").val()==null||$("#content").val()==""){
+    		swal({title: "系统提示",text: "请输入内容",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+    		})
+    	}else{
+	    	var str = $("#recipient").val();
+	    	var str2= $("#recipient").attr("name");
+	    	var retStr=str;
+	    	var lidStr=str2;
+			var title=$("input[name='title']").val();
+			var content=$("#content").val();
+			var data = {
+					retStr:retStr,
+					lidStr:lidStr,
+					title:title,
+					content:content
+			};
+	    	$.ajax({
+				type: "POST",
+				url: "/NfCrm/receivemessage/addOutBox.do",
+				dataType : "json",
+				data:data,
+				success: function(data){
+					if(data.code=="ok"){
+						swal({title: "系统提示",text: "发送成功！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+		        		},
+		        		function(){
+		        			window.location="/NfCrm/receivemessage/outBox.do"; 
+		        		});
+					}
+				},error: function(){
+					swal({title: "系统提示",text: "发送失败！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+	        		})
+				}
+			});
+    	}
+   
+    });
+	
+	
+</script>
+</body></html>

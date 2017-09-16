@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet" href="/NfCrm/resources/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script src="/NfCrm/resources/admin/systemmanagement/permissionslist.js"></script>
+</head>
+<body>
+
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">权限管理列表</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+      <!--  
+        <li> <a class="button border-main icon-plus-square-o" href="javascript:void(0);"> 添加内容</a> </li>-->
+      	<li>&nbsp;&nbsp;&nbsp;</li>
+      	<form  action="queryUserInfo.do" method="get">
+        <li>所属分组
+          <!-- <input name="s_ishome" class="input" onchange="changesearch()" style="width:120px; line-height:17px; display:inline-block"/> -->
+           <!--  <option value="">选择</option>
+            <option value="1">是</option>
+            <option value="0">否</option> -->
+            <select name="user_group" class="input" id="teamId" style="width: 20%;; line-height: 17px; display: inline-block">
+				<option value="">请选择</option>
+			</select>
+          &nbsp;&nbsp;
+          	用户姓名
+          <input name="user_name" type="text" class="input" id="userName"   style="width:20%; line-height:17px;display:inline-block"/>
+          &nbsp;&nbsp;
+          	用户编号
+          <input name="user_no" type="text" class="input" id="userNo" style="width:20%; line-height:17px;display:inline-block"/>
+          
+        </li>
+        <li>
+         <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1 >
+          <button type="submit" class="button border-main icon-search">查询</button>
+          </#if>
+        </li>
+        </form>
+      </ul>
+    </div>
+    <table class="table table-hover text-center">
+      <tr>
+        <th width="100" style="text-align:left; padding-left:20px;">ID</th>
+        <th width="10%">所属分组</th>
+        <th>用户姓名</th>
+        <th>用户编号</th>
+        <th width="310">操作</th>
+      </tr>
+      <volist name="list" id="vo">
+      <#list userList as userInfo>
+      	<tr>
+          <td style="text-align:left; padding-left:20px;">
+           ${userInfo_index+1}</td>
+          <td>${userInfo.groupName}</td>
+          <td>${userInfo.user_name}</td>
+          <td>${userInfo.user_no}</td>
+          <td>
+	          <div class="button-group"> 
+	          <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1 >
+	          	<a href="../admin/queryPermList.do?user_id=${userInfo.user_id}&flag=query" class="button border-main icon-search">角色详情</a>
+	          </#if>
+	          <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1 >
+	          	<#if userInfo.user_no = "0001" >
+		          	<a class="button border-main" href="javascript:return false;"  style="opacity: 0.2">
+		          		<span class="icon-edit"></span>修改
+		          	</a> 
+		          	
+	          	<#else>
+	          		<a class="button border-main" href="../admin/queryPermList.do?user_id=${userInfo.user_id}&flag=update">
+		          		<span class="icon-edit"></span>修改
+		          	</a> 
+		          	
+	          	</#if>
+	          	 </#if>
+	          </div>
+          </td>
+        </tr>
+      </#list>
+
+         
+      <tr>
+        
+        <td colspan="7" style="text-align:left;padding-left:20px;"> </td> 
+         
+          
+   	</tr>
+    </table>
+     <ul class="pagination" id="pagination"></ul></div>
+  </div>
+
+	<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="queryUserInfo.do?currPage="+num;
+        	}
+        }
+        
+    });
+</script>
+</body>
+</html>

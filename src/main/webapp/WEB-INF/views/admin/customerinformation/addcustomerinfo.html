@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+<script type="text/javascript"
+	src="/NfCrm/resources/admin/customerinformation/addcustomerinfo.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<style>
+.phone {
+	position: absolute;
+	top: 2%;
+	left: 60%;
+}
+
+.white_content {
+	display: none;
+	border: 12px solid #D6E9F1;
+	z-index: 1002;
+	width: 60%;
+	height: 100%;
+	left: 25%;
+	top: 25%;
+	background-color: #fff;
+	margin-top: -15%;
+	position: fixed;
+	margin-left: -5%;
+}
+
+.back_content {
+	display: none;
+	border: 12px solid #D6E9F1;
+	z-index: 1002;
+	width: 50%;
+	height: 40%;
+	left: 40%;
+	top: 40%;
+	background-color: #fff;
+	margin-left: -168px;
+	margin-top: -140px;
+	position: fixed;
+	margin-left: -168px;
+}
+
+.black_overlay {
+	display: none;
+	background-color: #f5f5f5;
+	z-index: 1001;
+	-moz-opacity: 0.8;
+	opacity: .80;
+	filter: alpha(opacity = 80);
+	width: 100%;
+	height: 100%;
+	left: 0%;
+	top: 0%;
+	right: 0%;
+	bottom: 0%;
+	position: fixed;
+}
+
+.close {
+	float: right;
+	clear: both;
+	width: 100%;
+	text-align: right;
+	margin: 0 0 6px 0
+}
+
+.close a {
+	color: #333;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 700
+}
+
+#con {
+	text-indent: 1.5pc;
+	line-height: 21px
+}
+
+#con .label {
+	width: 35%;
+}
+</style>
+</head>
+<body>
+
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>新增客户信息</strong>
+		</div>
+		<div class="body-content">
+			<form method="post" class="form-x"
+				action="/NfCrm/pubcustomer/addCustomer.do" id="customerFrom">
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%">
+						<label>倒计时：</label>
+					</div>
+					<div class="a">
+						<div id="timer"
+							style="text-align: center; float: left; margin-top: 9px;">
+							${DataTime.d_value}天</div>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					</div>
+
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%">
+						<label>客户名：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="customer_name"
+							id="CustomerName" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 20px; float: left;">(必填)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>客户生日：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" onClick="WdatePicker()"
+							readonly="readonly" value="" name="customer_birthday"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%">
+						<label>推荐人：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value=""
+							id="recommend_person" name="recommend_person"
+							data-validate="required:" style="width: auto"
+							onblur="checkperson()" />
+						
+					</div>
+					<div id="person" class="a"></div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>行业：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="industry"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%">
+						<label>客户来源：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value=""
+							name="customer_source" id="CustomerSource"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 20px; float: left;">(必填)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>所在区域：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="region"
+							id="Region" data-validate="required:请输入正确格式" style="width: auto" />
+						<span style="margin-top: 20px; float: left;">(必填)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%">
+						<label>电话号码：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="phone"
+							data-validate="required:请输入正确格式" onchange="checkPhone()"
+							style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>微信号：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="weixin"
+							data-validate="required:请输入正确格式" onchange="checkWX()"
+							style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%">
+						<label>QQ号：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="qq"
+							data-validate="required:请输入正确格式" onchange="checkQQ()"
+							style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>家庭人数：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="homeperson"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>客户预算：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value=""
+							name="customer_budget_min" data-validate="required:请输入正确格式"
+							style="width: 100px" /> <span style="float: left;">—</span> <input
+							type="text" class="input w50" value="" name="customer_budget_max"
+							data-validate="required:请输入正确格式" style="width: 100px;"
+							onblur="change()" /> <span
+							style="margin-top: 20px; float: left;">(万元)</span>
+						<div class="tips"></div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>客户等级：</label>
+					</div>
+					<div class="field">
+						<select name="customer_level" class="input w50" id="CustomerLevel">
+							<option value="">请选择等级</option>
+							<option value="A">A</option>
+							<option value="B">B</option>
+							<option value="C">C</option>
+						</select> <span style="margin-top: 20px; float: left;">(必填)</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>家庭住址：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="home_address"
+							data-validate="required:请输入正确格式" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>公司地址：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="unit_address"
+							id="UnitAddress" data-validate="required:请输入正确格式" /> <span
+							style="margin-top: 20px; float: left;">(必填)</span>
+					</div>
+				</div>
+
+
+
+				<div class="form-group">
+					<div class="label">
+						<label>项目名称:</label>
+					</div>
+					<input type="hidden" class="input w50" value="" name="Pro_name"
+						id="PN"> <input type="hidden" class="input w50" value=""
+						name="Pro_id" id="PI">
+					<button type="button" class="button bg-blue margin-left"
+						style="float: left;" id="showPro">新增</button>
+					<span style="margin-top: 20px; float: left;">(必填)</span>
+					<div class="field" id="pro"
+						style="display: block; width: 50%; float: left;"></div>
+				</div>
+
+
+				<div class="form-group"
+					style="display: none; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%">
+						<label>&nbsp;&nbsp;&nbsp;：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" id="" name=""
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="label">
+						<label>跟进日志：</label>
+					</div>
+					<input type="button" class="button bg-blue margin-left" id="image1"
+						value="+新增" style="float: left;" onclick="show('light')">
+					<span style="margin-top: 20px; float: left;">(必填)</span>
+				</div>
+
+				<table class="table table-hover text-center" id="mytable"
+					style="width: 80%;" align="center">
+
+					<tr id="hideid">
+						<th>跟进时间</th>
+						<th>跟进项目</th>
+						<th>电话记录</th>
+						<th>跟进备注</th>
+						<th>再次跟进时间</th>
+					</tr>
+				</table>
+				<br> <br> <br> <br>
+
+				<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="field">
+						<input type="hidden" name="submitParam" value="" id="submitParam"
+							class="input w50" />
+						<button class="button bg-main icon-check-square-o" type="submit"
+							onclick="submitData()">提交</button>
+					</div>
+				</div>
+			</form>
+
+			<div class="form-x">
+
+				<div id="light" class="white_content">
+					<div class="close">
+						<a href="javascript:void(0)" onclick="hide('light')">关闭</a>
+					</div>
+
+					<div id="con">
+
+						<div class="form-group"
+							style="display: none; width: 60%; float: left;">
+							<div class="label">
+								<label>跟进项目id：</label>
+							</div>
+							<div>
+								<input type="text" class="input w50" value="" id="pid"
+									name="pro_id" style="width: auto" />
+							</div>
+						</div>
+
+						<div class="form-group"
+							style="display: none; width: 60%; float: left;">
+							<div class="label">
+								<label>跟进项目截图：</label>
+							</div>
+							<div>
+								<input type="text" class="input w50" value="" id="Pho_img"
+									name="follow_img" style="width: auto" />
+
+							</div>
+						</div>
+						<div class="form-group"
+							style="display: block; width: 60%; float: left;">
+							<div class="label">
+								<label>跟进项目：</label>
+							</div>
+							<div>
+								<select name="follow_pro" class="input w50" id="testProId"></select>
+							</div>
+						</div>
+						<div class="phone">
+							<form enctype='multipart/form-data' id='upform' name='upimg'>
+								<div id="phone_up">
+									<div id="up_text">
+										<img id="pho" src="" style="width: 60%; height: 150px;">
+									</div>
+								</div>
+								<div style="margin-left: 20%;">
+									<input type="file" class="file_con" name="file1"
+										style="display: block" />
+									<button class="button bg-main icon-check-square-o"
+										type="button" id="up_button">截图上传</button>
+								</div>
+							</form>
+						</div>
+						<div class="form-group"
+							style="display: block; width: 60%; float: none;">
+							<div class="label">
+								<label>跟进时间：</label>
+							</div>
+							<div>
+
+								<input type="text" class="input w50" value=""
+									onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"
+									readonly="readonly" name="follow_time"
+									data-validate="required:请输入正确格式" style="width: auto" />
+							</div>
+						</div>
+						<div class="form-group"
+							style="display: block; width: 60%; float: left;">
+							<div class="label">
+								<label>再次跟进时间：</label>
+							</div>
+							<div>
+								<input type="text" class="input w50" value=""
+									onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"
+									readonly="readonly" name="repeat_follow"
+									data-validate="required:请输入正确格式" style="width: auto" />
+							</div>
+						</div>
+						<div class="form-group"
+							style="display: block; width: 50%; float: none;">
+							<div class="label">
+								<label>跟进备注：</label>
+							</div>
+							<div>
+								<textarea class="input w50" name="follow_desc" rows="4"
+									data-validate="required:请输入正确格式" onchange="checkdesc()"
+									style="width: 150%; float: none; margin-left: 35%"></textarea>
+							</div>
+						</div>
+
+						<input type="hidden" id="contextSize">
+
+						<div class="form-group"
+							style="display: block; width: 50%; float: none; height: -20px">
+							<div class="label">
+								<label>下次跟进方案：</label>
+							</div>
+							<div>
+								<textarea class="input w50" name="follow_scheme" rows="4"
+									data-validate="required:请输入正确格式" onchange="checkscheme()"
+									style="width: 150%; float: none; margin-left: 35%"></textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="field" style="float: right;">
+								<button class="button bg-main icon-check-square-o" type="button"
+									id="submit" onclick="hide('light')">提交</button>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+			<div id="fade" class="black_overlay"></div>
+
+
+			<div id="addcustomer" class="back_content" style="width: 35%;">
+				<div class="close">
+					<a href="javascript:void(0)" onclick="hide('addcustomer')">关闭</a>
+				</div>
+				<div id="tent" style="margin-left: 45px;">
+
+					<div class="form-group" style="float: left; width: 50%;">
+						<div class="label w50" style="line-height: 34px; width: 36%;">
+							<label>客户名：</label>
+						</div>
+						<div>
+							<input type="text" class="input w50" value=""
+								data-validate="required:请输入正确格式" name="recommend_name"
+								style="width: 60%" id="date" />
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<div class="label">
+							<button class="button bg-main icon-check-square-o" type="button"
+								id="zcq">确定</button>
+						</div>
+
+					</div>
+
+					<div class="form-group" style="float: left; width: 50%">
+						<table class="table table-hover text-center" id="Customertable"
+							style="width: 30%;"></table>
+					</div>
+
+					<div class="form-group" style="float: right; width: 50%;">
+						<div class="field">
+							<button class="button bg-main icon-check-square-o" type="button"
+								id="subfrom" onclick="hide('addcustomer')">提交</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="fade" class="black_overlay"></div>
+
+		</div>
+
+	</div>
+
+</body>
+</html>

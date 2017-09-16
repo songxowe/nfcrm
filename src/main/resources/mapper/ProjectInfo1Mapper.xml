@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.ProjectInfo1Mapper">
+	<!-- 主表的映射map -->
+	<resultMap type="com.sd.farmework.pojo.ProjectInfo" id="proMap">
+		<id column="pro_id" property="pro_id" />
+		<result column="pro_type" property="pro_type" />
+		<result column="pro_name" property="pro_name" />
+		<result column="pro_no" property="pro_no" />
+		<result column="spread_type" property="spread_type" />
+		<result column="input_time" property="input_time" />
+		<result column="region" property="region" />
+		<result column="price_range" property="price_range" />
+		<result column="actual_price" property="actual_price" />
+		<result column="area_range" property="area_range" />
+		<result column="actual_area" property="actual_area" />
+		<result column="pro_status" property="pro_status" />
+		<result column="p_type" property="p_type" />
+		<result column="profession" property="profession" />
+		<result column="features" property="features" />
+		<result column="address" property="address" />
+		<result column="floor" property="floor" />
+		<result column="property_price" property="property_price" />
+		<result column="decoration" property="decoration" />
+		<result column="food" property="food" />
+		<result column="phone" property="phone" />
+		<result column="tel" property="tel" />
+		<result column="pro_template" property="pro_template" />
+		<result column="pro_template_id" property="pro_template_id" />
+		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+	</resultMap>
+
+	<select id="queryList" parameterType="com.sd.farmework.pojo.ProjectInfo" resultMap="proMap">
+		select * 
+		from crm_proj_info 
+		where 1=1 
+			<if test="pro_no!= null and pro_no != ''"> 
+			   AND pro_no like CONCAT('%','${pro_no}','%' )  
+			</if>
+			<if test="pro_name!= null and pro_name != ''"> 
+			   AND pro_name like CONCAT('%','${pro_name}','%' )  
+			</if>
+			<if test="pro_type!= null and pro_type != ''"> 
+			   AND pro_type like CONCAT('%','${pro_type}','%' )
+			</if>
+			<if test="pro_status!= null and pro_status != ''"> 
+			   AND pro_status like CONCAT('%','${pro_status}','%' )
+			</if>
+			<if test="input_time!= null and input_time != ''"> 
+			   AND input_time like CONCAT('%','${input_time}','%' )
+			</if>
+			group by input_time desc
+		LIMIT  #{startRecod},#{pageSize}
+	</select>
+	<!-- 修改完无条件查询 -->
+	<select id="updatedquery" parameterType="com.sd.farmework.pojo.ProjectInfo" resultMap="proMap">
+		select * 
+		from crm_proj_info 
+		LIMIT  #{startRecod},#{pageSize}
+	</select>
+	<insert id="addpro" parameterType="com.sd.farmework.pojo.ProjectInfo" useGeneratedKeys="true" keyProperty="pro_id">
+		insert into crm_proj_info set 
+				pro_type=#{pro_type},
+				pro_name=#{pro_name},
+				pro_no=#{pro_no},
+				spread_type=#{spread_type},
+				input_time=NOW(),
+				region=#{region},
+				price_range=#{price_range},
+				actual_price=#{actual_price},
+				area_range=#{area_range},
+				actual_area=#{actual_area},
+				pro_status=#{pro_status},
+				p_type=#{p_type},
+				profession=#{profession},
+				features=#{features},
+				address=#{address},
+				floor=#{floor},
+				property_price=#{property_price},
+				decoration=#{decoration},
+				food=#{food},
+				phone=#{phone},
+				tel=#{tel},
+				pro_template=#{pro_template},
+				pro_template_id=#{pro_template_id},
+				create_time=NOW(),
+				create_user_id=#{createUserId},
+				create_user_name=#{createUserName}
+	</insert>
+	<select id="queryById" parameterType="com.sd.farmework.pojo.ProjectInfo" resultMap="proMap">
+			select * from crm_proj_info where pro_id=#{pro_id}
+	</select>
+	<update id="updatepro" parameterType="com.sd.farmework.pojo.ProjectInfo">
+			update crm_proj_info set 
+				pro_type=#{pro_type},
+				pro_name=#{pro_name},
+				pro_no=#{pro_no},
+				spread_type=#{spread_type},
+				input_time=NOW(),
+				region=#{region},
+				price_range=#{price_range},
+				actual_price=#{actual_price},
+				area_range=#{area_range},
+				actual_area=#{actual_area},
+				p_type=#{p_type},
+				profession=#{profession},
+				features=#{features},
+				address=#{address},
+				floor=#{floor},
+				property_price=#{property_price},
+				decoration=#{decoration},
+				food=#{food},
+				phone=#{phone},
+				tel=#{tel},
+				pro_template=#{pro_template},
+				pro_template_id=#{pro_template_id},
+				last_update_time=NOW(),
+				last_update_user_id=#{lastUpdateUserId},
+				last_update_user_name=#{lastUpdateUserName}
+				where pro_id=#{pro_id}
+	</update>
+	<update id="updatestatus" parameterType="com.sd.farmework.pojo.ProjectInfo">
+		update crm_proj_info set pro_status=#{pro_status} where pro_id=#{pro_id}
+	</update>
+	
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.ProjectInfo" resultType="Integer">
+		select count(*) from crm_proj_info where 1=1 
+			<if test="pro_no!= null and pro_no != ''"> 
+			   AND pro_no like CONCAT('%','${pro_no}','%' )  
+			</if>
+			<if test="pro_name!= null and pro_name != ''"> 
+			   AND pro_name like CONCAT('%','${pro_name}','%' )  
+			</if>
+			<if test="pro_type!= null and pro_type != ''"> 
+			   AND pro_type like CONCAT('%','${pro_type}','%' )
+			</if>
+			<if test="pro_status!= null and pro_status != ''"> 
+			   AND pro_status like CONCAT('%','${pro_status}','%' )
+			</if>
+			<if test="input_time!= null and input_time != ''"> 
+			   AND input_time like CONCAT('%','${input_time}','%' )
+			</if>
+	</select>
+	<select id="queryPro" parameterType="com.sd.farmework.pojo.ProjectInfo" resultMap="proMap">
+	            select pro_id,pro_name,create_time from crm_proj_info
+	</select>
+	
+	<select id="querytype" parameterType="com.sd.farmework.pojo.ProjectInfo" resultMap="proMap">
+		select * from crm_proj_info where pro_type=#{pro_type}
+	</select>
+	<!--查询某些字段的值  通过字典表中的字段拼接-->
+	<select id="queryByOneString" parameterType="com.sd.farmework.pojo.ProjectInfo"
+		resultType="java.lang.String">
+		select 
+		${oneString}
+		from
+		crm_proj_info 
+		where
+		pro_id=#{pro_id}
+	</select>
+</mapper>

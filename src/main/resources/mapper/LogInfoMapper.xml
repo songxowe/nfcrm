@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.LogInfoMapper">
+
+	<resultMap type="com.sd.farmework.pojo.LogInfo" id="logMap">
+
+		<id column="log_id" property="log_id"/>
+		<result column="follow_time" property="follow_time"/>
+		<result column="follow_pro" property="follow_pro"/>
+		<result column="pro_id" property="pro_id"/>
+		<result column="follow_desc" property="follow_desc"/>
+		<result column="phone_record" property="phone_record"/>
+		<result column="follow_img" property="follow_img"/>
+		<result column="repeat_follow" property="repeat_follow"/>
+		<result column="follow_scheme" property="follow_scheme"/>
+		
+		
+		
+		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+		
+	</resultMap>
+	<!-- 新增日志信息-->
+	<insert id="add" parameterType="com.sd.farmework.pojo.LogInfo" 
+	useGeneratedKeys="true" keyProperty="log_id">
+
+		INSERT INTO crm_log_info(
+     			    follow_time,
+					follow_pro,
+					pro_id,
+					follow_desc,
+					phone_record,
+					follow_img,
+					repeat_follow,
+					follow_scheme,
+					create_time,
+					create_user_id,
+					create_user_name,
+					last_update_time,
+					last_update_user_id,
+					last_update_user_name
+					)
+					VALUES 
+					(	
+				    #{follow_time},
+					#{follow_pro},
+					#{pro_id},
+					#{follow_desc},
+					#{phone_record},
+					#{follow_img},
+					#{repeat_follow},
+					#{follow_scheme},
+					NOW(),
+					#{createUserId},
+					#{createUserName},
+					NOW(),
+					#{lastUpdateUserId},
+					#{lastUpdateUserName}
+					)		
+	</insert>
+	<!-- 查询日志信息-->
+	<select id="queryLonInfo" parameterType="com.sd.farmework.pojo.LogInfo" resultMap="logMap">
+		
+			SELECT   
+			        follow_time,
+					follow_pro,
+					pro_id,
+					follow_desc,
+					phone_record,
+					follow_img,
+					repeat_follow,
+					follow_scheme,
+					create_time,
+					create_user_id
+					
+		    FROM crm_log_info WHERE 
+			log_id=#{log_id}
+	</select>
+	
+	<!-- author : 秦波   time:2016-11-18-->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.LogInfo" resultMap="logMap">
+		SELECT   	log_id,
+			        follow_time,
+					follow_desc,
+					phone_record,
+					follow_img,
+					repeat_follow,
+					follow_scheme,
+					create_time,
+					create_user_id,
+					create_user_name,
+					last_update_time,
+					last_update_user_id,
+					last_update_user_name
+		    FROM crm_log_info where pro_id=#{pro_id}
+	</select>
+	<!-- 根据项目id查询跟进记录-->
+	<select id="queryByProId" parameterType="com.sd.farmework.pojo.LogInfo" resultMap="logMap">
+			SELECT   	
+					log_id,
+			        follow_time,
+					follow_pro,
+					pro_id,
+					follow_desc,
+					phone_record,
+					follow_img,
+					repeat_follow,
+					follow_scheme
+		    FROM crm_log_info where pro_id=#{pro_id}
+	</select>
+	
+	<!--查询最后一条跟进时间-->
+	<select id="queryTime" parameterType="com.sd.farmework.pojo.LogInfo" resultMap="logMap">
+			select * from crm_log_info where pro_id=#{pro_id} order by last_update_time desc limit 1 
+	</select>
+	
+	<!--查询再次跟进时间-->
+	<select id="queryRFtime" parameterType="com.sd.farmework.pojo.LogInfo" resultMap="logMap">
+			select repeat_follow from crm_log_info where create_user_id =#{createUserId}
+	</select>
+	
+	<!--根据id查询-->
+	<select id="queryById" parameterType="com.sd.farmework.pojo.LogInfo" resultMap="logMap">
+			select 
+				log_id,
+			    follow_time,
+			    follow_pro,
+				follow_desc,
+				phone_record,
+				follow_img,
+				repeat_follow,
+				follow_scheme
+			from crm_log_info 
+			where log_id =#{log_id}
+	</select>
+</mapper>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>	
+<style type="text/css">
+.black_overlay {
+	display: none;
+	width: 30%;
+	border: 2px solid #D6E9F1;
+	z-index: 1002;
+	height: 70%;
+	left: 45%;
+	top: 36%;
+	background-color: #fff;
+	margin-left: -168px;
+	margin-top: -140px;
+	position: fixed;
+	margin-left: -168px;
+}
+#tab{
+	margin: 0px auto;
+}
+</style>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span>短信发送</strong></div>
+  <div class="body-content">
+    <div  class="form-x" >   
+    
+     <div class="form-group">
+        <div class="label">
+          <label>客户姓名：</label>
+        </div>
+        <div class="field" id="pro">
+          <input name="" id="customer_name" type="text" class="input"  style="width:25%;float:left; line-height:17px;display:inline-block" value=""/>
+          <input type="button" class="button bg-blue margin-left" id="choose" value="选择联系人"  style="float:left;">
+          <input type="button" class="button bg-blue margin-left" onclick="Claers()" value="清空"  style="float:left;">
+        </div>
+      </div>
+       <div class="form-group">
+        <div class="label">
+          <label>客服名称：</label>
+        </div>
+        <div class="field">
+          <#list user as list>
+       	  <input name="service_person" type="text" class="input" value="${list.user_name}"  style="width:25%;float:left; line-height:17px;display:inline-block"/>
+       	  </#list>
+        </div>
+      </div>
+      <div class="form-group">
+      	 <div class="label">
+          <label>固定号码：</label>
+        </div>
+        <div class="field">
+          <input name="s_isvouch" value="13599648288" type="text" class="input"  style="width:25%;float:left; line-height:17px;display:inline-block"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>主题：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input" style="width:35%;" id="topic" name="topic" value="" />
+          <div class="tips"></div>
+        </div>
+      </div>
+     
+      <div class="form-group">
+        <div class="label">
+          <label>内容：</label>
+        </div>
+        <div class="field">
+          <textarea id="content" name="context" style="width:50%;height:160px;"  placeholder="(不少于80字)"></textarea>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button id="submit" class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+        </div>
+      </div>
+      
+      <div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div style="text-align: center;">
+						<a class="button bg-main icon-check-square-o" href="/NfCrm/sms/smsList.do">返回</a>
+					</div>
+			</div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	function ContactsOpen(id){
+		  var iWidth=600;                          //弹出窗口的宽度; 
+		  var iHeight=510;                         //弹出窗口的高度; 
+		  var iTop = (window.screen.availHeight - 30 - iHeight) / 2; 
+	//获得窗口的水平位置 
+		var logid=id;
+	
+	var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; 
+	var url="/NfCrm/sms/contacts.do";
+	/* var url="/NfCrm/log/logDetail.do"; */
+		 window.open(url,"child",'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no'); 
+	}
+	$("#choose").click(function(){
+		/* $("#fade").show(); */
+		ContactsOpen();
+	});
+	
+	function Claers(){
+		$("#customer_name").val("");
+		$("#customer_name").attr("name","");
+	}
+	
+	//===========点击保存
+    $("#submit").click(function () {  
+    	var str=$("#customer_name").val();
+    	var str2=$("#customer_name").attr("name");
+    	
+    	var cusidStr=str2;
+    	var cusnameStr=str;
+		var topic=$("input[name='topic']").val();
+		var content=$("#content").val();
+		var data = {
+				cusidStr:cusidStr,
+				cusnameStr:cusnameStr,
+				topic:topic,
+				content:content
+		};
+		if($("#customer_name").val()==null||$("#customer_name").val()==""){
+			swal({title: "系统提示",text: "请选择客户",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+    		})
+		}else if($("#topic").val()==null||$("#topic").val()==""){
+			swal({title: "系统提示",text: "请输入标题",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+    		})
+		}else if($("#content").val()==null||$("#content").val()==""){
+			swal({title: "系统提示",text: "请输入内容",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+    		})
+		}else{
+	    	$.ajax({
+				type: "POST",
+				url: "/NfCrm/sms/addSmS.do",
+				dataType : "json",
+				data:data,
+				success: function(data){
+					if(data.code=="ok"){
+						swal({title: "系统提示",text: "发送成功！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+		        		},
+		        		function(){
+		        			window.location="/NfCrm/sms/smsList.do"; 
+		        		});
+					}
+				},error: function(){
+					swal({title: "系统提示",text: "发送失败！",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+	        		})
+				}
+			});
+		}
+    });
+</script>
+</body></html>

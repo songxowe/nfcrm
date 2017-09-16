@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.RolesalaryFormulaMapper">
+
+	<!-- 工资设置映射 -->
+	<resultMap type="com.sd.farmework.pojo.RolesalaryFormula" id="rolesalaryMap">
+		<id column="rolesalary_id" property="rolesalary_id" />
+		<result column="role_id" property="role_id" />
+		<result column="role_name" property="role_name" />
+		<result column="basic_salary" property="basic_salary" />
+		<result column="subsidy" property="subsidy" />
+		<result column="first_monad" property="first_monad" />
+		<result column="second_monad" property="second_monad" />
+		<result column="third_monad" property="third_monad" />
+		<result column="fourth_monad" property="fourth_monad" />
+		<result column="fifth_monad" property="fifth_monad" />
+		<result column="sixth_monad" property="sixth_monad" />
+		<result column="seventh_monad" property="seventh_monad" />
+		<result column="eighth_monad" property="eighth_monad" />
+		<result column="ninth_monad" property="ninth_monad" />
+		<result column="tenth_monad" property="tenth_monad" />
+		<result column="eleventh_monad" property="eleventh_monad" />
+		<result column="eleven_more" property="eleven_more" />
+		<result column="integral_reward_first" property="integral_reward_first" />
+		<result column="integral_reward_second" property="integral_reward_second" />
+		<result column="take_look_num" property="take_look_num" />
+		<result column="take_look_amount" property="take_look_amount" />
+		<result column="take_look_singlegroup" property="take_look_singlegroup" />
+		<result column="bill_award_first" property="bill_award_first" />
+		<result column="bill_award_third" property="bill_award_third" />
+		<result column="bill_award_second" property="bill_award_second" />
+		<result column="bill_award_fourth" property="bill_award_fourth" />
+		<result column="bill_award_fifth" property="bill_award_fifth" />
+		<result column="bill_award_sixth" property="bill_award_sixth" />
+		<result column="status" property="status" />
+
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+
+
+	<!-- 修改角色工资信息 -->
+	<update id="update" parameterType="com.sd.farmework.pojo.RolesalaryFormula">
+		update
+		crm_rolesalary_formula
+		set
+		role_id=#{role_id},
+		role_name=#{role_name},
+		basic_salary=#{basic_salary},
+		subsidy=#{subsidy},
+		first_monad=#{first_monad},
+		second_monad=#{second_monad},
+		third_monad=#{third_monad},
+		fourth_monad=#{fourth_monad},
+		fifth_monad=#{fifth_monad},
+		sixth_monad=#{sixth_monad},
+		seventh_monad=#{seventh_monad},
+		eighth_monad=#{eighth_monad},
+		eleven_more=#{eleven_more},
+		ninth_monad=#{ninth_monad},
+		tenth_monad=#{tenth_monad},
+		eleventh_monad=#{eleventh_monad},
+		integral_reward_first=#{integral_reward_first},
+		integral_reward_second=#{integral_reward_second},
+		take_look_num=#{take_look_num},
+		take_look_amount=#{take_look_amount},
+		take_look_singlegroup=#{take_look_singlegroup},
+		bill_award_first=#{bill_award_first},
+		bill_award_third=#{bill_award_third},
+		bill_award_second=#{bill_award_second},
+		bill_award_fourth=#{bill_award_fourth},
+		bill_award_fifth=#{bill_award_fifth},
+		bill_award_sixth=#{bill_award_sixth},
+		status=#{status},
+		create_time=NOW(),
+		create_user_id=#{createUserId},
+		last_update_time=NOW()
+		where rolesalary_id=#{rolesalary_id}
+	</update>
+
+	<!-- 新增角色工资信息 -->
+	<insert id="add" parameterType="com.sd.farmework.pojo.RolesalaryFormula">
+		INSERT INTO
+		crm_rolesalary_formula set
+		role_id=#{role_id},
+		role_name=#{role_name},
+		basic_salary=#{basic_salary},
+		subsidy=#{subsidy},
+		first_monad=#{first_monad},
+		second_monad=#{second_monad},
+		third_monad=#{third_monad},
+		fourth_monad=#{fourth_monad},
+		fifth_monad=#{fifth_monad},
+		sixth_monad=#{sixth_monad},
+		seventh_monad=#{seventh_monad},
+		eighth_monad=#{eighth_monad},
+		eleven_more=#{eleven_more},
+		ninth_monad=#{ninth_monad},
+		tenth_monad=#{tenth_monad},
+		eleventh_monad=#{eleventh_monad},
+		integral_reward_first=#{integral_reward_first},
+		integral_reward_second=#{integral_reward_second},
+		take_look_num=#{take_look_num},
+		take_look_amount=#{take_look_amount},
+		take_look_singlegroup=#{take_look_singlegroup},
+		bill_award_first=#{bill_award_first},
+		bill_award_third=#{bill_award_third},
+		bill_award_second=#{bill_award_second},
+		bill_award_fourth=#{bill_award_fourth},
+		bill_award_fifth=#{bill_award_fifth},
+		bill_award_sixth=#{bill_award_sixth},
+		status=#{status},
+		create_time=NOW(),
+		create_user_id=#{createUserId},
+		last_update_time=NOW()
+	</insert>
+
+
+	<!-- 根据角色id查询工资详情 -->
+	<select id="queryById" parameterType="com.sd.farmework.pojo.RolesalaryFormula"
+		resultMap="rolesalaryMap">
+		select * from crm_rolesalary_formula where
+		role_id=#{role_id}
+	</select>
+
+	<select id="queryBySId" parameterType="com.sd.farmework.pojo.RolesalaryFormula"
+		resultMap="rolesalaryMap">
+		select * from crm_rolesalary_formula where
+		rolesalary_id=#{rolesalary_id}
+	</select>
+</mapper>

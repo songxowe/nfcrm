@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js/proj/addpro.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/proj/project.css">
+</head>
+<body>
+
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>查看角色工资</strong>
+		</div>
+		<div class="body-content">
+			<form method="get" class="form-x" action="">
+				<div class="form-group">
+					<div class="label">
+						<label>角色名称：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${roleinfo.role_name}" name="role_name"
+							data-validate="required:请输入正确格式" style="width: auto" />
+						<div class="tips"></div>
+					</div>
+
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>底薪：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.basic_salary}" name="basic_salary"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>补贴：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.subsidy}" name="subsidy"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>提成：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.first_monad}" name="first_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第一单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.second_monad}" name="second_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第二单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.third_monad}" name="third_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第三单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.fourth_monad}" name="fourth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第四单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.fifth_monad}" name="fifth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第五单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.sixth_monad}" name="sixth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第六单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.seventh_monad}" name="seventh_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第七单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.eighth_monad}" name="eighth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第八单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.ninth_monad}" name="ninth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第九单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.tenth_monad}" name="tenth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第十单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.eleventh_monad}" name="eleventh_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第十一单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.eleven_more}" name="eleven_more"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;十一单以上</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>积分奖：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.integral_reward_first}"
+							name="integral_reward_first" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元&nbsp;&nbsp;(0~15分)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.integral_reward_second}"
+							name="integral_reward_second" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元&nbsp;&nbsp;(15分以上)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>带看奖：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.take_look_num}" name="take_look_num"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;带看数量</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.take_look_singlegroup}"
+							name="take_look_singlegroup" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元&nbsp;&nbsp;单组金额</span>
+					</div>
+				</div>
+
+				<div class="form-group" style="display: block;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.take_look_amount}" name="take_look_amount"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;奖励金额</span>
+					</div>
+				</div>
+
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>开单奖：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.bill_award_first}" name="bill_award_first"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(0~50万元)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.bill_award_third}" name="bill_award_third"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(51~100万元)</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.bill_award_second}" name="bill_award_second"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(101~200万元)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.bill_award_fourth}" name="bill_award_fourth"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(201~300万元)</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.bill_award_fifth}" name="bill_award_fifth"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(301~500万元)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${role.bill_award_sixth}" name="bill_award_sixth"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(500万元以上)</span>
+					</div>
+				</div>
+			</form>
+			<div class="form-group" style="margin-left: 30%">
+				<a class="button bg-main" href="/NfCrm/salary/queryAllRole.do"
+					type="button">返回</a>
+			</div>
+		</div>
+
+	</div>
+
+
+
+</body>
+</html>

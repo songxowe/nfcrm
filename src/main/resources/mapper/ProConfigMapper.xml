@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.ProConfigMapper">
+	<!-- 主表的映射map -->
+	<resultMap type="com.sd.farmework.pojo.ProConfig" id="proConfMap">
+		<id column="conf_id" property="conf_id" />
+		<result column="conf_type" property="conf_type" />
+		<result column="conf_name" property="conf_name" />
+		<result column="conf_proid" property="conf_proid" />
+		<result column="status" property="status" />
+		
+		 		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+	</resultMap>
+	<select id="queryList" parameterType="com.sd.farmework.pojo.ProConfig" resultMap="proConfMap">
+		select * from crm_proj_config where conf_proid=#{conf_proid}
+	</select>
+	<update id="update" parameterType="com.sd.farmework.pojo.ProConfig" >
+		update crm_proj_config SET conf_name=#{conf_name},conf_type=#{conf_type} where conf_proid=#{conf_proid} and conf_id=#{conf_id}
+	</update>
+	<insert id="add" parameterType="com.sd.farmework.pojo.ProConfig">
+		insert into crm_proj_config SET conf_name=#{conf_name},conf_proid=#{conf_proid},conf_type=#{conf_type},
+		create_time=NOW(),
+		create_user_id=#{createUserId},
+		create_user_name=#{createUserName}
+	</insert>
+	<delete id="deleteconfig"  parameterType="com.sd.farmework.pojo.ProConfig">
+		delete from crm_proj_config where conf_proid=#{conf_proid}
+	</delete>
+</mapper>

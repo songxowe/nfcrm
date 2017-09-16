@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.SysApprovenRulePersonMapper">
+	<resultMap type="com.sd.farmework.pojo.SysApprovenRulePerson" id="sysApprovenRulePersonMap">
+		
+		<id column="approven_person_id" property="approvenPersonId"/>
+		<result column="approven_rule_id" property="approvenRuleId"/>
+		<result column="approven_rule_name" property="approvenRuleName"/>
+		<result column="approven_function_id" property="approvenFunctionId"/>
+		<result column="approven_function_name" property="approvenFunctionName"/>
+		<result column="approven_user_id" property="approvenUserId"/>
+ 		<result column="approven_user_name" property="approvenUserName"/>
+		<result column="rule_order" property="ruleOrder"/>
+		
+		 		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+ 		 
+	</resultMap>
+	 
+	<!-- 查询当月考勤情况,及分页 -->
+	<select id="queryList"   resultMap="sysApprovenRulePersonMap" >
+		select approven_person_id , approven_rule_id , approven_rule_name , approven_function_id,approven_function_name,approven_user_id,approven_user_name,rule_order from sys_approven_function_rule_person
+		
+		where approven_rule_id = #{approvenRuleId}
+	</select>
+	
+	
+	<insert id="add" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson">
+	
+	insert into sys_approven_function_rule_person (
+   approven_rule_id,
+  approven_rule_name,
+  approven_function_id,
+  approven_function_name,
+  approven_user_id,
+  approven_user_name,
+  rule_exp,
+  rule_order,
+  rule_type,
+  create_user_id,
+  create_user_name
+) values (
+    #{approvenRuleId},
+   #{approvenRuleName},
+   #{approvenFunctionId},
+   #{approvenFunctionName},
+   #{approvenUserId},
+   #{approvenUserName},
+   #{ruleExp},
+   #{ruleOrder},
+   #{ruleType},
+   #{createUserId},
+	#{createUserName}
+) 
+
+	
+	</insert>
+	<delete id="delete" parameterType="com.sd.farmework.pojo.SysApprovenRulePerson">
+	delete  from  sys_approven_function_rule_person where  approven_person_id=#{approvenPersonId}
+	</delete>
+	
+</mapper>

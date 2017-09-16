@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<link type="text/css" rel="stylesheet" href="/NfCrm/resources/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">部门列表</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+        <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000443")!=-1 >
+        <li> <a class="button border-main icon-plus-square-o" href="../admin/addTeamPanel.do">添加分组</a> </li>
+      	</#if>
+      	<li>&nbsp;&nbsp;&nbsp;</li>
+      	<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1 >
+      	<form action="../team/queryAllteamList.do" method="post">
+        <li>部门
+          <input name="team_name" class="input"  style="width:120px; line-height:17px; display:inline-block"/>
+        </li>
+        <li>状态
+			<select name="status" class="input"onchange="changesearch()"
+					style="width: 90px; line-height: 17px; display: inline-block">
+				<option value="">请选择</option>
+				<option value="Y">启用</option>
+				<option value="N">禁用</option>
+			</select>
+        </li>
+        <li>
+          <button class="button border-main icon-search" type="submit"> 查询</button>
+        </li>
+        </form>
+        </#if>
+      </ul>
+    </div>
+    <table class="table table-hover text-center">
+      <tr>
+        <th width="15%" style="text-align:left; padding-left:20px;">ID</th>
+        <th width="15%">部门</th>
+        <th width="15%">描述</th>
+        <th width="15%">状态</th>
+        <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1 >
+        <th width="15%">操作</th>
+        </#if>
+      </tr>
+
+      <#list allteam as item>
+        <tr>
+          <td style="text-align:left; padding-left:20px;">
+           ${item_index+1}</td>
+          <td>${item.team_name}</td>
+          <td>${item.team_desc}</td>
+          <td><#if item.status=="Y">启用<#else>禁用</#if></td>
+          <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1 >
+          <td>
+	          <div class="button-group"> 
+	          	<a class="button border-main" href="queryteamorganization.do?parent_function_id=${item.team_id}">
+	          		<span class="icon-edit"></span>编辑
+	          	</a> 
+	          </div>
+          </td>
+          </#if>
+        </tr>
+        </#list>
+     <form method="post" action="" id="listform"></from>
+     </form> 
+    </table>
+    <ul class="pagination" id="pagination"></ul></div>
+
+	<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="queryAllteamList.do?currPage="+num;
+        	}
+        }
+    });
+</script>
+</body>
+</html>

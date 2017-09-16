@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.SmSInfoMapper">
+
+	<resultMap type="com.sd.farmework.pojo.SmSInfo" id="smsMap">
+		<id column="sms_id" property="sms_id" />
+		<result column="service_person" property="service_person" />
+		<result column="service_no" property="service_no" />
+		<result column="send_time" property="send_time" />
+		<result column="customer_id" property="customer_id" />
+		<result column="customer_name" property="customer_name" />
+		<result column="topic" property="topic" />
+		<result column="context" property="context" />
+
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+	<!-- 分页查询 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.SmSInfo"
+		resultMap="smsMap">
+
+		SELECT
+		sms_id,
+		service_person,
+		service_no,
+		send_time,
+		customer_id,
+		customer_name,
+		topic,
+		context
+		FROM crm_sms_center
+		WHERE 1 = 1
+		and
+		service_person=#{service_person}
+		<if test="service_person != null and service_person != ''">
+			AND service_person like CONCAT('%','${service_person}','%'
+			)
+		</if>
+		<if test="service_no != null and service_no != ''">
+			AND service_no like CONCAT('%','${service_no}','%' )
+		</if>
+		<if test="customer_id != null and customer_id != ''">
+			AND customer_id like CONCAT('%','${customer_id}','%' )
+		</if>
+		<if test="customer_name != null and customer_name != ''">
+			AND customer_name like CONCAT('%','${customer_name}','%' )
+		</if>
+		<if test="send_time != null and send_time != ''">
+			AND send_time like CONCAT('%','${send_time}','%' )
+		</if>
+		LIMIT #{startRecod},#{pageSize}
+	</select>
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.SmSInfo"
+		resultType="java.lang.Integer">
+		select count(*)
+		from crm_sms_center
+		where 1=1
+		and
+		service_person=#{service_person}
+		<if test="service_person != null and service_person != ''">
+			AND service_person like CONCAT('%','${service_person}','%'
+			)
+		</if>
+		<if test="service_no != null and service_no != ''">
+			AND service_no like CONCAT('%','${service_no}','%' )
+		</if>
+		<if test="customer_id != null and customer_id != ''">
+			AND customer_id like CONCAT('%','${customer_id}','%' )
+		</if>
+		<if test="customer_name != null and customer_name != ''">
+			AND customer_name like CONCAT('%','${customer_name}','%' )
+		</if>
+		<if test="send_time != null and send_time != ''">
+			AND send_time like CONCAT('%','${send_time}','%' )
+		</if>
+	</select>
+
+	<insert id="add" parameterType="com.sd.farmework.pojo.SmSInfo">
+		insert into crm_sms_center(
+		service_no,
+		service_person,
+		customer_id,
+		customer_name,
+		topic,
+		context,
+		send_time,
+		create_time,
+		create_user_id)
+		values(
+		#{service_no},
+		#{service_person},
+		#{customer_id},
+		#{customer_name},
+		#{topic},
+		#{context},
+		NOW(),
+		NOW(),
+		#{createUserId})
+	</insert>
+	<select id="queryById" parameterType="com.sd.farmework.pojo.SmSInfo"
+		resultMap="smsMap">
+		select
+		service_person,
+		service_no,
+		send_time,
+		customer_id,
+		customer_name,
+		topic,
+		context
+		from crm_sms_center
+		where sms_id=#{sms_id}
+	</select>
+</mapper>

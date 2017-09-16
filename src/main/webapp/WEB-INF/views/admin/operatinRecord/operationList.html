@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet" href="/NfCrm/resources/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script src="/NfCrm/resources/admin/systemmanagement/permissionslist.js"></script>
+<script type="text/javascript"
+	src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">操作记录列表</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+      <!--  
+        <li> <a class="button border-main icon-plus-square-o" href="javascript:void(0);"> 添加内容</a> </li>-->
+      	<li>&nbsp;&nbsp;&nbsp;</li>
+      	<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1 >
+      	<form  action="queryUserInfo.do" method="get">
+        <li>
+          	操作人
+          <input name="user_name" type="text" class="input" id="userName"   style="width:30%; line-height:17px;display:inline-block"/>
+          &nbsp;&nbsp;
+        </li>
+		<li>操作时间 <input name="employ_time" readOnly="readonly"
+						value="" type="text" class="input "
+						onClick="WdatePicker({readOnly:true})"
+						style="width: 120px; line-height: 17px; display: inline-block" />
+		</li>
+        <li>
+          <button type="submit" class="button border-main icon-search">查询</button>
+        </li>
+        </form>
+        </#if>
+      </ul>
+    </div>
+     <table class="table table-hover text-center">
+      <tr style="background:#DFDFDF;">
+        <th width="100" style="text-align:left; padding-left:20px;">ID</th>
+        <th>操作人</th>
+        <th width="20%">操作内容</th>
+        <th width="310">操作时间</th>
+      </tr>
+      <volist name="list" id="vo"> <olist>
+
+      <#list list as item>
+        <tr>
+          <td style="text-align:left; padding-left:20px;">
+           ${item_index+1}</td>
+            
+          <td>${item.operate_person_name}</td>
+          <td>${item.function_name}</td>
+          <td>${item.create_time}</td>
+        </tr>
+        </#list>
+    </table>
+     <ul class="pagination" id="pagination"></ul></div>
+  </div>
+
+	<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="getOperatinRecord.do?currPage="+num;
+        	}
+        }
+        
+    });
+</script>
+</body>
+</html>

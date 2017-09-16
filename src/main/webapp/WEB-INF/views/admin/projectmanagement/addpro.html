@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js/proj/addpro.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/proj/project.css">
+</head>
+<body>
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>新增项目</strong>
+		</div>
+		<div class="body-content">
+			<form method="get" class="form-x" action="../upload.do">
+				<div class="form-group">
+					<div class="label">
+						<label>项目类别：</label>
+					</div>
+					<div class="a" style="width: 60%">
+						<select name="pro_type" id="protype" class="input w50" onchange="findtype()">
+							<option value="please">请选择</option>
+							<option value="0">个人项目</option>
+							<option value="1">公司项目</option>
+						</select>
+						<div class="tips"></div>
+					</div>
+					<div id="parent" style="display: none;"> 
+					<div class="label">
+						<label>公司项目：</label>
+					</div>
+					<div class="a" style="width: 60%">
+						<select  id="parenttype"  class="input w50" onchange="finddetail()">
+							<option value="please">请选择</option>
+						</select>
+						<div class="tips"></div>
+						<input type="hidden" name="pro_type2" value="<#if prodetail??>${prodetail.pro_type}</#if>">
+					</div>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>项目名称：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.pro_name}</#if>" name="pro_name"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>铺型：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.spread_type}</#if>" name="spread_type"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label"  style="margin-left: 15%;">
+						<label>所在区域：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.region}</#if>" name="region"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>价格范围：</label>
+					</div>
+					<div class="a">
+						<input type="hidden" class="input w50" value="<#if prodetail??>${prodetail.price_range}</#if>" name="price_range" />
+						<input type="text" class="input w50" value="" name="price_min"
+							data-validate="required:请输入正确格式" style="width: 15%" />
+							<div id="willhide"><span style="float: left;">&nbsp;—— &nbsp;</span>
+						<input type="text" class="input w50" value="" name="price_max"
+							data-validate="required:请输入正确格式" style="width: 15%" />
+						<span style="margin-top: 20px;float: left;">(万元)</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label"  style="margin-left: 15%;">
+						<label>实际价格：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.actual_price}</#if>" name="actual_price"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>面积范围：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="area_min"
+							data-validate="required:请输入正确格式" style="width: 15%" />
+							<div id="willhide2">
+							<span style="float: left;">&nbsp;—— &nbsp;</span>
+						<input type="text" class="input w50" value="" name="area_max"
+							data-validate="required:请输入正确格式" style="width: 15%" />
+						<input type="hidden" class="input w50" value="<#if prodetail??>${prodetail.area_range}</#if>" name="area_range" />
+						<span style="margin-top: 20px;float: left;">(平米)</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label"  style="margin-left: 15%;">
+						<label>实际面积：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.actual_area}</#if>" name="actual_area"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>类型：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.p_type}</#if>" name="p_type"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>行业：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.profession}</#if>" name="profession"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>特色：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.features}</#if>" name="features"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label"  style="margin-left: 15%;">
+						<label>楼盘地址：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.address}</#if>" name="address"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" >
+						<label>所在楼层：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.floor}</#if>" name="floor"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>物业费：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.property_price}</#if>"
+							name="property_price" data-validate="required:请输入正确格式"
+							style="width: auto" />
+							<span style="margin-top: 20px;float: left;">(元/平米/月)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>装修：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="<#if prodetail??>${prodetail.decoration}</#if>" name="decoration"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label"  style="margin-left: 15%;">
+						<label>电话：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="phone"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>重餐饮：</label>
+					</div>
+					<div class="a">
+					<#if prodetail??><input type="text" class="input w50" value="${prodetail.food}" name="food"
+							data-validate="required:请输入正确格式"  style="width: auto" /><#else>
+						<select name="food" class="input w50" >
+							<option value="please">请选择</option>
+							<option value="是">是</option>
+							<option value="否">否</option>
+						</select>
+					</#if>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label"  style="margin-left: 15%;">
+						<label>座机电话：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="tel"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" >
+						<label>报备模板：</label>
+					</div>
+					<div class="a">
+						<select name="pro_template" id="emlop"  class="input w50">
+							<option value="">请选择模板</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>配套设施：</label>
+					</div>
+					<div class="a">
+						<div style="float: left; margin-top: 10px;" id="facilities"></div>
+						<#if (conf1??)> <#list conf1 as proOne> <input type="text" 
+						style='width:120px; float:left;' id='facilities' name='confi'
+							value="${proOne}" class="input"><a style='float:left'>&nbsp;&nbsp;</a> </#list> <#else> </#if>
+						<button type="button" name="addconfigbtn" onclick="addfacilities()"
+							class="button bg-green">+新增</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>适合经营：</label>
+					</div>
+					<div class="a">
+						<div style="float: left; margin-top: 10px;" id="operate"></div>
+						<#if (conf2??)> <#list conf2 as proTwo> <input type="text"
+						style='width:120px; float:left;' id='operate' name='confi'
+							value="${proTwo}" class="input"><a style='float:left'>&nbsp;&nbsp;</a> </#list> <#else> </#if>
+						<button type="button" name="addconfigbtn" onclick="addoperate()"
+							class="button  bg-green">+新增</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>社会工作措施：</label>
+					</div>
+					<div class="a">
+						<div style="float: left; margin-top: 10px;" id="workstep"></div>
+						<#if (conf3??)> <#list conf3 as proThree><input type="text"
+						style='width:120px;  float:left;' id='workstep' name='confi'
+							value="${proThree}" class="input"><a style='float:left'>&nbsp;&nbsp;</a></#list> <#else> </#if>
+						<button type="button" name="addconfigbtn" onclick="addworkstep()"
+							class="button bg-green">+新增</button>
+					</div>
+				</div>
+			</form>
+			<form enctype='multipart/form-data' id='upform' name='upimg'>
+				<input type='hidden' name='projectid'/>
+				<#if (img1??)>
+				<div class="form-group" >
+					<div class="label" style="margin-left: 12%;">
+						<label>室内图：</label>
+					</div>
+					<div class="a" style="margin-left: 15%;">
+						 <#list img1 as imgOne> <img src="${imgOne.img_source}" name="photo" title="${imgOne.img_remark}" id="${imgOne.img_id}" style="width: 300px;height:300px;"> </#list>
+					</div>
+				</div>
+				</#if>
+				<#if (img2??)>
+				<div class="form-group" >
+					<div class="label" style="margin-left: 12%;">
+						<label>平铺图：</label>
+					</div>
+					<div class="a" style="margin-left: 15%;">
+						 <#list img2 as imgOne> <img src="${imgOne.img_source}" name="photo" title="${imgOne.img_remark}" id="${imgOne.img_id}" style="width: 300px;height:300px;"> </#list>
+					</div>
+				</div>
+				</#if>
+				<#if (img3??)>
+				<div class="form-group" >
+					<div class="label" style="margin-left: 12%;">
+						<label>展示图：</label>
+					</div>
+					<div class="a" style="margin-left: 15%;">
+						 <#list img3 as imgOne> <img src="${imgOne.img_source}" name="photo" title="${imgOne.img_remark}" id="${imgOne.img_id}" style="width: 300px;height:300px;"> </#list>
+					</div>
+				</div>
+				</#if>
+				<#if (img4??)>
+				<div class="form-group" >
+					<div class="label" style="margin-left: 12%;">
+						<label>环境图：</label>
+					</div>
+					<div class="a" style="margin-left: 15%;">
+						 <#list img4 as imgOne> <img src="${imgOne.img_source}" name="photo" title="${imgOne.img_remark}" id="${imgOne.img_id}" style="width: 300px;height:300px;"> </#list>
+					</div>
+				</div>
+				</#if>
+				</form>
+			<div class="form-group">
+				<div class="label">
+					<label></label>
+				</div>
+				<div class="a">
+					<form enctype='multipart/form-data' id='upform' name='upimg'>
+						<div id="extra" style="margin-left: 15%;"></div>
+
+						<button style="margin-left: 15%;" name="addconfigbtn" id="addlineBtn" type="button"
+							class="button bg-yellow" onclick="addoneline()">新增项目图片</button>
+					</form>
+				</div>
+			</div>
+
+			<div class="form-group" style="margin-left: 15%">
+				<div class="label">
+					<label></label>
+				</div>
+				<div class="a">
+					<button class="button bg-main icon-check-square-o" type="button"
+							id="submit">提交</button>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+					<a class="button bg-main" href="/NfCrm/proj/selectallpro.do" type="button">返回</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

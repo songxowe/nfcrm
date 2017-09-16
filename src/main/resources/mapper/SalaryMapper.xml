@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.SalaryMapper">
+
+	<resultMap type="com.sd.farmework.pojo.RolesalaryFormula" id="salaryMap">
+		<id column="rolesalary_id" property="rolesalary_id" />
+		<result column="role_id" property="role_id" />
+		<result column="role_name" property="role_name" />
+		<result column="basic_salary" property="basic_salary" />
+		<result column="subsidy" property="subsidy" />
+		<result column="first_monad" property="first_monad" />
+		<result column="second_monad" property="second_monad" />
+		<result column="third_monad" property="third_monad" />
+		<result column="fourth_monad" property="fourth_monad" />
+		<result column="fifth_monad" property="fifth_monad" />
+		<result column="sixth_monad" property="sixth_monad" />
+		<result column="seventh_monad" property="seventh_monad" />
+		<result column="eighth_monad" property="eighth_monad" />
+		<result column="ninth_monad" property="ninth_monad" />
+		<result column="tenth_monad" property="tenth_monad" />
+		<result column="eleventh_monad" property="eleventh_monad" />
+		<result column="eleven_more" property="eleven_more" />
+
+		<result column="integral_reward_first" property="integral_reward_first" />
+		<result column="integral_reward_second" property="integral_reward_second" />
+		<result column="take_look_num" property="take_look_num" />
+		<result column="take_look_amount" property="take_look_amount" />
+		<result column="take_look_singlegroup" property="take_look_singlegroup" />
+
+		<result column="bill_award_first" property="bill_award_first" />
+		<result column="bill_award_third" property="bill_award_third" />
+		<result column="bill_award_second" property="bill_award_second" />
+		<result column="bill_award_fourth" property="bill_award_fourth" />
+		<result column="bill_award_fifth" property="bill_award_fifth" />
+		<result column="bill_award_sixth" property="bill_award_sixth" />
+
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+
+	</resultMap>
+
+	<resultMap type="com.sd.farmework.pojo.EmployeeSalary" id="empsalMap">
+		<id column="rolesalary_id" property="rolesalary_id" />
+		<result column="user_id" property="user_id" />
+		<result column="user_name" property="user_name" />
+		<result column="basic_salary" property="basic_salary" />
+		<result column="subsidy" property="subsidy" />
+		<result column="commission" property="commission" />
+		<result column="integral_reward" property="integral_reward" />
+		<result column="take_look" property="take_look" />
+		<result column="bill_award" property="bill_award" />
+		<result column="attend" property="attend" />
+		<result column="other" property="other" />
+		<result column="count" property="count" />
+
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+
+	</resultMap>
+
+	<!-- 根据角色id查询角色工资详情 -->
+	<select id="queryByRoId" parameterType="com.sd.farmework.pojo.RolesalaryFormula"
+		resultMap="salaryMap">
+		select *
+		from crm_rolesalary_formula
+		where role_id=#{role_id}
+	</select>
+
+	<!-- 根据员工编号查询员工工资详情 -->
+	<select id="queryByUserNo" parameterType="com.sd.farmework.pojo.EmployeeSalary"
+		resultMap="empsalMap">
+		select *
+		from crm_employee_salary
+		where user_id=#{user_id}
+		and
+		create_time like
+		CONCAT('%','${createTime}','%' )
+		order by rolesalary_id
+		desc
+		LIMIT
+		#{startRecod},#{pageSize}
+	</select>
+	<!-- 根据员工编号查询员工工资详情总条数 -->
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.EmployeeSalary"
+		resultType="java.lang.Integer">
+		select count(*)
+		from crm_employee_salary
+		where
+		user_id=#{user_id}
+		and
+		create_time like
+		CONCAT('%','${createTime}','%' )
+		order by rolesalary_id
+		desc
+	</select>
+
+
+	<!-- 新增员工工资信息 -->
+	<insert id="add" parameterType="com.sd.farmework.pojo.EmployeeSalary">
+		insert into
+		crm_employee_salary(user_id,user_name,basic_salary,subsidy,commission,
+		integral_reward,take_look,bill_award,attend,other,count,
+		status,create_time,create_user_id)
+		values(#{user_id},#{user_name},#{basic_salary},#{subsidy},#{commission},#{integral_reward},
+		#{take_look},#{bill_award},#{attend},#{other},#{count},#{status},NOW(),#{createUserId})
+	</insert>
+</mapper>

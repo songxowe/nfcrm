@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+<script type="text/javascript">
+	$(document).ready(
+			function() {
+				$.ajax({
+					type : "GET",
+					url : "/NfCrm/useradmin/queryteam.do",
+					async : true,
+					dataType : "json",
+					success : function(data) {
+						var num = data.teamlist;
+						for (var i = 0; i < num.length; i++) {
+							var options = "<option value='"+num[i].team_id+"'>"
+									+ num[i].team_name + "</option>";
+							$("#teamlist").append(options);
+						}
+					},
+					error : function(rec) {
+						swal({title: "系统提示",text: "网络异常！",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+		        		},
+		        		function(){
+		        			
+		        		});
+					}
+				});
+			}
+	);
+	function findgroup(){
+		var data={
+				tag:$("#teamlist").val()
+		};
+		$.ajax({
+			type : "GET",
+			url : "/NfCrm/useradmin/queryteam.do",
+			data : data,
+			dataType : "json",
+			success : function(rsp) {
+				var num = rsp.teamlist;
+				var obj = "<option value='0'>请选择</option>";
+				$("#grouplist").html("");
+				$("#grouplist").append(obj);
+				for (var i = 0; i < num.length; i++) {
+					var options = "<option value='"+num[i].team_id+"'>"
+							+ num[i].team_name + "</option>";
+					$("#grouplist").append(options);
+				}
+			},
+			error : function(rec) {
+				swal({title: "系统提示",text: "网络异常！",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+        		},
+        		function(){
+        			
+        		});
+			}
+		});
+	};
+	function　sub(){
+		var level_id=$("#level_id").val();
+		var team=$("#teamlist").val();
+		var group=$("#grouplist").val();
+		var username=$("input[name='user_name']").val();
+		var userno= $("input[name='user_no']").val();
+		var userpwd=$("input[name='user_pwd']").val();
+		var accountno=$("input[name='account_no']").val();
+		var remark=$("#remark").val();
+		if(team=="@"||group=="#"||username==""||userno==""||userpwd==""||accountno==""||remark==""){
+			swal({title: "系统提示",text: "您的信息还未填写完整！",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+    		},
+    		function(){
+    			
+    		});
+		}else{
+			var data={
+					level_id : level_id,
+					user_name : username ,
+					user_group: group,
+					user_no : userno,
+					user_pwd : userpwd,
+					account_no : accountno,
+					remark : remark
+			};
+			$.ajax({
+				type : "POST",
+				url : "/NfCrm/useradmin/addUserMsg.do",
+				data : data,
+				dataType : "json",
+				success : function(rsp) {
+					swal({title: "系统提示",text: "新增用户成功！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+	        		},
+	        		function(){
+	        			window.location="/NfCrm/useradmin/queryUserList.do";
+	        		});
+				},
+				error : function(rec) {
+					swal({title: "系统提示",text: "网络异常！",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+	        		},
+	        		function(){
+	        			
+	        		});
+				}
+			});
+		}
+		
+	}
+</script>
+</head>
+<body>
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>新建用户</strong>
+		</div>
+		<div class="body-content">
+			<form id="userfrom" method="post" class="form-x"
+				action="../useradmin/addUserMsg.do">
+				<div class="form-group">
+					<div class="label">
+						<label>姓名：</label>
+					</div>
+					<div class="field">
+						
+					<#list temp as list>
+						<#if list.level_id!=null || list.level_id!=''>
+							<input type="text" disabled="disabled" class="input w50" value="${list.customer_level}" name="user_name"
+								data-validate="required:请输入正确格式的数据" />
+						</#if> 
+						<#if list.level_id==null || list.level_id==''>
+							<input type="text" class="input w50" value="" name="user_name"
+								data-validate="required:请输入正确格式的数据" />
+						</#if>		
+						<input type="hidden" id="level_id" value="${list.level_id}">
+					</#list>
+						<div class="tips"></div>
+					</div>
+				</div>
+				<input name="user_group" id="group" type="hidden"></input>
+				<div class="form-group">
+					<div class="label">
+						<label>部门：</label>
+					</div>
+					<div style="width: 60%">
+						<select name="pro_type" id="teamlist" class="input w50"
+							onchange="findgroup()">
+							<option value="@">请选择</option>
+						</select>
+						<div class="tips">
+							<label style="float: left; margin-top: 9px; margin-left: 5%;">分组：
+							</label><select name="pro_type" id="grouplist" class="input w50">
+								<option value="#">请选择</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>编号：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="user_no"/>
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>账号：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="account_no"
+							data-validate="required:请输入正确格式的数据" />
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>密码：</label>
+					</div>
+					<div class="field">
+						<input type="password"  class="input w50" value="" name="user_pwd"
+							data-validate="required:请输入正确格式的数据" />
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>备注：</label>
+					</div>
+					<div class="field">
+						<textarea class="input" name="remark" id="remark"
+							style="height: 90px;"></textarea>
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="field">
+						<button class="button bg-main icon-check-square-o" onclick="sub()"
+							type="button">保存</button>
+							&nbsp;&nbsp;
+						<a class="button bg-main icon-check-sign:before" href="/NfCrm/employee/queryEmployeeInfo.do">返回</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>

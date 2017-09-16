@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet"
+	href="/NfCrm/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+<script type="text/javascript"
+	src="/NfCrm/resources/js/jqPaginator.js"></script>
+</head>
+<body>
+
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong class="icon-reorder">礼品申请待审批列表</strong>  
+		</div>
+		<div class="padding border-bottom">
+			<ul class="search" style="padding-left: 10px;">
+				<form action="waitingApprovenList.do" method="get">
+					<li>&nbsp;&nbsp;任务名称<input name="taskName" type="text"
+					 class="input" style="width: 120px; line-height: 17px; display: inline-block" />
+						&nbsp;任务发起时间&nbsp;<input name="approvenSendTime" type="text"
+						readonly="readonly" class="input" onClick="WdatePicker()"
+						style="width: 120px; line-height: 17px; display: inline-block" />
+					</li>
+					<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1 >
+					<button type="submit" class="button border-main icon-search" >查询</button>
+					</#if>
+				</form>
+
+			</ul>
+		</div>
+		<table class="table table-hover text-center">
+			 <tr>
+　        <th width="10%">任务编号</th>
+        <th>任务名称</th>
+         <th>审核人</th>
+        <th>审核发送时间</th>
+        <th>审核结束时间</th>
+        <th width="300px">操作</th>
+      </tr>
+      
+	      <#list testList as list >
+	      	<tr>
+　	          <td> ${list_index+1}</td>
+	          <td>${list.taskName}</td>
+	          <td>${list.approvenUserName}</td>
+	          <td>${list.approvenSendTime}</td>
+	          <td>${list.approvenEndTime}</td>
+	           <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000456")!=-1 >
+	            <td><a href="javascript:mainOpen('${list.taskId}')" class="button border-red" style="padding:5px 15px;" >审核</a></td>
+	            </#if>
+	        </tr>
+	      </#list>
+        
+		</table>
+		<ul class="pagination" id="pagination"></ul>
+	</div>
+	<script type="text/javascript">
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		var sat=$("#status").val();
+        		window.location.href="waitingApprovenList.do?currPage="+num+"&status="+sat+"&taskName=${obj.taskName}&approvenSendTime=${obj.approvenSendTime}&function_id=${function_id}";
+        	}
+        }
+    });
+
+    function mainOpen(taskId){
+   	 window.open("/NfCrm/gift/doApprovenShow.do?taskId="+taskId,"child","width=800px,height=510px,resizable=no,scroll=no,status=no");
+   	 
+    }
+    </script> 
+</body>
+</html>

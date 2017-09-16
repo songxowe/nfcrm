@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet"
+	href="/NfCrm/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript"
+	src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong class="icon-reorder">项目列表</strong> <a href=""
+				style="float: right; display: none;">添加字段</a>
+		</div>
+		<div class="padding border-bottom">
+			<ul class="search" style="padding-left: 10px;">
+			<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000440")!=-1 >
+				<li><a class="button border-main " href="../menu/addpro.do">新建</a>
+				</#if>
+				</li>
+				<li>&nbsp;&nbsp;&nbsp;</li>
+				<form action="selectallpro.do" method="post">
+					<li>项目编号 <input name="pro_no" class="input"
+						onchange="changesearch()"
+						style="width: 80px; line-height: 17px; display: inline-block" />
+					</li>
+					<li>项目名称 <input name="pro_name" type="text" class="input"
+						onchange="changesearch()"
+						style="width: 80px; line-height: 17px; display: inline-block" />
+						&nbsp;&nbsp; 项目类别 <select name="pro_type" class="input"
+						onchange="changesearch()"
+						style="width: 100px; line-height: 17px; display: inline-block">
+							<option value="">请选择</option>
+							<option value="0">个人项目</option>
+							<option value="1">公司项目</option>
+
+					</select>
+					</li>
+
+					<li>项目状态 <select name="pro_status" class="input"
+						onchange="changesearch()"
+						style="width: 90px; line-height: 17px; display: inline-block">
+							<option value="">请选择</option>
+							<option value="0">进行中</option>
+							<option value="1">已完成</option>
+
+					</select>
+					</li>
+
+					<li>发布时间 <input id="relese_time" name="input_time" onClick="WdatePicker()"
+						class="input"
+						style="width: 50%; line-height: 17px; display: inline-block" />
+					</li>
+						<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1 >
+					<li><Button type="submit"
+						class="button border-main icon-search" onclick="changesearch()">
+							查询</Button></li>
+							</#if>
+
+				</form>
+
+
+			</ul>
+		</div>
+		<table class="table table-hover text-center">
+			<tr>
+			<th>ID</th>
+				<th>项目编号</th>
+				<th>项目名称</th>
+				<th>项目类别</th>
+				<th>项目状态</th>
+				<th>发布时间</th>
+				<th>操作</th>
+			</tr>
+			<#list prolist as pro>
+			<tr>
+			<td>${pro_index+1}</td>
+				<td>${pro.pro_no}</td>
+				<td>${pro.pro_name}</td>
+				<td><#if pro.pro_type==1>公司项目<#else>个人项目</#if></td> 
+				<td><font color="#00CC99"><#if
+						pro.pro_status==1>未开始<#else>进行中</#if></font></td>
+				<td>${pro.input_time}</td>
+				<td>
+					<div class="button-group">
+					<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1 >
+						<a class="button border-main"
+							href="editpro.do?pro_id=${pro.pro_id}&conf_proid=${pro.pro_id}&img_proid=${pro.pro_id}">
+							<span class="icon-edit"></span>编辑</a> 
+					</#if>
+					<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000448")!=-1 >
+							<#if pro.pro_status==1><a class="button border-green"
+							href="changestatus.do?pro_id=${pro.pro_id}"><span
+								class="icon-edit"></span>开始</a><#else><a class="button border-red"
+							href="changestatus.do?pro_id=${pro.pro_id}"><span
+								class="icon-edit"></span>结束</a></#if> 
+					</#if>
+					<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000444")!=-1 >
+							<a class="button border-blue"
+							href="proMsgdetail.do?pro_id=${pro.pro_id}&conf_proid=${pro.pro_id}&img_proid=${pro.pro_id}"> <span
+								class="icon-edit"></span>详情
+						</a>
+					</#if>
+					</div>
+				</td>
+			</tr>
+			</#list>
+
+			<form method="post" action="" id="listform">
+
+			</form>
+		</table>
+		<ul class="pagination" id="pagination"></ul>
+	</div>
+	</div>
+	<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="selectallpro.do?currPage="+num+"&pro_type=${obj.pro_type}&function_id=${function_id}&pro_name=${obj.pro_name}&pro_status=${obj.pro_status}&input_time=${obj.input_time}";
+        	}
+        }
+        
+    });
+</script>
+	<script type="text/javascript">
+//单个删除
+function del(id,mid,iscid){
+	if(confirm("您确定要删除吗?")){
+		
+	}
+}
+</script>
+</body>
+</html>

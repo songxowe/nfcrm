@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/proj/project.css">
+</head>
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+						$("#submit")
+								.click(
+										function() {
+											var late1 = $(
+													"input[name='latemin']")
+													.val();
+											var late2 = $(
+													"input[name='latetwolv']")
+													.val();
+											var late3 = $(
+													"input[name='lateHour']")
+													.val();
+											var lateprice = $(
+													"input[name='lateprice']")
+													.val();
+											var absenteeism = $(
+													"input[name='absenteeism']")
+													.val();
+											var absenprice = $(
+													"input[name='absenprice']")
+													.val();
+											var late = late1 * 10 + late2 * 30
+													+ late3 * lateprice
+													+ absenteeism * absenprice;
+
+											var data = {
+												user_id : $(
+														"input[name='user_id']")
+														.val(),
+												user_name : $(
+														"input[name='user_name']")
+														.val(),
+												role_id : $(
+														"input[name='role_id']")
+														.val(),
+												first_monad : $(
+														"input[name='first_monad']")
+														.val(),
+												second_monad : $(
+														"input[name='second_monad']")
+														.val(),
+												third_monad : $(
+														"input[name='third_monad']")
+														.val(),
+												fourth_monad : $(
+														"input[name='fourth_monad']")
+														.val(),
+												fifth_monad : $(
+														"input[name='fifth_monad']")
+														.val(),
+												sixth_monad : $(
+														"input[name='sixth_monad']")
+														.val(),
+												seventh_monad : $(
+														"input[name='seventh_monad']")
+														.val(),
+												eighth_monad : $(
+														"input[name='eighth_monad']")
+														.val(),
+												ninth_monad : $(
+														"input[name='ninth_monad']")
+														.val(),
+												tenth_monad : $(
+														"input[name='tenth_monad']")
+														.val(),
+												eleventh_monad : $(
+														"input[name='eleventh_monad']")
+														.val(),
+												eleven_more : $(
+														"input[name='eleven_more']")
+														.val(),
+												integral : $(
+														"input[name='integral']")
+														.val(),
+												num : $("input[name='num']")
+														.val(),
+												bill : $("input[name='bill']")
+														.val(),
+												other : $("input[name='other']")
+														.val(),
+												late : late
+											}
+
+											$
+													.ajax({
+														type : "POST",
+														url : "/NfCrm/salary/employeeSalary.do",
+														dataType : "json",
+														data : data,
+														success : function(data) {
+
+															if (data.code == "ok") {
+																swal(
+																		{
+																			title : "系统提示",
+																			text : "保存成功了啦~",
+																			type : "success",
+																			showCancelButton : false,
+																			confirmButtonColor : "#DD6B55",
+																			confirmButtonText : "确定"
+																		},
+																		function() {
+																			window.location = "/NfCrm/salary/userRoleList.do";
+																		});
+															}
+														}
+													});
+										});
+					});
+</script>
+<body>
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>编辑员工工资</strong>
+		</div>
+		<div class="body-content">
+			<div class="form-x">
+				<div class="form-group">
+					<div class="label">
+						<label>账号名：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${user.user_name}" name="user_name"
+							data-validate="required:请输入正确格式" style="width: auto" />
+						<div class="tips"></div>
+					</div>
+					<input type="hidden" name="user_id" value="${user.user_id}">
+
+					<input type="hidden" name="role_id" value="${role.role_id}">
+				</div>
+				<div class="form-group"
+					style="display: none; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>底薪：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="basic_salary"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: none; width: 50%; float: left;">
+					<div class="label">
+						<label>补贴：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="subsidy"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>提成：</label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第一单</span>
+						<input type="text" class="input w50" value="" name="first_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第二单</span>
+						<input type="text" class="input w50" value="" name="second_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第三单</span>
+						<input type="text" class="input w50" value="" name="third_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第四单</span>
+						<input type="text" class="input w50" value="" name="fourth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第五单</span>
+						<input type="text" class="input w50" value="" name="fifth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第六单</span>
+						<input type="text" class="input w50" value="" name="sixth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第七单</span>
+						<input type="text" class="input w50" value="" name="seventh_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第八单</span>
+						<input type="text" class="input w50" value="" name="eighth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第九单</span>
+						<input type="text" class="input w50" value="" name="ninth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第十单</span>
+						<input type="text" class="input w50" value="" name="tenth_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">第十一单</span>
+						<input type="text" class="input w50" value=""
+							name="eleventh_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<span style="margin-top: 12px; margin-left: 5px; float: left;">十一单以上</span>
+						<input type="text" class="input w50" value="" name="eleven_more"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;万元</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>积分：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="integral"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">分</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>带看组数：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="num"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">组</span>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="label">
+						<label>开单：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="bill"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">万元</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>迟到：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${count1}"
+							name="latemin" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">次&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp; 10分钟以内 &nbsp;&nbsp;&nbsp;10元/次</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${count2}"
+							name="latetwolv" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">次&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp; 10~60分钟 &nbsp;&nbsp;&nbsp;30元/次</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${count3}"
+							name="lateHour" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">次
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+							一小时以上&nbsp;&nbsp;&nbsp;</span> <span style="margin-left: 10px;"><input
+							class="input w50" width="80px" name="lateprice" type="text">元/次</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>旷工</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="absenteeism"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">天
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span
+							style="margin-left: 10px;"><input class="input w50"
+							name="absenprice" type="text">元/天</span>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>请假</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${num}" name="leave"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">天</span>
+
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>其他</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="other"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元(扣款加负号)</span>
+
+					</div>
+				</div>
+				<div class="form-group" style="margin-left: 30%">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<button class="button bg-main icon-check-square-o" type="button"
+							id="submit">提交</button>
+						&nbsp;&nbsp;&nbsp;&nbsp; <a class="button bg-main"
+							href="/NfCrm/salary/userRoleList.do" type="button">返回</a>
+					</div>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

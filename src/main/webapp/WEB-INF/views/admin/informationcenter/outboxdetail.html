@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<style type="text/css">
+.black_overlay {
+	display: none;
+	width: 30%;
+	border: 2px solid #D6E9F1;
+	z-index: 1002;
+	height: 70%;
+	left: 45%;
+	top: 36%;
+	background-color: #fff;
+	margin-left: -168px;
+	margin-top: -140px;
+	position: fixed;
+	margin-left: -168px;
+	
+}
+#tab{
+	margin: 0px auto;
+}
+</style>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span>发信详情</strong></div>
+  <div class="body-content">
+    <div class="form-x" >   
+    <#list outboxlist as list>
+     <div class="form-group">
+        <div class="label">
+          <label>收件人：</label>
+        </div>
+        <div class="field">
+          <input type="text" readonly="readonly" name="recipient" class="input tips" style="width:25%; float:left;"  value="${list.recipient}"  />
+         
+        </div>
+      </div>
+         
+      <div class="form-group">
+        <div class="label">
+          <label>标题：</label>
+        </div>
+        <div class="field">
+          <input type="text" readonly="readonly" class="input" style="width:35%;" name="title" value="${list.title}" />
+          <div class="tips"></div>
+        </div>
+      </div>
+     
+      <div class="form-group">
+        <div class="label">
+          <label>内容：</label>
+        </div>
+        <div class="field">
+          <textarea readonly="readonly" id="content" name="content">${list.context}</textarea>
+          <div class="tips"></div>
+        </div>
+      </div>
+     </#list>
+    </div>
+  </div>
+</div>
+</body></html>

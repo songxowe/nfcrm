@@ -1,0 +1,23 @@
+@charset "utf-8";
+/*初始化常用标签*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0;  font-style: inherit; font-size: 100%; font-family: inherit; }
+:focus { outline: 0; }
+table { border-collapse: separate; border-spacing: 0; }
+caption, th, td { font-weight: normal; }
+a img, iframe { border: none; }
+ol, ul, li{list-style: none; }
+input, textarea, select, button { font-size: 100%; font-family: inherit; }
+select { margin: inherit; }
+input{ font-size:20px;}
+html{ font-family:"Microsoft Yahei",Arial,Lucida,Verdana,Helvetica,sans-serif;}
+body{ margin:0px; padding:0px; font-size:20px; }
+/* == clearfix == */
+.clearfix:after { /*/*/content: "."; /* IE8 hack */ display: block; height: 0; clear: both; visibility: hidden; }
+/* IE7 hack */
+.clearfix { display: inline-block; }
+/* IE-mac, IE5, IE6 */
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+
+
+

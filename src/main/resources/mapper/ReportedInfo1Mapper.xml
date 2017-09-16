@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.ReportedInfo1Mapper">
+
+	<resultMap type="com.sd.farmework.pojo.ReportedInfo" id="reporteMap">
+		<id column="reported_id" property="reported_id"/>
+		<result column="reported_yw" property="reported_yw"/>
+		<result column="customer_id" property="customer_id"/>
+		<result column="reported_time" property="reported_time"/>
+		<result column="end_time" property="end_time"/>
+		<result column="reported_no" property="reported_no"/>
+		<result column="customer_id" property="customer_id"/>
+		<result column="reported_customer" property="reported_customer"/>
+		<result column="remark" property="remark"/>
+		<result column="pro_name" property="pro_name"/>
+		<result column="company" property="company"/>
+		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+		
+	</resultMap>
+    <!-- 新增 -->
+    	<insert id="add" parameterType="com.sd.farmework.pojo.ReportedInfo">
+    INSERT INTO crm_reported_center(
+        t_id,
+        customer_id,
+		reported_yw,
+		reported_time,
+		reported_no,
+		reported_customer,
+		remark,
+		pro_name,
+		create_time,
+	    create_user_id
+		)
+		VALUES
+		(
+		#{t_id},
+		#{customer_id},
+		#{reported_yw},
+		NOW(),
+		13224354522,
+		#{reported_customer},
+		#{remark},
+		#{pro_name},
+		NOW(),
+		#{createUserId}
+			)			
+	</insert>
+    
+
+	<!-- 分页查询 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.ReportedInfo" resultMap="reporteMap">
+		
+					SELECT   
+						reported_id,
+						t_id,
+						reported_yw,
+						reported_time,
+						reported_no,
+						reported_customer,
+						remark,
+						pro_name,
+						customer_id,
+						company
+					FROM crm_reported_center 
+					WHERE 1 = 1
+			  <if test="reported_yw != null and reported_yw != ''"> 
+			   AND reported_yw like CONCAT('%','${reported_yw}','%' )  
+			  </if>
+			  <if test="reported_customer != null and reported_customer != ''"> 
+			   AND reported_customer like CONCAT('%','${reported_customer}','%' )  
+			  </if>
+			  <if test="remark != null and remark != ''"> 
+			   AND remark like CONCAT('%','${remark}','%' )  
+			  </if>
+			  <if test="reported_no != null and reported_no != ''"> 
+			   AND reported_no like CONCAT('%','${reported_no}','%' )  
+			  </if>	
+			  <if test="pro_name != null and pro_name != ''"> 
+			   AND pro_name like CONCAT('%','${pro_name}','%' )  
+			  </if>	
+			  <if test="reported_time != null and reported_time != ''"> 
+			   AND reported_time BETWEEN #{reported_time} and  #{end_time}  
+			  </if>	
+			  LIMIT #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryCount"  parameterType="com.sd.farmework.pojo.ReportedInfo"  resultType="java.lang.Integer">
+ 		   select  count(*)
+					from crm_reported_center 
+					where 1=1
+			   <if test="reported_yw != null and reported_yw != ''"> 
+			   AND reported_yw like CONCAT('%','${reported_yw}','%' )  
+			  </if>
+			  <if test="reported_customer != null and reported_customer != ''"> 
+			   AND reported_customer like CONCAT('%','${reported_customer}','%' )  
+			  </if>
+			  <if test="remark != null and remark != ''"> 
+			   AND remark like CONCAT('%','${remark}','%' )  
+			  </if>
+			  <if test="reported_no != null and reported_no != ''"> 
+			   AND reported_no like CONCAT('%','${reported_no}','%' )  
+			  </if>	
+			   <if test="pro_name != null and pro_name != ''"> 
+			   AND pro_name like CONCAT('%','${pro_name}','%' )  
+			  </if>	
+			  <if test="reported_time != null and reported_time != ''"> 
+			   AND reported_time BETWEEN #{reported_time} and  #{end_time}   
+			  </if>	 
+	</select>
+</mapper>

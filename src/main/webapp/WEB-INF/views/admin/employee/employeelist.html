@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet"
+	href="/NfCrm/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script type="text/javascript"
+	src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+</head>
+<body>
+
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong class="icon-reorder">员工列表</strong> <a href=""
+				style="float: right; display: none;">添加字段</a>
+		</div>
+		<div class="padding border-bottom">
+			<ul class="search" style="padding-left: 10px;">
+				<#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000440")!=-1
+				>
+				<li><a class="button border-main "
+					href="/NfCrm/menu/addEployeeMsg.do">新增</a></li> </#if> <#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000445")!=-1
+				>
+				<li></li> </#if> <#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000446")!=-1
+				>
+				<li>
+					<button class="button border-main " id="clickForMal"
+						onclick="onclickForMal(this)">转正式</button>
+				</li> </#if> <#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000447")!=-1
+				>
+				<li>
+					<button class="button border-main " id="clickLeav"
+						onclick="onclickLeav(this)">转离职</button>
+				</li> </#if>
+				<li>&nbsp;&nbsp;&nbsp;</li>
+				<form method="post" action="/NfCrm/employee/queryEmployeeInfo.do">
+					<li>姓名 <input name="customer_level" class="input"
+						style="width: 65px; line-height: 17px; display: inline-block" />
+
+						&nbsp;&nbsp; 员工编号 <input name="level_id" type="text" class="input"
+						style="width: 65px; line-height: 17px; display: inline-block" />
+
+						状态 <select name="status" class="input"
+						style="width: 80px; line-height: 17px; display: inline-block"
+						onchange="changesearch()">
+							<option value="">请选择</option>
+							<option value="0">试用</option>
+							<option value="1">正式</option>
+							<option value="2">离职</option>
+					</select>
+					</li>
+					<li>入职日期 <input name="job_date" readonly="readonly"
+						type="text" class="input" onclick="WdatePicker({readOnly:true})"
+						style="width: 100px; line-height: 17px; display: inline-block" />
+					</li>
+
+					<li><#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1
+						>
+						<button type="submit" class="button border-main icon-search"
+							onclick="changesearch()">查询</button> </#if>
+					</li>
+				</form>
+
+			</ul>
+		</div>
+		<table class="table table-hover text-center">
+			<tr>
+				<th width="10%" style="text-align: left; padding-left: 20px;">序号</th>
+				<th>姓名</th>
+				<th>员工编号</th>
+				<th>入职日期</th>
+				<th>状态</th>
+				<th width="300px">操作</th>
+			</tr>
+
+			<#list employeeList as list>
+			<tr>
+				<td style="text-align: left; padding-left: 20px;"><input
+					value="${list.level_id}" name="id[]" type="checkbox"
+					id="checkboxid" /> ${list_index+1}</td>
+				<td>${list.customer_level}</td>
+				<td>${list.level_id}</td>
+				<td>${list.job_date}</td>
+				<input type="hidden" value="${list.status}" id="status">
+				<#if list.status==0>
+				<td>试用</td> </#if> <#if list.status==1>
+				<td>正式</td> </#if> <#if list.status==2>
+				<td>离职</td> </#if>
+				<td>
+					<div class="button-group">
+						<#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1
+						> <a class="button border-main"
+							href="/NfCrm/employee/updateEmployeeUI.do?level_id=${list.level_id}">
+							<span class="icon-edit"></span>编辑
+						</a> </#if> <#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000444")!=-1
+						> <a class="button border-red"
+							href="/NfCrm/employee/employeeDetailUI.do?level_id=${list.level_id}">
+							<span class="icon-trash-o"></span>详情
+						</a>
+						<button class="button border-red" name="employeeid"
+							value="${list.level_id}">
+							<span class="icon-trash-o"></span>创建账号
+						</button>
+						</#if>
+
+					</div>
+				</td>
+			</tr>
+			</#list>
+
+
+
+			<td colspan="7" style="text-align: left; padding-left: 20px;">
+
+
+				<ul class="pagination" id="pagination"></ul>
+			</td>
+
+
+
+		</table>
+
+	</div>
+	<script type="text/javascript">
+     var status=$("#status").val();
+	$("button[name='employeeid']").click(function(){
+		var id = $(this).attr("value");
+		var data={
+    		id:id,
+    		status:status
+    	}
+		$.ajax({
+			type: "POST",
+			url: "/NfCrm/useradmin/queryUserByEmployeeId.do",
+			dataType : "json",
+			data:data,
+			success: function(msg){
+				if(msg.code=="000"){
+					swal({title: "系统提示",text: "您已创建过账号",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"});
+				}else{
+	    			window.location="/NfCrm/useradmin/addUserMsgUI.do?level_id="+id;
+				}
+			}
+		}); 
+	});
+	
+	
+	
+	
+	//转试用
+    function onclickTryOut(obj){
+    	var strIds=$("input:checkbox:checked");
+    	var status=$("")
+    	if($("input:checkbox:checked").val()!=null){
+    		var strid="";
+    		for (var i = 0; i < strIds.length; i++) {
+	        	if((i+1)==strIds.length){
+	        		strid+=strIds[i].value+"";
+	        	}else{
+	        		strid+=strIds[i].value+","
+	        	}
+			}
+    		var data={
+    			strid:strid,
+        		status:status
+    		}
+    		$.ajax({
+    			type: "POST",
+    			url: "/NfCrm/employee/changeTryOut.do",
+    			dataType : "json",
+    			data:data,
+    			success: function(data){
+    				
+    				if(data.code=="ok"){
+    					swal({title: "系统提示",text: "修改成功",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"},
+    				function(){
+        				window.location="/NfCrm/employee/queryEmployeeInfo.do";
+        			});
+    				}
+    			}
+    		});
+       	}else{
+       		swal({title: "系统提示",text: "最少勾选一条",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"});
+       	}
+    }
+    	
+    //转正式
+    function onclickForMal(obj){
+    	var strIds=$("input:checkbox:checked");
+    	if($("input:checkbox:checked").val()!=null){
+    		var strid="";
+    		for (var i = 0; i < strIds.length; i++) {
+	        	if((i+1)==strIds.length){
+	        		strid+=strIds[i].value+"";
+	        	}else{
+	        		strid+=strIds[i].value+","
+	        	}
+			}
+    		var data={
+    			strid:strid	
+    		}
+    		$.ajax({
+    			type: "POST",
+    			url: "/NfCrm/employee/changeForMal.do",
+    			dataType : "json",
+    			data:data,
+    			success: function(data){
+    				
+    				if(data.code=="ok"){
+    					swal({title: "系统提示",text: "修改成功",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"},
+    				function(){
+        				window.location="/NfCrm/employee/queryEmployeeInfo.do";
+        			});
+    				}//
+    			}
+    		});
+       	}else{
+       		swal({title: "系统提示",text: "最少勾选一条",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"});
+       	}
+    }
+    //转离职
+    function onclickLeav(obj){
+    	var strIds=$("input:checkbox:checked");
+    	if($("input:checkbox:checked").val()!=null){
+    		var strid="";
+    		for (var i = 0; i < strIds.length; i++) {
+	        	if((i+1)==strIds.length){
+	        		strid+=strIds[i].value+"";
+	        	}else{
+	        		strid+=strIds[i].value+","
+	        	}
+			}
+    		var data={
+    			strid:strid,
+        		status:status	
+    		}
+    		$.ajax({
+    			type: "POST",
+    			url: "/NfCrm/employee/changeLeav.do",
+    			dataType : "json",
+    			data:data,
+    			success: function(data){
+    				
+    				if(data.code=="ok"){
+    					swal({title: "系统提示",text: "修改成功",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"},
+    				function(){
+    					window.location="/NfCrm/employee/queryEmployeeInfo.do";
+    				});
+    				}
+    			}
+    		});
+       	}else{
+       		swal({title: "系统提示",text: "最少勾选一条",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"});
+       	}
+    }
+  	
+  	//分页
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="queryEmployeeInfo.do?currPage="+num+"&customer_level=${obj.customer_level4}&level_id=${obj.level_id}&status=${obj.status}&job_date=${obj.job_date}&function_id=${function_id}";
+        	}
+        }
+        
+    });
+    
+</script>
+
+</body>
+</html>

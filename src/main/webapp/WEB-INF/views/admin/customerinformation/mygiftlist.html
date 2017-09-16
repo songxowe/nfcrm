@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet"
+	href="/NfCrm/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong class="icon-reorder">礼品申请列表</strong> <a href=""
+				style="float: right; display: none;">添加字段</a>
+		</div>
+		<div class="padding border-bottom">
+			<ul class="search" style="padding-left: 10px;">
+				<!-- <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000440")!=-1 >
+				<li><a class="button border-main " href="../menu/giftapply.do">新建</a>
+				</li>
+			</#if> -->
+				<li>&nbsp;&nbsp;&nbsp;</li>
+				<form action="querymylist.do" method="post">
+					<li>客户名称 <input name="customer_name" class="input"
+						onchange="changesearch()"
+						style="width: 150px; line-height: 17px; display: inline-block" />
+					</li>
+					<li>项目名称 <input name="pro_name" type="text" class="input"
+						onchange="changesearch()"
+						style="width: 150px; line-height: 17px; display: inline-block" />
+						&nbsp;&nbsp;
+					</li>
+					<li>礼品 <input name="gift" type="text" class="input"
+						onchange="changesearch()"
+						style="width: 150px; line-height: 17px; display: inline-block" />
+						&nbsp;&nbsp;
+					</li>
+
+					<li>状态 <select name="step" class="input"
+						onchange="changesearch()"
+						style="width: 90px; line-height: 17px; display: inline-block">
+							<option value="">请选择</option>
+							<option value="1">待审核</option>
+							<option value="2">已通过</option>
+							<option value="3">不通过</option>
+
+					</select>
+					</li> <#if
+					sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1
+					>
+					<li><Button type="submit"
+							class="button border-main icon-search">查询</Button></li> </#if>
+				</form>
+
+
+			</ul>
+		</div>
+		<table class="table table-hover text-center">
+			<tr>
+				<th>序号</th>
+				<th>客户名称</th>
+				<th>项目名称</th>
+				<th>发放人</th>
+				<th>礼品</th>
+				<th>电话</th>
+				<th>状态</th>
+				<th>操作</th>
+			</tr>
+			<#list giftList as gift>
+			<tr>
+				<td height="60px;" style="vertical-align: middle;">${gift_index+1}</td>
+				<td height="60px;" style="vertical-align: middle;">${gift.customer_name}</td>
+				<td height="60px;" style="vertical-align: middle;">${gift.pro_name}</td>
+				<td height="60px;" style="vertical-align: middle;">${gift.createUserName}</td>
+				<td height="60px;" style="vertical-align: middle;">${gift.gift}</td>
+				<td height="60px;" style="vertical-align: middle;">${gift.phone}</td>
+				<td height="60px;" style="vertical-align: middle;"><#if
+					gift.step==1>待审核<#elseif gift.step==2>已通过<#elseif
+					gift.step==3>不通过</#if></td>
+				<td height="60px;" style="vertical-align: middle;"><#if
+					sessionRole.function_operate_ids?index_of(function_id+"_00000000444")!=-1
+					> <a href="javascript:mainOpen('${gift.gift_id}')"
+					class="button border-red" style="padding: 5px 15px;"> 审核详情 </a>
+					</#if>
+				</td>
+			</tr>
+			</#list>
+		</table>
+		<ul class="pagination" id="pagination"></ul>
+	</div>
+	<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="querymylist.do?currPage="+num+"&customer_name=${obj.customer_name}&pro_name=${obj.pro_name}&gift=${obj.gift}&step=${obj.step}";
+        	}
+        }
+        
+    });
+    function mainOpen(taskId){
+     	 window.open("/NfCrm/gift/dataApprovenDetailList.do?sourceTablePkColumnValue="+taskId,"child","width=800px,height=510px,resizable=no,scroll=no,status=no");
+     	 
+      }
+</script>
+
+	<script type="text/javascript">
+//单个删除
+function del(id,mid,iscid){
+	if(confirm("您确定要删除吗?")){
+		
+	}
+}
+</script>
+</body>
+</html>

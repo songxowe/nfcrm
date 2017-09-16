@@ -1,0 +1,86 @@
+@charset "utf-8";
+/*我的地址-空时*/
+.NomyAdress{min-width:320px;max-width:750px;margin:0 auto;border-top:1px #ccc solid;}
+.NomyAdress .NoMain{margin-top:6rem;}
+.NomyAdress .NoMain .Img{width:10.4rem;margin:0 auto;}
+.NomyAdress .NoMain .Img img{width:10.4rem;height:10.4rem;}
+.NomyAdress .NoMain .Txt{width:11.5rem;margin:0 auto;margin-top:5rem;}
+.NomyAdress .NoMain .Txt p{font-size:1.2rem;color:#999;line-height:1.8rem;}
+.NomyAdress .NoMain .go{padding-top:4rem;width:15.4rem;height:3.2rem;margin:0 auto;}
+.NomyAdress .NoMain .go a{width:15.4rem;line-height:3.2rem;background:#ef3636;text-align:center;color:#fff;font-size:1.5rem;display:inline-block;border-radius:3px;}
+.Addelete{background:#f2f1f1 url(../default/default/images/borBg.png) left top repeat-x;height:6rem;position:fixed;bottom: 0;min-width:320px;max-width:750px;width:100%;}
+.Addelete div{width:28rem;margin:0 auto;margin-top:1rem;}
+.Addelete a{width:28rem;line-height:4.3rem;height:4.3rem;color:#fff;font-size: 1.5rem;text-align:center;border-radius:3px;display:inline-block;background:#e40177;}
+.Addelete a span{font-size:2.7rem;vertical-align: bottom;}
+.Addelete a:link,.Addelete a:visited{color:#fff;}
+
+
+
+#BgDiv{background-color:#e3e3e3; position:absolute; z-index:99; left:0; top:0; display:none; width:100%; height:1000px;opacity:0.5;filter: alpha(opacity=50);-moz-opacity: 0.5;}
+/*编辑收货地址*/
+.editAdress{min-width:320px;max-width:750px;margin:0 auto;border-top:1px #ccc solid;}
+.editAdress .editMain{margin:0 .9rem;padding-bottom:10rem;}
+.editAdress .editMain ul li{margin-top:10px;width:100%;}
+.editAdress .editMain ul li.right .check{line-height:2rem;margin-right:.5rem;margin-top:.3rem;vertical-align: middle;}
+.editAdress .editMain ul li.right label{height:2rem;line-height:2rem;font-size: 1.2rem;}
+.editAdress .editMain ul li p{width:8.5rem;text-align:right;float:left;margin-top:1rem;font-size:1.4rem;color:#666;}
+.editAdress .editMain ul li p.chose{padding-top:.3rem;}
+.editAdress .editMain ul li textarea{width:65%;height:5rem;box-sizing: border-box;border:1px #e5e3e4 solid;resize: none;outline:none;padding:.5rem;line-height:1.8rem;color:#666;font-size:1.2rem;}
+.editAdress .editMain ul li input[type="text"]{height:3.7rem;line-height:100%;border:1px #e5e3e4 solid;width:65%;color:#666;font-size:1.2rem;text-indent:1rem;}
+.editAdress .editMain ul li input.check{width:3rem;margin-left:8rem;} 
+.editAdress .editMain ul li.right cite{font-style: normal;padding-right:5rem;}
+.editAdress .editMain ul li .choose{line-height:3.7rem;border-bottom:1px #e0dfdf solid;color:#666;text-indent:10px;width:100%;display:block;position:relative;}
+.editAdress .editMain ul li .choose i img{width:.7rem;height:1.4rem;position:absolute;top:1.2rem;right:1.6rem;}
+.fa-sele-box{width:65%;color:#686868;box-sizing: border-box;border:1px solid #e5e3e4;position:relative;padding:0 2.2rem 0 .5rem;height:3.7rem;line-height:3.7rem;margin-top:.5rem;margin-bottom:.5rem;display:inline-block;font-size: 1.2rem;}
+.fa-sele-box:before{background:url(../images/arrow-left-up.png) -25px 0 no-repeat;background-size:100% 100%;content:"";width:14px;height:9px;position:absolute;top:15px;right:4px;}
+.fa-sele-box i{font-style:normal;color:#666;}
+.fa-sele-box select{background:#fff;height:3rem;line-height:3rem;padding-right:.5rem;border:1px #000 solid;opacity:0;z-index:10;position:absolute;top:0;left:0;width:100%;display:inline-block;font-size:1.2rem;}
+
+/*我的地址*/
+.myAdress{min-width:320px;max-width:750px;margin:0 auto;}
+.myAdress .myAdressMain{border-bottom:1px #e5e5e5 solid;}
+.myAdress .myAdressMain ul{padding:1rem 1.3rem;}
+.myAdress .myAdressMain ul li{line-height:2.2rem;color:#949494;font-size:1.2rem;}
+.myAdress .myAdressMain ul li.name span{color:#666;font-size:1.4rem;}
+.myAdress .myAdressMain ul li.name i{font-style:normal;color:#666;font-family:Arial;font-size:1.4rem;}
+.myAdress .myAdressMain .default{margin:0 1rem;line-height:3.7rem;}
+.myAdress .myAdressMain .default div.fl{color:#949494;font-size:1.2rem;}
+.myAdress .myAdressMain .default div.fr span.edit img{width:1.3rem;height:1.5rem;margin-right:1rem;vertical-align:middle;margin-top:-3px;}
+.myAdress .myAdressMain .default div.fr span.del img{width:1.1rem;height:1.4rem;margin-right:1.0rem;vertical-align:middle;margin-top:-3px;}
+.myAdress .myAdressMain .default div.fr{color:#949494;font-size:1.2rem;line-height:3.7rem;}
+.myAdress .myAdressMain .default div.fr span{margin-right:1.2rem;}
+
+/*选择收货地址*/
+.chmyAdress{min-width:320px;max-width:750px;margin:0 auto;padding-bottom: 4rem;}
+.chmyAdress .chmyAdressMain{border-bottom:1px #e5e5e5 solid;padding:.8rem 0 .7rem 0;max-width:750px;min-width:320px;width:100%;margin:0 auto;}
+.chmyAdress .chmyAdressMain .radio{margin:1.5rem 1rem;float:left;}
+.chmyAdress .chmyAdressMain .info{float:left;width:65%;}
+.chmyAdress .chmyAdressMain .info ul li{line-height:2.2rem;color:#949494;font-size:1.2rem;display:block;}
+.chmyAdress .chmyAdressMain .info ul li.name span{color:#666;font-size:1.4rem;padding-right:.5rem;border:1px #f00 solid;}
+.chmyAdress .chmyAdressMain .info ul li.name i{font-style:normal;color:#666;font-family:Arial;font-size:1.4rem;padding-right:.5rem;border:1px #f00 solid;}
+.chmyAdress .chmyAdressMain .info ul li cite{width:3.2rem;height:1.6rem;line-height:1.6rem;text-align:center;background:#ef3636;border-radius:2px;color:#fff;font-size:1.0rem;font-style:normal;margin-top:3px;border:1px #f00 solid;}
+.chmyAdress .chmyAdressMain .info ul li.name span{color:#666;font-size:1.4rem;float:left;padding-right:.5rem;}
+.chmyAdress .chmyAdressMain .info ul li.name table tr td{height:2.2rem;line-height:2.2rem;overflow:hidden;}
+.chmyAdress .chmyAdressMain .info ul li.name i{font-style:normal;color:#666;font-family:Arial;font-size:1.4rem;float:left;padding-right:.5rem;}
+.chmyAdress .chmyAdressMain .info ul li cite{width:3.2rem;height:1.6rem;line-height:1.6rem;text-align:center;background:#e40177;border-radius:2px;color:#fff;font-size:1rem;font-style:normal;display:inline-block;margin-top:.3rem;}
+.chmyAdress .chmyAdressMain .edit{line-height:4.1rem;border-left:1px #e6e6e6 solid;float:right;}
+.chmyAdress .chmyAdressMain .edit img{width:1.7rem;height:2rem;margin:0px 1.5rem;padding-top:2rem;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

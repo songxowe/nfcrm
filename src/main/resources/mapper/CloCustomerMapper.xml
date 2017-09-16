@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.CloCustomerMapper">
+
+	<resultMap type="com.sd.farmework.pojo.CustomerInfo" id="customerMap">
+		<id column="customer_id" property="customer_id" />
+		<result column="open_countdown" property="open_countdown" />
+		<result column="customer_level" property="customer_level" />
+		<result column="customer_name" property="customer_name" />
+		<result column="input_time" property="input_time" />
+		<result column="customer_budget_min" property="customer_budget_min" />
+		<result column="customer_budget_max" property="customer_budget_max" />
+		<result column="customer_birthday" property="customer_birthday" />
+		<result column="customer_source" property="customer_source" />
+		<result column="adscription" property="adscription" />
+		<result column="adscription_id" property="adscription_id" />
+		<result column="phone" property="phone" />
+		<result column="weixin" property="weixin" />
+		<result column="qq" property="qq" />
+
+		<result column="industry" property="industry" />
+		<result column="homeperson" property="homeperson" />
+		<result column="purpose" property="purpose" />
+		<result column="region" property="region" />
+		<result column="look_date" property="look_date" />
+		<result column="recommend_person" property="recommend_person" />
+		<result column="transactions_date" property="transactions_date" />
+		<result column="pro_name" property="pro_name" />
+		<result column="pro_id" property="pro_id" />
+		<result column="customer_type" property="customer_type" />
+		<result column="qq_registered" property="qq_registered" />
+		<result column="wx_registered" property="wx_registered" />
+		<result column="home_address" property="home_address" />
+		<result column="unit_address" property="unit_address" />
+		<result column="recommend_count" property="recommend_count" />
+		<result column="recommend_customer" property="recommend_customer" />
+		<result column="gift_count" property="gift_count" />
+		<result column="flag" property="flag" />
+		<result column="gift_date" property="gift_date" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+
+	<resultMap type="com.sd.farmework.pojo.CustomerProJInfo" id="customerproMap">
+		<id column="c_id" property="c_id" />
+		
+		<result column="customer_id" property="customer_id" />
+		<result column="pro_id" property="pro_id" />
+		<result column="pro_name" property="pro_name" />
+		<result column="pro_type" property="pro_type" />
+		<result column="status" property="status" />
+		
+ 		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+
+	</resultMap>
+
+	<!-- 查询成交客户 -->
+	<select id="findClo" parameterType="com.sd.farmework.pojo.CustomerInfo"
+		resultMap="customerMap">
+		select customer_id,open_countdown,customer_level,customer_name,input_time,
+		customer_budget_min,customer_budget_max,customer_birthday,customer_source,adscription,
+		adscription_id,phone,weixin,qq,industry,
+		homeperson,purpose,region,look_date,recommend_person,
+		transactions_date,pro_name,pro_id,customer_type,qq_registered,
+		wx_registered,home_address,unit_address,recommend_count,recommend_customer,
+		gift_count,gift_date,flag,create_time,create_user_id,
+		create_user_name,last_update_time,last_update_user_id,last_update_user_name
+		from
+		crm_customer_info where
+		customer_type=2
+	</select>
+
+	<!-- 查询成交客户信息byid -->
+	<select id="findById" parameterType="com.sd.farmework.pojo.CustomerInfo"
+		resultMap="customerMap">
+		select customer_id,open_countdown,
+		customer_level,customer_name,
+		input_time,customer_budget_min,
+		customer_budget_max,customer_birthday,
+		customer_source,adscription,
+		adscription_id,phone,
+		weixin,qq,
+		industry,homeperson,
+		purpose,region,
+		look_date,recommend_person,
+		transactions_date,pro_name,
+		pro_id,customer_type,
+		qq_registered,wx_registered,
+		home_address,unit_address,
+		recommend_count,recommend_customer,
+		gift_count,gift_date,
+		flag,create_time,
+		create_user_id,create_user_name,
+		last_update_time,last_update_user_id,
+		last_update_user_name
+		from
+		crm_customer_info where
+		customer_id=#{customer_id} and customer_type=2
+	</select>
+	
+	<!-- 查询客户信息byid -->
+	<select id="queryById" parameterType="com.sd.farmework.pojo.CustomerInfo"
+		resultMap="customerMap">
+		select customer_id,
+		open_countdown,
+		customer_level,
+		customer_name,
+		input_time,
+		adscription,
+		customer_budget_min,
+		customer_budget_max,
+		customer_birthday,
+		customer_source,
+		phone,
+		weixin,
+		qq,
+		industry,
+		homeperson,
+		purpose,
+		region,
+		look_date,
+		recommend_person,
+		transactions_date,
+		pro_id,
+		pro_name,
+		customer_type,
+		qq_registered,
+		wx_registered,
+		home_address,
+		unit_address,
+		recommend_count,
+		recommend_customer,
+		gift_count,
+		flag,
+		gift_date,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name
+		 from
+		crm_customer_info where
+		customer_id=#{customer_id}
+	</select>
+	
+	
+
+<!-- 查询客户信息by create_user_id -->
+	<select id="queryByCuid" parameterType="com.sd.farmework.pojo.CustomerInfo"
+		resultMap="customerMap">
+		select customer_id,
+		open_countdown,
+		customer_level,
+		customer_name,
+		input_time,
+		adscription,
+		customer_budget_min,
+		customer_budget_max,
+		customer_birthday,
+		customer_source,
+		phone,
+		weixin,
+		qq,
+		industry,
+		homeperson,
+		purpose,
+		region,
+		look_date,
+		recommend_person,
+		transactions_date,
+		pro_id,
+		pro_name,
+		customer_type,
+		qq_registered,
+		wx_registered,
+		home_address,
+		unit_address,
+		recommend_count,
+		recommend_customer,
+		gift_count,
+		flag,
+		gift_date,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name
+		 from
+		crm_customer_info where
+		create_user_id =#{createUserId}
+	</select>
+
+
+	<!-- ——————————————————————————————start ———————————————————————————— -->
+	<!-- 客户信息分页查询 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.CustomerInfo"
+		resultMap="customerMap">
+		select
+		customer_id,
+		open_countdown,
+		customer_level,
+		customer_name,
+		input_time,
+		customer_budget_min,
+		customer_budget_max,
+		customer_birthday,
+		customer_source,
+		phone,
+		pro_id,
+		weixin,
+		qq,
+		industry,
+		homeperson,
+		purpose,
+		region,
+		adscription,
+		adscription_id,
+		look_date,
+		recommend_person,
+		transactions_date,
+		pro_name,
+		customer_type,
+		qq_registered,
+		wx_registered,
+		home_address,
+		unit_address,
+		recommend_count,
+		recommend_customer,
+		gift_count,
+		gift_date,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name
+		from
+		crm_customer_info
+		where 1=1
+		<!-- 客户姓名 -->
+		<if test="customer_name!= null and customer_name !=''">
+			AND customer_name like CONCAT('%','${customer_name}','%' )
+		</if>
+		<!-- 客户等级 -->
+		<if test="customer_level!= null and customer_level !=''">
+			AND customer_level like
+			CONCAT('%','${customer_level}','%')
+		</if>
+		<!-- 客户手机 -->
+		<if test="phone!= null and phone !=''">
+			AND phone like CONCAT('%','${phone}','%' )
+		</if>
+		<!-- 客户来源 -->
+		<if test="customer_source!= null and customer_source !=''">
+			AND customer_source like
+			CONCAT('%','${customer_source}','%' )
+		</if>
+		<!-- 项目名称 -->
+		<if test="pro_name!= null and pro_name != ''">
+			AND pro_name like CONCAT('%','${pro_name}','%' )
+		</if>
+		<!-- 推荐人数 -->
+		<if test="recommend_count!= null and recommend_count != ''">
+			AND recommend_count =#{recommend_count}
+		</if>
+		<!-- 录入时间 -->
+		<if test="input_time!= null and input_time != ''">
+			AND input_time like CONCAT('%','${input_time}','%' )
+		</if>
+		and customer_type=2
+		group by input_time desc
+		<!-- 开始页数 每页显示条数 -->
+		LIMIT #{startRecod},#{pageSize}
+	</select>
+	<!-- ——————————————————————————————end ———————————————————————————— -->
+
+	<!-- ——————————————————————————————start ———————————————————————————— -->
+	<!-- 查行数 -->
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.CustomerInfo"
+		resultType="java.lang.Integer">
+		select count(*) from crm_customer_info where 1=1 and customer_type=2
+		<if test="customer_name!= null and customer_name != ''">
+			AND customer_name like CONCAT('%','${customer_name}','%' )
+		</if>
+		<if test="customer_level!= null and customer_level != ''">
+			AND customer_level like CONCAT('%','${customer_level}','%')
+		</if>
+		<if test="phone!= null and phone != ''">
+			AND phone like CONCAT('%','${phone}','%' )
+		</if>
+		<if test="customer_source!= null and customer_source != ''">
+			AND customer_source like
+			CONCAT('%','${customer_source}','%' )
+		</if>
+		<if test="recommend_count!= null and recommend_count != ''">
+			AND recommend_count like
+			CONCAT('%','${recommend_count}','%' )
+		</if>
+		<if test="pro_name!= null and pro_name != ''">
+			AND pro_name like CONCAT('%','${pro_name}','%' )
+		</if>
+		<if test="input_time!= null and input_time != ''">
+			AND input_time like CONCAT('%','${input_time}','%' )
+		</if>
+	</select>
+	<!-- ——————————————————————————————end ———————————————————————————— -->
+	
+	<update id="update" parameterType="com.sd.farmework.pojo.CustomerInfo">
+		update
+		crm_customer_info set
+		open_countdown=#{open_countdown},
+		customer_level=#{customer_level},
+		customer_name=#{customer_name},
+		customer_budget_min=#{customer_budget_min},
+		customer_budget_max=#{customer_budget_max},
+		customer_birthday=#{customer_birthday},
+		customer_source=#{customer_source},
+		phone=#{phone},
+		adscription=#{adscription},
+		weixin=#{weixin},
+		qq=#{qq},
+		industry=#{industry},
+		homeperson=#{homeperson},
+		purpose=#{purpose},
+		region=#{region},
+		look_date=#{look_date},
+		recommend_person=#{recommend_person},
+		transactions_date=#{transactions_date},
+		pro_name=#{pro_name},
+		pro_id=#{pro_id},
+		qq_registered=#{qq_registered},
+		wx_registered=#{wx_registered},
+		home_address=#{home_address},
+		unit_address=#{unit_address},
+		recommend_count=#{recommend_count},
+		recommend_customer=#{recommend_customer},
+		gift_count=#{gift_count},
+		flag=#{flag},
+		gift_date=#{gift_date},
+		last_update_time=NOW(),
+		last_update_user_id=#{lastUpdateUserId},
+		last_update_user_name=#{lastUpdateUserName}
+		where customer_id=#{customer_id}
+	</update>
+	
+	
+	<!-- 查询项目名根据id -->
+	<select id="queryProNameById" parameterType="com.sd.farmework.pojo.CustomerProJInfo" resultMap="customerproMap">
+	           	select 
+	           		c_id,
+	           		pro_id,
+	           		customer_id,
+	           		pro_name,
+	           		pro_type
+	           	from 
+	           	crm_customer_proj
+	           	where customer_id=#{customer_id} 
+	</select>
+	
+	<!-- 根据cid来修改状态-->
+	<update id="updateTypeById" parameterType="com.sd.farmework.pojo.CustomerProJInfo" >
+		update crm_customer_proj set
+		pro_type= 'N'
+		where customer_id=#{customer_id}
+	</update>
+	
+	<!-- 更新当前项目为主推-->
+	<update id="updateCusProInfo" parameterType="com.sd.farmework.pojo.CustomerProJInfo" >
+		update crm_customer_proj set
+		pro_type='Y' 
+		where c_id=#{c_id}
+	</update>
+	
+	<delete id="delete">
+		delete 
+		from 
+		crm_customer_proj 
+		where customer_id=#{customer_id}
+	</delete>
+	
+	<insert id="addCustomerProName" parameterType="com.sd.farmework.pojo.CustomerProJInfo">
+		insert into crm_customer_proj(
+			pro_id,
+			customer_id,
+			pro_name,
+			pro_type,
+			status,
+			create_time,
+			create_user_id,
+			create_user_name
+		)
+		values(
+			#{pro_id},
+			#{customer_id},
+			#{pro_name},
+			#{pro_type},
+			#{status},
+			NOW(),
+			#{createUserId},
+			#{createUserName}
+		)
+	</insert>
+	
+	<!-- 根据proid和customerid将项目的状态改为Y-->
+	<update id="updateStatus" parameterType="com.sd.farmework.pojo.CustomerProJInfo" >
+		update crm_customer_proj set
+		pro_type='Y' 
+		where pro_id=#{pro_id}
+		and customer_id=#{customer_id}
+	</update>
+</mapper>

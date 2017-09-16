@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.GiftApplyMapper">
+	<!-- 主表的映射map -->
+	<resultMap type="com.sd.farmework.pojo.GiftApply" id="giftMap">
+		<id column="gift_id" property="gift_id" />
+		<result column="customer_name" property="customer_name" />
+		<result column="input_time" property="input_time" />
+		<result column="pro_name" property="pro_name" />
+		<result column="adscription" property="adscription" />
+		<result column="phone" property="phone" />
+		<result column="weixin" property="weixin" />
+		<result column="qq" property="qq" />
+		<result column="industry" property="industry" />
+		<result column="homeperson" property="homeperson" />
+		<result column="recommend_count" property="recommend_count" />
+		<result column="gift" property="gift" />
+		<result column="status" property="status" />
+		<result column="description" property="description" />
+
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+		<result column="step" property="step" />
+		<result column="customer_id" property="customer_id" />
+	</resultMap>
+
+
+	<!-- 查询礼物申请 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.GiftApply"
+		resultMap="giftMap">
+		select * from crm_gift_give where create_user_id=#{createUserId}
+		<if test="customer_name!= null and customer_name != ''">
+			AND customer_name like CONCAT('%','${customer_name}','%' )
+		</if>
+		<if test="pro_name!= null and pro_name != ''">
+			AND pro_name like CONCAT('%','${pro_name}','%' )
+		</if>
+		<if test="gift!= null and gift != ''">
+			AND gift like CONCAT('%','${gift}','%' )
+		</if>
+		<if test="step!= null and step != ''">
+			AND step like CONCAT('%','${step}','%' )
+		</if>
+		order by create_time desc LIMIT #{startRecod},#{pageSize}
+	</select>
+
+	<!-- 查询礼物申请总条数 -->
+	<select id="queryCount" resultType="Integer">
+		select count(*) from crm_gift_give where
+		create_user_id=#{createUserId}
+		<if test="customer_name!= null and customer_name != ''">
+			AND customer_name like CONCAT('%','${customer_name}','%' )
+		</if>
+		<if test="pro_name!= null and pro_name != ''">
+			AND pro_name like CONCAT('%','${pro_name}','%' )
+		</if>
+		<if test="gift!= null and gift != ''">
+			AND gift like CONCAT('%','${gift}','%' )
+		</if>
+		<if test="step!= null and step != ''">
+			AND step like CONCAT('%','${step}','%' )
+		</if>
+	</select>
+
+
+	<!-- 礼品申请 -->
+	<insert id="insertall" parameterType="com.sd.farmework.pojo.GiftApply"
+		useGeneratedKeys="true" keyProperty="gift_id">
+		insert into crm_gift_give (
+		customer_name,
+		input_time,
+		pro_name,
+		adscription,
+		phone,
+		weixin,
+		qq,
+		industry,
+		homeperson,
+		recommend_count,
+		customer_id,
+		gift,
+		description,
+		create_time,
+		create_user_id,
+		create_user_name
+		) values(
+		#{customer_name},
+		NOW(),
+		#{pro_name},
+		#{adscription},
+		#{phone},
+		#{weixin},
+		#{qq},
+		#{industry},
+		#{homeperson},
+		#{recommend_count},
+		#{customer_id},
+		#{gift},
+		#{description},
+		NOW(),
+		#{createUserId},
+		#{createUserName}
+		)
+	</insert>
+	<update id="update" parameterType="com.sd.farmework.pojo.GiftApply">
+		update crm_gift_give set step
+		=#{step} where gift_id =#{gift_id}
+	</update>
+
+	<select id="queryById" parameterType="com.sd.farmework.pojo.GiftApply"
+		resultMap="giftMap">
+		select * from crm_gift_give where
+		gift_id=#{gift_id}
+	</select>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.UserAndRolesMapper">
+	<resultMap type="com.sd.farmework.pojo.UserAndRoles" id="userAndRolesMap">
+		<id column="r_id" property="r_id"/>
+		<result column="user_id" property="user_id"/>
+		<result column="role_id" property="role_id"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	<!-- 用户角色关系查询 -->
+	<select id="queryList"  parameterType="com.sd.farmework.pojo.UserAndRoles"  resultMap="userAndRolesMap">
+		    SELECT r.r_id,
+				r.user_id,
+				r.role_id,
+				r.status,
+				r.create_user_id
+				 
+			FROM sys_user_roles r
+			WHERE r.status='Y' AND r.user_id=#{user_id}
+	</select>
+	<!-- 删除用户角色关系 -->
+	<delete id="delete" parameterType="com.sd.farmework.pojo.UserAndRoles">
+		delete from sys_user_roles where user_id=#{user_id}
+	</delete>
+	<!-- 增加用户角色关系 -->
+	<insert id="add" parameterType="com.sd.farmework.pojo.UserAndRoles">
+		INSERT INTO sys_user_roles SET 
+				user_id=#{user_id},
+				role_id=#{role_id},
+				STATUS='y',
+				create_user_id=#{createUserId},
+				create_user_name=#{createUserName},
+				create_time=NOW(),
+				last_update_user_id=#{lastUpdateUserId},
+				last_update_user_name=#{lastUpdateUserName},
+				last_update_time=NOW()	
+	</insert>
+	
+</mapper>

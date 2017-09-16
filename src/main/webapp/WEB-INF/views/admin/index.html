@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title>后台管理中心</title>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script type="text/javascript"
+	src="/NfCrm/resources/admin/power/roleTemplate.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#sign").click(function() {
+			$.ajax({
+				type : "GET",
+				url : "/NfCrm/attend/havesige.do",
+				data : "",
+				success : function(msg) {
+					if (msg == "success") {
+						swal({
+							title : "系统提示",
+							text : "签到成功！",
+							type : "success",
+							showCancelButton : false,
+							confirmButtonColor : "#DD6B55",
+							confirmButtonText : "确定"
+						}, function() {
+
+						});
+					} else if (msg == "fail") {
+						swal({
+							title : "系统提示",
+							text : "已经签到过了啦~",
+							type : "warning",
+							showCancelButton : false,
+							confirmButtonColor : "#DD6B55",
+							confirmButtonText : "确定"
+						}, function() {
+
+						});
+					} else if (msg == "overtime") {
+						swal({
+							title : "系统提示",
+							text : "已经不是上班时间了就不要签到了好嘛~",
+							type : "warning",
+							showCancelButton : false,
+							confirmButtonColor : "#DD6B55",
+							confirmButtonText : "确定"
+						}, function() {
+
+						});
+					}
+				}
+			});
+		});
+		$("#sign_back").click(function() {
+			$.ajax({
+				type : "GET",
+				url : "/NfCrm/attend/updatetime.do",
+				data : "",
+				success : function(msg) {
+					if (msg == "no_sign") {
+						swal({
+							title : "系统提示",
+							text : "今天还没有签到哦！",
+							type : "warning",
+							showCancelButton : false,
+							confirmButtonColor : "#DD6B55",
+							confirmButtonText : "确定"
+						}, function() {
+
+						});
+					} else if (msg == "repeat") {
+						swal({
+							title : "系统提示",
+							text : "你已经签退过了哦！",
+							type : "warning",
+							showCancelButton : false,
+							confirmButtonColor : "#DD6B55",
+							confirmButtonText : "确定"
+						}, function() {
+
+						});
+					} else if (msg == "sign_back_success") {
+						swal({
+							title : "系统提示",
+							text : "签退成功！",
+							type : "success",
+							showCancelButton : false,
+							confirmButtonColor : "#DD6B55",
+							confirmButtonText : "确定"
+						}, function() {
+
+						});
+					} else if (msg == "timenotout") {
+						swal({
+							title : "系统提示",
+							text : "还没到下班时间了啦~",
+							type : "warning",
+							showCancelButton : false,
+							confirmButtonColor : "#DD6B55",
+							confirmButtonText : "确定"
+						}, function() {
+
+						});
+					}
+				}
+			});
+		});
+
+	});
+	function showMessage1() {
+
+		$(function() {
+
+			$.ajax({
+						type : "GET",
+						url : "/NfCrm/receivemessage/Sendlogin.do",
+						data : "",
+						success : function(msg) {
+							if (msg.code== "000") {
+								var num=msg.returnList.length;
+								var htmlStr = "<span style='font-size:18px;font-weight: bold'>邮箱提醒:</span><a href='javascript:void(0)' onclick='closeElement()' style='float: right;'>关闭</a><br>"
+								if (num != 0) {
+									$("#showDetail").html("");
+									$("#showMsg").hide();
+									$("#showDetail")
+											.html(
+													htmlStr
+															+ "&nbsp;&nbsp;您当前有"
+															+ num
+															+ "条未读邮件 "+"，请注意查看！<a href='/NfCrm/receivemessage/receiveMessageList.do?function_id=00000000019' target='right' style='color:red;font-size:18px;font-weight: bold' onclick='closeElement()' style='float: right;'>查看邮件</a>");
+									$("#showMsg").show();
+								}
+
+							}
+						}
+					});
+
+		});
+		
+	}
+
+	function showMessage() {
+
+		$(function() {
+
+			$
+					.ajax({
+						type : "GET",
+						url : "/NfCrm/customer/getLogindata.do",
+						data : "",
+						success : function(msg) {
+							if (msg.code == "000") {
+								var num = msg.returnList.length;
+								var htmlStr = "<span style='font-size:18px;font-weight: bold'>日志提醒:</span><a href='javascript:void(0)' onclick='closeElement()' style='float: right;'>关闭</a><br>"
+								if (num == 0) {
+
+								} else {
+									$("#showDetail").html("");
+									$("#showMsg").hide();
+									$("#showDetail")
+											.html(
+													htmlStr
+															+ "&nbsp;&nbsp;您当前有"
+															+ num
+															+ "条到期<a href='/NfCrm/customer/queryCustomerByCUId.do?function_id=00000000019' target='right' style='color:red;font-size:18px;font-weight: bold'>跟进日志</a>，请注意查看！");
+									$("#showMsg").show();
+								}
+
+							}
+						}
+					});
+
+		});
+	}
+	setInterval("showMessage()", 1000 * 60);//1000为1秒钟,设置为1分钟。  
+	setInterval("showMessage1()", 1000 * 60);
+
+	function closeElement() {
+		$("#showDetail").html("");
+		$("#showMsg").hide();
+	}
+</script>
+
+</head>
+<body style="background-color: #f2f9fd;">
+	<div class="header bg-main">
+		<div class="logo margin-big-left fadein-top">
+			<h1>
+				<img src="/NfCrm/resources/images/y.jpg"
+					class="radius-circle rotate-hover" height="50" alt="" />后台管理中心
+			</h1>
+		</div>
+		<div class="head-l">
+			<a class="button button-little bg-green"
+				href="/NfCrm/frontEntrance/index.html" target="_blank"><span
+				class="icon-home"></span> 前台首页</a> &nbsp;&nbsp; <a
+				class="button button-little bg-blue" id="sign"
+				style="cursor: pointer;"> 签到</a>&nbsp;&nbsp;<a
+				class="button button-little bg-yellow" id="sign_back"
+				style="cursor: pointer;"><span></span> 签退</a> &nbsp;&nbsp;<a
+				class="button button-little bg-red"
+				href="/NfCrm/admin/userLoginOut.do" id="loginOut"><span
+				class="icon-power-off"></span> 退出登录</a>
+		</div>
+	</div>
+
+	<div class="leftnav">
+		<div class="leftnav-title">
+			<strong><span class="icon-list"></span>菜单列表</strong>
+		</div>
+		<h2>
+			<span class="icon-users"></span>${menuMap.text}
+		</h2>
+
+		<ul style="display: block">
+
+			<#list menuMap.children as parentItem>
+			<h2>
+				<span class="${parentItem.functionStyle}"></span>${parentItem.text}
+			</h2>
+			<ul>
+				<#list parentItem.children as childrenItem> <#if
+				childrenItem.url?index_of("?")!=-1 > <#if
+				childrenItem.url?index_of("tag=1")!=-1 >
+				<li><a
+					href="${childrenItem.url}&function_id=${childrenItem.id}"
+					target="right"><span class="icon-caret-right"></span>${childrenItem.text}</a></li>
+				<#else>
+				<li><a
+					href="${childrenItem.url}&function_id=${childrenItem.id}&adscription_id=${loginUser.employee_id}"
+					target="right"><span class="icon-caret-right"></span>${childrenItem.text}</a></li>
+				</#if> <#else>
+				<li><a
+					href="${childrenItem.url}?function_id=${childrenItem.id}"
+					target="right"><span class="icon-caret-right"></span>${childrenItem.text}</a></li>
+				</#if> </#list>
+			</ul>
+			</#list>
+
+
+		</ul>
+	</div>
+
+	<script type="text/javascript">
+		$(function() {
+
+			$(".leftnav h2").click(function() {
+				$(this).next().slideToggle(200);
+				$(this).toggleClass("on");
+			})
+			$(".leftnav ul li a").click(function() {
+				$("#a_leader_txt").text($(this).text());
+				$(".leftnav ul li a").removeClass("on");
+				$(this).addClass("on");
+			})
+		});
+	</script>
+	<ul class="bread">
+		<li><a href="/NfCrm/admin/mianContent.do" target="right"
+			class="icon-home"> 首页</a></li>
+		<li><a href="##" id="a_leader_txt">网站信息</a></li>
+	</ul>
+
+	<div class="admin">
+		<iframe scrolling="auto" rameborder="0"
+			src="/NfCrm/admin/mianContent.do" name="right" width="100%"
+			height="98%"></iframe>
+	</div>
+
+	<div
+		style="position: fixed; bottom: 10px; font-size: 18px; width: 100%; height: auto; display: none"
+		id="showMsg">
+		<div id="showDetail"
+			style="background: #F0FFFF; height: 250px; width: 350px; float: right; border: 1px #b5cfd9 solid;">2222</div>
+	</div>
+
+</body>
+</html>

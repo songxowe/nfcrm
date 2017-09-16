@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/admin/customerinformation/addcustomerinfo.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+
+<style>
+.phone {
+	position: absolute;
+	top:2%;
+	left: 60%;
+}
+.white_content {
+	display: none;
+	border: 12px solid #D6E9F1;
+	z-index: 1002;
+	width: 60%;
+	height: 100%;
+	left: 35%;
+	top: 23%;
+	background-color: #fff;
+	margin-left: -168px;
+	margin-top: -140px;
+	position: fixed;
+	margin-left: -168px;
+}
+.back_content {
+	display: none;
+	border: 12px solid #D6E9F1;
+	z-index: 1002;
+	width: 50%;
+	height: 40%;
+	left: 40%;
+	top: 40%;
+	background-color: #fff;
+	margin-left: -168px;
+	margin-top: -140px;
+	position: fixed;
+	margin-left: -168px;
+}
+
+.black_overlay {
+	display: none;
+	background-color: #f5f5f5;
+	z-index: 1001;
+	-moz-opacity: 0.8;
+	opacity: .80;
+	filter: alpha(opacity=80);
+	width: 100%;
+	height: 100%;
+	left: 0%;
+	top: 0%;
+	right: 0%;
+	bottom: 0%;
+	position: fixed;
+}
+
+.close {
+	float: right;
+	clear: both;
+	width: 100%;
+	text-align: right;
+	margin: 0 0 6px 0
+}
+
+.close a {
+	color: #333;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 700
+}
+
+#con {
+	text-indent: 1.5pc;
+	line-height: 21px
+}
+
+#con .label {
+	width: 35%;
+}
+</style>
+<script type="text/javascript">
+
+function LogDetail(id){
+	  var iWidth=850;                          //弹出窗口的宽度; 
+	  var iHeight=510;                         //弹出窗口的高度; 
+	  var iTop = (window.screen.availHeight - 30 - iHeight) / 2; 
+    //获得窗口的水平位置 
+   	var logid=id;
+    
+    var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; 
+    var url="/NfCrm/log/logDetail.do?log_id="+logid;
+    /* var url="/NfCrm/log/logDetail.do"; */
+	 window.open(url,"child",'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no'); 
+}
+function findlogdetail(){
+		var id=this.id;
+		LogDetail(id);
+}
+$(document).ready(function(){
+	
+	//获取倒计时
+	var jjj={
+	 pro_id:'${customerlist.pro_id}'
+	 };	
+	$.ajax({
+		type : "POST",
+		url : "/NfCrm/pubcustomer/selectTime.do",
+		data : jjj,
+		async : true,
+		dataType : "json",
+		success : function(fff) {
+			var Stime=fff.TimeDate;
+			$("#needtime").html(Stime);
+		},
+		error : function(rec) {
+			console.info("网络异常,请稍后再试");
+		}
+	});
+	
+	
+	//提交按钮
+	$("#edit").click(function(){
+		var proname=$("input[name='Cpro']");
+		var strname="";
+		var strid="";
+		if("input:checkbox:checked"){
+			cId=$("input[name='Cpro'][checked='checked']").attr("class");
+			proid=$("input[name='Cpro'][checked='checked']").attr("id");
+			proName=$("input[name='Cpro'][checked='checked']").val();
+		}
+		
+		if(proname!=null||proname.length!=0){
+			
+			for(var i=0;i<proname.length;i++){
+				if((i+1)==proname.length){
+					strname += proname[i].value+"";
+					strid += proname[i].id+"";
+	        	}else{
+	        		strname += proname[i].value+",";
+	        		strid += proname[i].id+",";
+	        	}
+				
+			}
+			
+		}
+	
+		var data={
+			customer_id:$("input[name='customer_id']").val(),
+			customer_name:$("input[name='customer_name']").val(),
+			customer_birthday:$("input[name='customer_birthday']").val(),
+			recommend_person:$("input[name='recommend_person']").val(),
+			industry:$("input[name='industry']").val(),
+			customer_source:$("input[name='customer_source']").val(),
+			phone:$("input[name='phone']").val(),
+			weixin:$("input[name='weixin']").val(),
+			qq:$("input[name='qq']").val(),
+			homeperson:$("input[name='homeperson']").val(),
+			look_date:$("input[name='look_date']").val(),
+			transactions_date:$("input[name='transactions_date']").val(),
+			customer_budget:$("input[name='customer_budget']").val(),
+			customer_budget_min:$("#customer_budget_min").val(),
+			customer_budget_max:$("#customer_budget_max").val(),
+			customer_level:$("#CustomerLevel option:selected").val(),
+			home_address:$("input[name='home_address']").val(),
+			unit_address:$("input[name='unit_address']").val(),
+			recommend_count:$("input[name='recommend_count']").val(),
+			gift_count:$("input[name='gift_count']").val(),
+			strname:strname,
+			proid:proid,
+			proName:proName,
+			cId:cId,
+			strid:strid
+			
+			
+		}
+		$.ajax({
+			type: "POST",
+			url: "/NfCrm/pubcustomer/updateById.do",
+			dataType : "json",
+			data:data,
+			success: function(data){
+				if(data.code="ok"){
+					swal({title: "系统提示",text: "修改成功！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"},
+					function(){
+						window.location="/NfCrm/pubcustomer/findPub.do";
+	        		});
+				}
+			}
+		});
+		
+	});
+});	
+
+</script>
+</head>
+
+<body>
+
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>编辑客户信息</strong>
+		</div>
+		<div class="body-content">
+			<div  class="form-x"  id="customerFrom">
+
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%">
+						<label>倒计时：</label>
+					</div>
+					<div class="a">
+						<div id="timer"style="text-align: center;float: left;margin-top: 9px;">
+						  <a id="needtime"></a>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="customer_id" value="${customerlist.customer_id}">
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					</div>
+					
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%">
+						<label>客户名：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${customerlist.customer_name}" name="customer_name"
+						 id="CustomerName"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>客户生日：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" onClick="WdatePicker()" readonly="readonly"
+							value="${customerlist.customer_birthday}" name="customer_birthday"
+						data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group" 
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%">
+						<label>推荐人：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${customerlist.recommend_person}" name="recommend_person"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>行业：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${customerlist.industry}" name="industry"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%">
+						<label>客户来源：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${customerlist.customer_source}" name="customer_source"
+						id="CustomerSource"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>归属人：</label>
+					</div>
+					<div class="field">
+						<input type="text" disabled="disabled" class="input w50" value="${customerlist.adscription}" name="adscription"
+						id="Region"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%">
+						<label>电话号码：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${customerlist.phone}" name="phone"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>微信号：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${customerlist.weixin}" name="weixin"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%">
+						<label>QQ号：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${customerlist.qq}" name="qq"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>家庭人数：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${customerlist.homeperson}" name="homeperson"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+			
+
+				<div class="form-group" style="display: block; ">
+					<div class="label">
+						<label>客户预算：</label>
+					</div>
+					<div class="field">
+					    <input type="text" class="input w50" value="${customerlist.customer_budget_min}" id="customer_budget_min"
+							data-validate="required:请输入正确格式" style="width: 100px" />
+						<input type="text" class="input w50" value="${customerlist.customer_budget_max}" id="customer_budget_max"
+							data-validate="required:请输入正确格式" style="width: 100px;margin-left:10px" />
+						<span style="margin-top: 20px;float: left;">(万元)</span>
+						<div class="tips"></div>
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<div class="label">
+						<label>客户等级：</label>
+					</div>
+					<div class="field">
+						<select name="customer_level" style="width:19.5%" class="input" id="CustomerLevel">
+							<option value="${customerlist.customer_level}">${customerlist.customer_level}</option>
+							<option value="A">A</option>
+							<option value="B">B</option>
+							<option value="C">C</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>家庭住址：</label>
+					</div>
+					<div class="field">
+						<input type="text" style="width:19.5%" class="input" value="${customerlist.home_address}" name="home_address"
+							data-validate="required:请输入正确格式" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>公司地址：</label>
+					</div>
+					<div class="field">
+						<input type="text" style="width:19.5%" class="input" value="${customerlist.unit_address}" name="unit_address"
+						id="UnitAddress"
+							data-validate="required:请输入正确格式" />
+					</div>
+				</div>
+
+				<div class="form-group" >
+					<div class="label" >
+						<label>项目名称：</label>
+					</div>
+					<div class="field" id="pro">
+						<#list prolist as  prolist>
+							<#if prolist.pro_type=="Y">
+								<input name='Cpro' checked='checked' type='checkbox' class="${prolist.c_id}" value='${prolist.pro_name}' id='${prolist.pro_id}'/>${prolist.pro_name}
+							</#if>
+							<#if prolist.pro_type=="N">
+								<input name='Cpro' type='checkbox' class="${prolist.c_id}" value='${prolist.pro_name}' id='${prolist.pro_id}'/>${prolist.pro_name}
+							</#if>
+						</#list>
+					</div>
+					<button type="button" class="button bg-blue margin-left"  style="float:left;" id="showPro">新增</button>
+					<div class="tips"></div>
+				</div>
+				
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%">
+						<label>推荐人数:</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${customerlist.recommend_count}" id="Po_list" name="recommend_count"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+						<div class="label">
+			                 <label>跟进日志：</label>
+			            </div>
+			            <input type="button" class="button bg-blue margin-left"
+						id="image1" value="+新增" style="float:left;"onclick="show('light')">
+									
+				</div>
+				<table class="table table-hover text-center" id="mytable"  style="width:80%;margin: 0px auto;" >
+					
+					<tr id="hideid">
+						
+						<th>跟进时间</th>
+						<th>跟进项目</th>
+						<th>电话记录</th>
+						<th>跟进备注</th>
+						<th>跟进截图</th>
+						<th>再次跟进时间</th>
+						<th>详情</th>
+					</tr>
+					<#list loglist as list>
+					<tr>
+							<td>${list.follow_time}</td>
+							<td>${list.follow_pro}</td>
+							<td>${list.phone_record}</td>
+							<td>${list.follow_desc}</td>
+							<td><#if list.follow_img??><#if list.follow_img=="">无<#else>有</#if><#else>无</#if></td>
+							<td>${list.repeat_follow}</td>
+							<td><input type="button" id="${list.log_id}" name="logDetail" value="查看" onclick="LogDetail(${list.log_id})"></td>
+							<!-- <td><a href="/NfCrm/menu/logDetail.do">查看</a></td> -->
+					</tr>
+					</#list>	
+				</table>
+                <br><br>
+                <br><br>
+
+			<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="field">
+						<button class="button bg-main icon-check-square-o"  type="submit" id="edit">提交</button>
+					</div>
+			</div>
+			</div>
+			
+			<div class="form-x" >
+			
+			<div id="light" class="white_content">
+					<div class="close">
+						<a href="javascript:void(0)" onclick="hide('light')">关闭</a>
+					</div>
+			
+					<div id="con">
+					
+					<div class="form-group" style="display: none; width:50%; float:left;">
+							<div class="label">
+								<label>跟进项目id：</label>
+							</div>
+							<div>
+								<input type="text" class="input w50" value="" id="pid" name="pro_id"  style="width: auto" />
+						
+							</div>
+					</div>
+					
+					<div class="form-group"
+							style="display: block; width:50%; float:left;">
+							<div class="label">
+								<label>跟进项目：</label>
+							</div>
+							<div>
+								<select name="follow_pro" class="input w50" id="testProId" style="width: auto" >
+									
+								</select>
+							</div>
+					</div>
+					<div class="phone">
+					     <form enctype='multipart/form-data' id='upform' name='upimg'>
+						   <div id="phone_up">
+							<div id="up_text">
+								<img id="pho" src="" style="width:60%; height:150px;" >
+							</div>
+						   </div>
+						  <div style="margin-left:20%;">
+						    <input type="file" class="file_con" name="file1" style="display: block" />
+						     <button class="button bg-main icon-check-square-o" type="button"
+							 id="up_button">截图上传</button>		
+					      </div>		
+					     </form>		 
+				    </div>
+					
+				    <div class="form-group"
+							style="display: block; width:50%; float:none;">
+							<div class="label">
+								<label>跟进时间：</label>
+							</div>
+							<div>
+								 
+					           <input type="text" class="input w50" value="" onClick="WdatePicker()" readonly="readonly"
+							    name="follow_time" data-validate="required:请输入正确格式" style="width: auto" />
+							</div>
+					</div>
+				    
+				    
+					
+					<div class="form-group" style="float: left; width: 85%;display:none">
+							<div class="label">
+								<label>电话记录：3个<input type="button"
+									class="button bg-blue margin-left" id="image1" value="新增">
+								</label>
+							</div>
+							<div class="field"></div>
+				    </div>
+				    
+					<table class="table table-hover text-center" style="width:80%;display:none"
+							align="center">
+							<tr>
+								<th>上传时间</th>
+								<th>状态</th>
+								<th>上传大小</th>
+								<th>上传时长</th>
+								<th></th>
+							</tr>
+							<tr>
+								<td>2016-10-31</td>
+								<td>上传成功</td>
+								<td>1538kb</td>
+								<td>1'32</td>
+								<td><a>播放</a></td>
+							</tr>
+							<tr>
+								<td>2016-10-30</td>
+								<td>上传成功</td>
+								<td>1647kb</td>
+								<td>1'45</td>
+								<td><a>播放</a></td>
+							</tr>
+							<tr>
+								<td>2016-11-1</td>
+								<td>上传成功</td>
+								<td>2134kb</td>
+								<td>2'25</td>
+								<td><a>播放</a></td>
+							</tr>
+							<tr height="20px">
+							</tr>
+					</table>
+					
+					<div class="form-group"
+							style="display: block; width:50%; float:left;">
+							<div class="label">
+								<label>再次跟进时间：</label>
+							</div>
+							<div>
+					       
+					       <input type="text" class="input w50" value="" onClick="WdatePicker()" readonly="readonly"
+							name="repeat_follow" data-validate="required:请输入正确格式" style="width: auto" />
+							</div>
+					</div>
+					
+					
+					<div class="form-group"
+							style="display: block; width:50%; float:none;">
+							<div class="label">
+								<label>跟进备注：</label>
+							</div>
+							<div>
+								<textarea class="input w50" name="follow_desc" rows="4"
+									data-validate="required:请输入正确格式"
+									style="width:150%; float: none; margin-left: 35%"></textarea>
+							</div>
+					</div>
+					
+					
+					
+					<div class="form-group"
+							style="display: block; width:50%; float:none;height: -20px">
+							<div class="label">
+								<label>下次跟进方案：</label>
+							</div>
+							<div >
+								<textarea class="input w50" name="follow_scheme" rows="4"
+									data-validate="required:请输入正确格式"
+									style="width:150%; float: none; margin-left: 35%"></textarea>
+							</div>
+					</div>
+					
+				   <div class="form-group">
+							<div class="field" style="float: right;">
+								<button class="button bg-main icon-check-square-o" type="button" id="submit" onclick="hide('light')">提交</button>
+							</div>
+				       </div>
+				  
+				   </div>
+				
+				</div>
+			</div>
+			
+			
+	<div id="fade" class="black_overlay"></div>
+		
+
+    <div id="addcustomer" class="back_content" style="width:35%;">
+				<div class="close">
+					<a href="javascript:void(0)" onclick="hide('addcustomer')">关闭</a>
+				</div>
+				<div id="tent" style="margin-left: 45px;">
+		
+					<div class="form-group" style="float: left;width: 50%;">
+						 <div class="label w50" style="line-height: 34px;width:36%;">
+							<label>客户名：</label>
+						 </div>
+						 <div >
+							<input type="text" class="input w50" value=""
+							data-validate="required:请输入正确格式" 
+							name="recommend_name" style="width: 60%" id="date" />
+						 </div>
+					</div>
+					
+			
+				<div class="form-group">
+							<div class="label">
+								<button class="button bg-main icon-check-square-o" type="button" id="zcq">确定</button>
+							</div>
+					
+				</div>
+							
+			    <div class="form-group" style="float:left;width:50%">
+				  <table class="table table-hover text-center" id="Customertable" style="width:30%;"></table>
+	            </div>
+	          
+			  <div class="form-group" style="float:right;width:50%;" align="center">
+							<div class="field" >
+		                     <button class="button bg-main icon-check-square-o" type="button" id="subfrom" onclick="hide('addcustomer')">提交</button>
+			  </div>
+			  </div>
+			</div>		
+	  </div>
+	  <div id="fade" class="black_overlay"></div>
+			
+	
+	  </div>
+	  
+	</div>
+
+</body>
+</html>

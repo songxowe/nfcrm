@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript">
+	$(document).ready(function (){
+		var teamName=$("input[name='teamName']");
+		var teamDesc=$("input[name='teamDesc']");
+		var teamId=$("input[name='teamId']");
+		var namestr="";
+		var descstr="";
+		var idstr="";
+		var stepstr="";
+		var teamStep=$("input[name='status']").val();
+		var status=document.getElementsByName(teamId[0].value);
+		var groupstatus=$("input[name='groupstatus']");
+		for(var j=0;j<groupstatus.length;j++){
+			var step=document.getElementsByName(teamId[j+1].value);
+			if(groupstatus[j].value=="Y"){
+				step[0].checked=true;
+			}else{
+				step[1].checked=true;
+			}
+		}
+		if(teamStep=="Y"){
+			status[0].checked=true;
+		}else{
+			status[1].checked=true;
+		}
+		$("#save").click(function(){
+			
+			for(var i=0;i<teamId.length;i++){
+				namestr+=(teamName[i].value)+"##";
+				descstr+=(teamDesc[i].value)+"##";
+				idstr+=(teamId[i].value)+"##";
+				var status=document.getElementsByName(teamId[i].value);
+				if(status[0].checked){
+					stepstr+=status[0].value+"##";
+				}else if(status[1].checked){
+					stepstr+=status[1].value+"##";
+				}
+			}
+			var group={
+					teamStatus:stepstr,
+					teamId:idstr,
+					teamName:namestr,
+					teamDesc:descstr
+			}
+			$.ajax({
+				type : "GET",
+				data : group,
+				url : "/NfCrm/team/updateteam.do",
+				success : function(msg) {
+					if(msg=="success"){
+						swal({title: "系统提示",text: "部门更新成功！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+		        		},
+		        		function(){
+		        			window.location="/NfCrm/team/queryAllteamList.do";
+		        		});
+					}
+				}
+			});
+		})
+	});
+</script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改部门信息</strong></div>
+  <div class="body-content">
+    <form method="get" class="form-x" action="">
+      <div class="form-group">
+        <div class="label">
+          <label>部门：</label>
+        </div>
+        <div class="field">
+        	<input type="hidden" value="${currentTeam.team_id}" name="teamId" />
+			<input type="text" style="width: 10%;" class="input w50" value="${currentTeam.team_name}" name="teamName" data-validate="required:请输入正确格式的数据" />
+			<input type="text" placeholder='部门描述'  style="width: 30%;margin-left: 10%" class="input w50" value="${currentTeam.team_desc}" name="teamDesc" data-validate="required:请输入正确格式的数据" />      </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>状态：</label>
+        </div>
+        <div class="field">
+        <input type="hidden" value="${currentTeam.status}" name="status">
+        <div style="margin-top: 8px;"><input type="radio"  value="Y" name="${currentTeam.team_id}" style="margin-left: 5px"><span style="margin-left: 5px;">启用</span><input type="radio" name="${currentTeam.team_id}" value="N" style="margin-left: 20px"><span style="margin-left: 5px;">禁用</span></div>
+      </div>
+      </div>
+	<hr>
+      <#list teamdetail as team>
+		<div class="form-group">
+        <div class="label">
+          <label>分组：</label>
+        </div>
+        <div class="field">
+        	<input type="hidden" value="${team.status}" name="groupstatus">
+        	<input type="hidden" value="${team.team_id}" name="teamId" />
+          	<input type="text" style="width: 10%;" class="input w50" value="${team.team_name}" name="teamName" data-validate="required:请输入正确格式的数据" />
+        	<input type="text" placeholder='分组描述'  style="width: 30%;margin-left: 10%" class="input w50" value="${team.team_desc}" name="teamDesc" data-validate="required:请输入正确格式的数据" />
+     	</div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+        <div style="margin-top: 8px;"><input type="radio" value="Y" name="${team.team_id}" style="margin-left: 5px"><span style="margin-left: 5px;">启用</span><input type="radio" name="${team.team_id}" value="N" style="margin-left: 20px"><span style="margin-left: 5px;">禁用</span></div>
+      </div>
+      </div>
+      </#list>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button class="button bg-main icon-check-square-o" id="save" type="button">修改</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body></html>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.UserInfoMapper">
+	<resultMap type="com.sd.farmework.pojo.UserInfo" id="userMap">
+		<id column="user_id" property="user_id"/>
+		<result column="user_name" property="user_name"/>
+		<result column="employee_id" property="employee_id"/>
+		<result column="user_no" property="user_no"/>
+		<result column="account_no" property="account_no"/>
+		<result column="user_pwd" property="user_pwd"/>
+		<result column="employ_time" property="employ_time"/>
+		<result column="user_group" property="user_group"/>
+		<result column="remark" property="remark"/>
+		<result column="status" property="status"/>
+		
+		 		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+		
+		
+	</resultMap>
+	<!-- 用户查询 -->
+	<select id="query"  parameterType="com.sd.farmework.pojo.UserInfo"  resultMap="userMap">
+		    SELECT user_id ,
+		    	employee_id,
+				 user_name,
+				 user_no,
+				 account_no ,
+				 user_pwd,
+				 employ_time,
+				 user_group,
+				 remark,
+				 STATUS
+				 
+			 FROM  sys_user_info 
+			 WHERE STATUS='Y' 
+			 AND account_no=#{account_no} AND user_pwd=#{user_pwd}
+	</select>
+	<!-- 通过用户名查询用户ID -->
+	<select id="queryByUserName"  parameterType="com.sd.farmework.pojo.UserInfo"  resultMap="userMap">
+		    SELECT user_id ,
+		         employee_id,
+				 user_name,
+				 user_no,
+				 account_no ,
+				 user_pwd,
+				 employ_time,
+				 user_group,
+				 remark,
+				 STATUS
+			 FROM  sys_user_info 
+			 WHERE 
+			 account_no=#{account_no} 
+	</select>
+	<select id="queryById"  parameterType="com.sd.farmework.pojo.UserInfo"  resultMap="userMap">
+		    SELECT user_id ,
+				 user_name,
+				 user_no,
+				 account_no ,
+				 user_pwd,
+				 employ_time,
+				 user_group,
+				 remark,
+				 STATUS
+			 FROM  sys_user_info 
+			 WHERE STATUS='Y' 
+			and user_id=#{user_id}
+	</select>
+	<update id="updatepwd" parameterType="com.sd.farmework.pojo.UserInfo" >
+		update sys_user_info set user_pwd=#{user_pwd} where user_id=#{user_id}
+	</update>
+	<select id="queryall"  parameterType="com.sd.farmework.pojo.UserInfo"  resultMap="userMap">
+		    SELECT user_id ,
+				 user_name,
+				 user_no,
+				 account_no ,
+				 user_pwd,
+				 employ_time,
+				 user_group,
+				 remark,
+				 STATUS 
+			 FROM  sys_user_info 
+			 WHERE STATUS='Y' 
+			 AND user_id=#{user_id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet" href="/NfCrm/resources/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+</head>
+<body>
+
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">模板列表</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+      <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000440")!=-1 >
+			<li> <a class="button border-main icon-plus-square-o" href="/NfCrm/template/addTemplateUI.do">添加</a> </li>
+			</#if>
+			<li>
+			<form action="/NfCrm/template/selectTemplate.do" method="get">
+				&nbsp;&nbsp;
+	          	模板名称:
+	          <input name="template_name" type="text" class="input"  style="width:100px; line-height:17px;display:inline-block"/>
+	          <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1 >
+	          <button type="submit" class="button border-main icon-search" onclick="changesearch()" > 查询</button>
+	          </#if>
+	        </form>
+			</li>
+      </ul>
+    </div>
+    <table class="table table-hover text-center">
+      <tr>
+        <th width="100" style="text-align:left; padding-left:20px;">序号</th>       
+        <th>模板名称</th>
+        <th width="310">操作</th>
+      </tr>
+      <#list template as temp>
+	      <tr>
+	       	<td>${temp_index+1}</td>
+	       	<td>${temp.template_name}</td>
+	       	<td>
+	       		<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1 >
+		        <a href="/NfCrm/template/updateTemplateUI.do?t_id=${temp.t_id}" class="button border-red" style="padding:5px 15px;" > 
+		        	编辑
+		        </a>
+		        <a href="/NfCrm/template/templateDetail.do?t_id=${temp.t_id}" class="button border-red" style="padding:5px 15px;" > 
+		        	详情
+		        </a>
+		        </#if>
+
+	       	</td>
+	      </tr>
+	  </#list>
+    </table>
+    <ul class="pagination" id="pagination"></ul>
+
+	
+<script type="text/javascript">
+
+$.jqPaginator('#pagination', {
+    totalPages: ${totalCount},
+    visiblePages: 10,
+    currentPage: ${currPage},
+    prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+    next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+    page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+    onPageChange: function (num, type) {
+    	console.info(type);
+    	if(type!='init'){
+    		window.location.href="selectTemplate.do?currPage="+num;
+    	}
+    }
+    
+});
+
+
+
+</script>
+</body>
+</html>

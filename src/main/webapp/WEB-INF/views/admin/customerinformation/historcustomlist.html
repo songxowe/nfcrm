@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+
+<title></title>
+<link type="text/css" rel="stylesheet"
+	href="/NfCrm/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+
+<script src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js/customer/customer.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+<script src="/NfCrm/resources/js/jqPaginator.js"></script>
+
+<style type="text/css">
+.oneoffive {
+	float: left;
+	width: 15%;
+}
+
+.diyinput {
+	font-size: 14px;
+	border: solid 0.1px #ddd;
+	line-height: 20px;
+	display: fiex;
+	padding: 10px;
+	border-radius: 3px;
+	-webkit-appearance: none;
+	fiex: 1;
+}
+
+th {
+	background: #efefef
+}
+
+td {
+	border: solid #ddd;
+	border-width: 0px 1px 1px 0px;
+}
+</style>
+
+<script type="text/javascript">
+function findall(){
+$("#findclocustomer").submit();
+}
+</script>
+
+</head>
+<body>
+	<input type="hidden" value="${loginUser.employee_id}" name="employeeId" />
+	
+	<div class="panel admin-panel">
+		
+		<div class="panel-head">
+			<strong class="icon-reorder">成交客户列表</strong> <a href=""
+				style="float: right; display: none;">添加字段</a>
+		</div>
+		
+		<div class="padding border-bottom">
+			
+<form id="findclocustomer" action="/NfCrm/clocustomer/queryCloCustomer.do" method="post">
+				<ul class="search" style="padding-left: 10px;">
+					<li>
+					
+						<div class="oneoffive">
+							客户名称 <input name="customer_name" class="diyinput" value=""
+								onchange="changesearch()"
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+
+						<div class="oneoffive">
+							电话号码 <input name="phone" type="text" class="diyinput"
+								onchange="changesearch()" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+						
+						<div class="oneoffive">
+							客户来源 <input name="customer_source" type="text" class="diyinput"
+								onchange="changesearch()" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+
+						<div class="oneoffive">
+							项目名称 <input name="pro_name" type="text" class="diyinput"
+								onchange="changesearch()" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div> 
+					<input name="adscription" type="hidden" value="${loginUser.user_name}" />
+
+						<div class="oneoffive">
+							推荐人数 <input name="recommend_count" type="text" class="diyinput"
+								onchange="changesearch()" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+
+						<div class="oneoffive">
+							录入时间 <input name="input_time" type="text" class="diyinput"
+								onClick="WdatePicker({readOnly:true})" value=""
+								style="width: 60%;; line-height: 17px; display: inline-block" />
+						</div>
+
+						<div class="oneoffive">
+							客户等级 <select name="customer_level" class="diyinput"
+								onchange="changesearch()"
+								style="width: 60%;; line-height: 17px; display: inline-block">
+
+								<option value="">请选择</option>
+								<option value="A">A</option>
+								<option value="B">B</option>
+								<option value="C">C</option>
+
+							</select>
+						</div>
+
+<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1>
+				<button type="button" class="button border-main icon-search"
+							onclick="findall()">查询</button> </#if>
+					</li>
+				</ul>
+
+				<input type="hidden" name="customer_type" value="2">
+			</form>
+			
+		</div>
+
+		<table class="table table-hover text-center">
+			<tr>
+				<th style="text-align: left; padding-left: 10px;">ID</th>
+				<th>客户等级</th>
+				<th>客户名称</th>
+				<th>客户类别</th>
+				<th>电话号码</th>
+				<th>项目名称</th>
+				<th>成交时间</th>
+				<th>客户预算</th>
+				<th>客户来源</th>
+				<th>归属人</th>
+				<th>推荐人数</th>
+				<th>礼品发放数</th>
+				<th>录入时间</th>
+				<th width="180px">详情</th>
+			</tr>
+
+			<tr>
+				<#list customerList as list>
+				<td style="text-align: left; padding-left: 10px;"><input
+					type="checkbox" onclick="checkin(this)" id="${list.customer_id}"
+					name="incheck" /> ${list_index+1}</td>
+				<#if list.customer_level=='A'>
+					<td style="color: red;font-weight: bolder;">A</td>
+				</#if>
+				<#if list.customer_level=='B'>
+					<td style="color: blue;font-weight: bolder;">B</td>
+				</#if>
+				<#if list.customer_level=='C'>
+					<td style="color: yellow;font-weight: bolder;">C</td>
+				</#if>
+				<td>${list.customer_name}</td>
+				<td><#if list.customer_type==2>成交客户</#if></td>
+				<td>${list.phone}</td>
+				<td>${list.pro_name}</td>
+				<td>${list.transactions_date}</td>
+				<td>${list.customer_budget_min}—${list.customer_budget_max}（万）</td>
+				<td>${list.customer_source}</td>
+				<td>${list.adscription}</td>
+				<td>${list.recommend_count}</td>
+				<td>${list.gift_count}</td>
+				<td>${list.input_time}</td>
+				<td>
+
+			<div class="button-group">
+		<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1> 
+<a class="button border-main"
+		href="queryCloCustomerById.do?customer_id=${list.customer_id}">
+		 <span class="icon-edit"></span>编辑</a> 
+						</#if> 
+	<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000444")!=-1> 
+	<a class="button border-red"
+			href="queryCustomerMsg.do?customer_id=${list.customer_id}"> 
+		<span class="icon-trash-o"></span>详情
+						</a> 
+					</#if>
+				</div>
+				
+			  </td>
+			</tr>
+			</#list>
+			<td style="text-align: left; padding: 19px 0; padding-left: 10px;">
+				<input type="checkbox" id="checkall" onclick="checkall(this)"/> 全选
+			</td>
+
+<td colspan="15" style="text-align: left; padding-left: 10px;">
+	<#if sessionRole.function_operate_ids?index_of(function_id+"_00000000454")!=-1> 
+	<a href="javascript:void(0)"
+				class="button border-main padding-left:50px" onclick="haveparma()">
+					礼品申请</a> 
+	<a href="javascript:void(0)"
+				class="button border-main padding-left:50px" onclick="report()">
+					报备</a> 
+	</#if>
+			</td>
+		</table>
+		<ul class="pagination" id="pagination" style="margin: 0 auto;"></ul>
+	</div>
+
+	<script type="text/javascript">
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 5,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+      
+        //当页面发生改变时触发的事件 
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="queryCloCustomer.do?currPage="+num+"&customer_name=${obj.customer_name}"
+        		+"&phone=${obj.phone}"
+        		+"&customer_source=${obj.customer_source}"
+        		+"&pro_name=${obj.pro_name}"
+        		+"&recommend_count=${obj.recommend_count}"
+        		+"&input_time=${obj.input_time}"
+        		+"&customer_level=${obj.customer_level}"    		
+        		+"&customer_type="+2;
+        	}
+        }
+    });
+	</script>
+
+</body>
+</html>

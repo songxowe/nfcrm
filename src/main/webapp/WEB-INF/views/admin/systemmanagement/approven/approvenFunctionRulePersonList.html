@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Basic DataGrid - jQuery EasyUI Demo</title>
+    	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/icon.css">
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+</head>
+<body>
+	<table id="list_data" cellspacing="0" cellpadding="0"> 
+
+</table>  
+ 
+</body>
+</html>
+<script type="text/javascript">
+
+	 
+$(function(){
+	$('#dlg').dialog('close');
+		 $('#list_data').datagrid({ 
+        iconCls:'icon-edit',//图标 
+        width: 800, 
+        height: '200', 
+        nowrap: false, 
+        striped: true, 
+        border: true, 
+        collapsible:false,//是否可折叠的 
+        fit: true,//自动大小 
+        url:'/NfCrm/admin/approven/approvenFunctionRulePersonDataList.do?approvenRuleId=${approvenRuleId}', 
+        remoteSort:false,  
+        pageSize: 15,//每页显示的记录条数，默认为10 
+        pageList: [15,30,45],//可以设置每页记录条数的列表
+        idField:'controllerMethodId', 
+        singleSelect:true,//是否单选 
+        pagination:false,//分页控件 
+        rownumbers:true,//行号 
+        columns:[[
+				  {field:'approvenPersonId',title:'类型编号',width:100,hidden:true},
+                  {field:'approvenFunctionId',title:'类型编号',width:100},
+                  {field:'approvenFunctionName',title:'类型名称',width:150},
+                  {field:'approvenRuleName',title:'审批类型',width:150},
+                  {field:'approvenUserName',title:'审批人',width:100},
+                  {field:'ruleOrder',title:'审批顺序',width:100,editor: { type: 'validatebox', options: { required: true} }}
+                  ]],
+        onClickRow: function(index, data) {
+        	var row = $('#list_data').datagrid('getSelected');
+         },
+        toolbar: [{ 
+            text: '添加', 
+            iconCls: 'icon-add', 
+            handler: function() { 
+            	if('${approvenFunctionId}'==null||'${approvenRuleId}'==""){
+            		alert("请选择审批类型");
+            		
+            		return;
+            	}
+            	window.parent.mainOpen("person",'${approvenRuleId}','${approvenRuleName}','${approvenFunctionId}','${approvenFunctionName}');
+            } 
+        },{ 
+            text: '删除', 
+            iconCls: 'icon-remove', 
+            handler: function() { 
+            	var row = $('#list_data').datagrid('getSelected');
+            	if(row==null||row==""){
+            		alert("请选择一行数据");
+            		return;
+            	}
+            	var data = {approvenPersonId:row.approvenPersonId}
+            	$.ajax({ url: "/NfCrm/admin/approven/approvenFunctionRulePersonDelete.do",method:"POST", data: data, success: function(){
+                    alert("保存成功");
+                   }});
+             	
+            } 
+        }] 
+    });
+		
+});
+		
+	</script>
+   

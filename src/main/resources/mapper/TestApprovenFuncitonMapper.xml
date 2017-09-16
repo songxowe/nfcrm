@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.TestApprovenFuncitonMapper">
+	<resultMap type="com.sd.farmework.pojo.TestApprovenFunciton" id="testApprovenMap">
+		<id column="test_id" property="testId"/>
+		<result column="test_name" property="testName"/>
+		<result column="test_remark" property="testRemark"/>
+		<result column="step" property="step"/>
+		  		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+	</resultMap>
+	
+	<!-- 查询当月考勤情况,及分页 -->
+	<select id="queryList"   resultMap="testApprovenMap" >
+		 select test_id , test_name , test_remark , step from test_approven_funciton
+	</select>
+	 
+	 
+	  
+	 <insert id="add" parameterType="com.sd.farmework.pojo.TestApprovenFunciton"
+	  useGeneratedKeys="true" keyProperty="testId" >
+	 
+	  
+	  
+ 		 insert into test_approven_funciton(test_name,test_remark,step) values ( #{testName}, #{testRemark},1);
+	</insert>
+	
+	<update id="update" parameterType="com.sd.farmework.pojo.TestApprovenFunciton">
+	    update test_approven_funciton set step =#{step} where  test_id = #{testId}
+	</update>
+	 
+	
+</mapper>

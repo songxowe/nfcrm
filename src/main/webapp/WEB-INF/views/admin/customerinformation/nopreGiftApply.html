@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+
+
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>礼品发放申请</strong>
+		</div>
+		<div class="body-content">
+			<form method="post" class="form-x" action="../gift/addgiftMsg.do">
+				<div class="form-group">
+					<div class="label">
+						<label>客户名：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="customer_name"
+							data-validate="required:请输入正确格式" style="width: 12%" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%;">
+						<label>项目名称：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="pro_name"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>归属人 ：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="adscription"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%;">
+						<label>电话号码：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value=""
+							name="phone" data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>微信：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="weixin"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%;">
+						<label>QQ：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value=""
+							name="qq" data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>行业：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="industry"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left;">
+					<div class="label" style=" margin-left:15%;">
+						<label>家庭成员：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="homeperson"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:50%; float:left; ">
+					<div class="label">
+						<label>推荐人数：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="recommend_count"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group" style="display: block; width:100%; ">
+					<div class="label" style=" margin-left:15%; float: none;">
+						<label><h5>推荐人物品发放申请明细</h5>
+						</label>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width:100%; float:left; ">
+					<div class="label">
+						<label>发放人：</label>
+					</div>
+					<div style="float: left;">
+						<a class="button bg-green" type="button">${loginUser.user_name}</a>
+					</div>
+					<div class="label">
+						<label>奖品：</label>
+					</div>
+					<div style="float: left;">
+						<input type="text" class="input w50" value=""
+							name="gift" data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>描述：</label>
+					</div>
+					<div class="field">
+						<textarea class="input" name="description" style=" height:90px;"></textarea>
+						<div class="tips"></div>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="field">
+						<button class="button bg-main icon-check-square-o" type="submit">申请</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>

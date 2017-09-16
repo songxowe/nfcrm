@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.UserAdminMapper">
+	<resultMap type="com.sd.farmework.pojo.UserAdmin" id="userMap">
+		<id column="user_id" property="user_id" />
+		<result column="user_name" property="user_name" />
+		<result column="employee_id" property="employee_id"/>
+		<result column="user_no" property="user_no" />
+		<result column="account_no" property="account_no" />
+		<result column="user_pwd" property="user_pwd" />
+		<result column="employ_time" property="employ_time" />
+		<result column="user_group" property="user_group" />
+		<result column="remark" property="remark" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+
+	</resultMap>
+	<!-- 用户查询 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.UserAdmin"
+		resultMap="userMap">
+		SELECT user_id,
+		user_name,
+		user_no,
+		account_no,
+		user_pwd,
+		employ_time,
+		user_group,
+		remark,status,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name
+		FROM
+		sys_user_info WHERE STATUS='Y'
+		<if test="user_name!= null and user_name != ''">
+			AND user_name like CONCAT('%','${user_name}','%' )
+		</if>
+		<if test="user_no!= null and user_no != ''">
+			AND user_no like CONCAT('%','${user_no}','%' )
+		</if>
+		<if test="account_no!= null and account_no != ''">
+			AND account_no like CONCAT('%','${account_no}','%' )
+		</if>
+		<if test="employ_time!= null and employ_time != ''">
+			AND employ_time like CONCAT('%','${employ_time}','%' )
+		</if>
+		group by  employ_time desc
+		LIMIT #{startRecod},#{pageSize}
+	</select>
+	<select id="queryall" parameterType="com.sd.farmework.pojo.UserAdmin"
+		resultMap="userMap">
+		SELECT user_id,
+		user_name,
+		user_no,
+		account_no,
+		user_pwd,
+		employ_time,
+		user_group,
+		remark,
+		status,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name
+		FROM
+		sys_user_info
+	</select>
+	<!-- 用户查询byid -->
+	<select id="queryById" parameterType="com.sd.farmework.pojo.UserAdmin"
+		resultMap="userMap">
+		SELECT user_id,
+		user_name,
+		user_no,
+		account_no,
+		user_pwd,
+		employ_time,
+		user_group,
+		remark,status,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name
+		FROM sys_user_info WHERE user_id=#{user_id}
+	</select>
+	
+	<select id="queryByEmployeeId" parameterType="com.sd.farmework.pojo.UserAdmin"
+		resultMap="userMap">
+		SELECT user_id,
+		user_name,
+		employee_id,
+		user_no,
+		account_no,
+		user_pwd,
+		employ_time,
+		user_group,
+		remark,
+		status
+		FROM sys_user_info WHERE employee_id=#{employee_id}
+	</select>
+	<!-- 用户添加 -->
+	<insert id="add" parameterType="com.sd.farmework.pojo.UserAdmin">
+		insert into
+		sys_user_info(user_name,
+		employee_id,
+		user_no,
+		account_no,
+		user_pwd,
+		employ_time,
+		user_group,
+		remark,
+		status,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name)
+		values(
+		#{user_name},
+		#{employee_id},
+		#{user_no},
+		#{account_no},
+		#{user_pwd},
+		NOW(),
+		#{user_group},
+		#{remark},
+		#{status},
+		NOW(),
+		#{createUserId},
+		#{createUserName},
+		NOW(),
+		#{lastUpdateUserId},
+		#{lastUpdateUserName}
+		)
+	</insert>
+	<update id="update" parameterType="com.sd.farmework.pojo.UserAdmin">
+		update sys_user_info set
+		user_name=#{user_name},
+		user_no=#{user_no},
+		account_no=#{account_no},
+		user_group=#{user_group},
+		remark=#{remark},
+		last_update_time=NOW(),
+		last_update_user_id=#{lastUpdateUserId},
+		last_update_user_name=#{lastUpdateUserName}
+		where 
+		user_id=#{user_id}
+	</update>
+	<delete id="delete" parameterType="com.sd.farmework.pojo.UserAdmin">
+		delete from sys_user_info
+		where 
+		user_id=#{user_id}
+	</delete>
+	<!-- 分页查询 -->
+	<select id="queryUserInfo" parameterType="com.sd.farmework.pojo.UserAdmin"
+		resultMap="userMap">
+		SELECT user_id,
+		user_name,
+		user_no,
+		account_no,
+		user_pwd,
+		employ_time,
+		user_group,
+		remark,
+		STATUS
+		FROM sys_user_info
+		WHERE 1 = 1
+		<if test="user_name!= null and user_name != ''">
+			AND user_name like CONCAT('%','${user_name}','%' )
+		</if>
+		<if test="user_no!= null and user_no != ''">
+			AND user_no like CONCAT('%','${user_no}','%' )
+		</if>
+		<if test="user_group!= null and user_group != ''">
+			AND user_group like CONCAT('%','${user_group}','%' )
+		</if>
+		group by  employ_time desc
+		LIMIT #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.UserAdmin"
+		resultType="java.lang.Integer">
+		select count(*)
+		from sys_user_info
+		where 1=1
+		<if test="user_name!= null and user_name != ''">
+			AND user_name like CONCAT('%','${user_name}','%' )
+		</if>
+		<if test="user_no!= null and user_no != ''">
+			AND user_no like CONCAT('%','${user_no}','%' )
+		</if>
+		<if test="account_no!= null and account_no != ''">
+			AND account_no like CONCAT('%','${account_no}','%' )
+		</if>
+		<if test="employ_time!= null and employ_time != ''">
+			AND employ_time like CONCAT('%','${employ_time}','%' )
+		</if>
+		<if test="user_group!= null and user_group != ''">
+			AND user_group like CONCAT('%','${user_group}','%' )
+		</if>
+	</select>
+	
+	<select id="queryUserIdAndName" parameterType="com.sd.farmework.pojo.UserAdmin"
+		resultMap="userMap">
+		SELECT user_id,
+		user_name
+		FROM sys_user_info 
+		WHERE user_name!=#{user_name}
+	</select>
+	<select id="queryidbygroup" parameterType="com.sd.farmework.pojo.UserAdmin" resultMap="userMap">
+		SELECT user_id,
+		user_name,
+		user_no,
+		account_no,
+		user_pwd,
+		employ_time,
+		remark,
+		status,
+		create_time,
+		create_user_id,
+		create_user_name,
+		last_update_time,
+		last_update_user_id,
+		last_update_user_name
+		FROM
+		sys_user_info where user_group=#{user_group}
+	</select>
+	
+	<update id="updateByEId" parameterType="com.sd.farmework.pojo.UserAdmin">
+		update sys_user_info set
+		user_name=#{user_name},
+		last_update_time=NOW(),
+		last_update_user_id=#{lastUpdateUserId},
+		last_update_user_name=#{lastUpdateUserName}
+		where 
+		employee_id=#{employee_id}
+	</update>
+</mapper>

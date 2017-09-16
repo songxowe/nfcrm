@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript">
+var i = 0;
+function addoneline() {
+	i++;
+	var oneline = "<div style='width:50%'><select name='photo"
+			+ i
+			+ "type' class='input w50'><option value=''>请选择图片</option><option value='indoor'>室内图</option><option value='show'>展示图</option><option value='tile'>平铺图</option><option value='envir'>环境图</option></select></div><div><a style='float: left;margin-top: 10px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a><input type='file' class='input w50' value='' style='width:12%;' name='photo"
+			+ i
+			+ "' /></div><div><a style='float: left;margin-top: 10px;'>&nbsp;&nbsp;&nbsp;&nbsp;备注：</a><input type='text' class='input w50' name='photo"
+			+ i
+			+ "remark' style='width:18%;float:left;' /></div><input type='hidden' name='projectid'/><br><br><br><br>";
+
+	$("#extra").append(oneline);
+}
+function addfacilities() {
+	var faciliti="<input type='text' id='facilities' name='confi' class='input' style='width:120px;margin-top:-10px; float:left;' /><a style='float:left'>&nbsp;&nbsp</a>";
+	$("#facilitiess").append(faciliti);
+}
+function addoperate() {
+	var operate="<input type='text' id='operate' name='confi' class='input' style='width:120px;margin-top:-10px; float:left;' /><a style='float:left'>&nbsp;&nbsp</a>";
+	$("#operates").append(operate);
+}
+function addworkstep() {
+	var workstep="<input type='text' id='workstep' name='confi' class='input' style='width:120px;margin-top:-10px; float:left;' /><a style='float:left'>&nbsp;&nbsp</a>";
+	$("#worksteps").append(workstep);
+}
+$(document).ready(function() {
+	$.ajax({
+		type : "GET",
+		url : "/NfCrm/template/selectTemplate2.do",
+		async : true,
+		dataType : "json",
+		success : function(data) {
+			var num = data.mylist;
+			var options=null;
+			for (var i = 0; i < num.length; i++) {
+				if(num[i].t_id=='${prodetail.pro_template_id}'){
+					options+= "<option value='" + num[i].t_id  + "' selected='selected'>"
+					+ num[i].template_name + "</option>";
+				}else{
+					options+= "<option value='" + num[i].t_id + "'>"
+						+ num[i].template_name + "</option>";
+				}
+			}
+			$("#temple").append(options);
+		},
+		error : function(rec) {
+			console.info("网络异常,请稍后再试");
+		}
+	});
+/* 	项目类别 */
+		var type =${prodetail.pro_type};
+		if(type==0){
+			$('#protype option:eq(1)').attr('selected','selected');
+			$("input[name='pro_no']").attr("disabled", true);
+			$("#temple option:selected").attr("disabled", true);
+			$("input[name='pro_name']").attr("disabled", true);
+			$("#protype option:selected").attr("disabled", true);
+			$("input[name='spread_type']").attr("disabled", true);
+			$("input[name='input_time']").attr("disabled", true);
+			$("input[name='region']").attr("disabled", true);
+			$("input[name='price_range']").attr("disabled", true);
+			$("input[name='actual_price']").attr("disabled", true);
+			$("input[name='area_range']").attr("disabled", true);
+			$("input[name='actual_area']").attr("disabled", true);
+			$("input[name='p_type']").attr("disabled", true);
+			$("input[name='profession']").attr("disabled", true);
+			$("input[name='features']").attr("disabled", true);
+			$("input[name='address']").attr("disabled", true);
+			$("input[name='floor']").attr("disabled", true);
+			$("input[name='property_price']").attr("disabled", true);
+			$("input[name='decoration']").attr("disabled", true);
+			$("input[name='food']").attr("disabled", true);
+			$("input[name='confi']").attr("disabled", true);
+			$("button[name='addnewconfig']").remove();
+		}else if(type==1){
+			$('#protype option:eq(2)').attr('selected','selected');
+		}
+		
+		$("img[name='prephoto']").click(function (){
+			var thisid=this.id;
+			swal({title: "系统提示",text: "您想替换这张图片吗？",type: "warning",showCancelButton: true,confirmButtonColor: "#DD6B55",confirmButtonText: "确定",cancelButtonText: "取消",closeOnConfirm: false,closeOnCancel: false
+    		},function(){
+    			$.get("/NfCrm/proj/deleteimg.do?img_id="+thisid);
+    			document.getElementById(thisid).remove();
+    		});
+		});
+});
+/**
+ * 提交更新内容
+ */
+function updateBtn() {
+	var str = "";
+	var items = $("input[name='confi']");
+	for (var i = 0; i < items.length; i++) {
+		if(items[i].value!=""){
+		str += items[i].value + "," + items[i].id + "|"
+		}else{
+			continue;
+		}
+	}
+
+	var data = {
+		confi : str,
+		pro_no : $("input[name='pro_no']").val(),
+		pro_template_id:$("#temple option:selected").val(),
+		pro_template : $("#temple option:selected").text(),
+		pro_name : $("input[name='pro_name']").val(),
+		pro_type: $("#protype option:selected").val(),
+		spread_type : $("input[name='spread_type']").val(),
+		input_time : $("input[name='input_time']").val(),
+		region : $("input[name='region']").val(),
+		price_range : $("input[name='price_range']").val(),
+		actual_price : $("input[name='actual_price']").val(),
+		area_range : $("input[name='area_range']").val(),
+		actual_area : $("input[name='actual_area']").val(),
+		p_type : $("input[name='p_type']").val(),
+		profession : $("input[name='profession']").val(),
+		features : $("input[name='features']").val(),
+		address : $("input[name='address']").val(),
+		floor : $("input[name='floor']").val(),
+		property_price : $("input[name='property_price']").val(),
+		decoration : $("input[name='decoration']").val(),
+		food : $("input[name='food']").val(),
+		phone : $("input[name='phone']").val(),
+		tel : $("input[name='tel']").val(),
+		pro_id : '${prodetail.pro_id}',
+		conf_proid : '${prodetail.pro_id}'
+	};
+
+	$.ajax({
+		type : "POST",
+		url : "/NfCrm/proj/updateproMsg.do",
+		data : data,
+		async : true,
+		dataType : "json",
+		success : function(msg) {
+			
+			$("input[name='projectid']").val(${prodetail.pro_id});
+			var formData = new FormData($("#upform")[0]);
+			var url = "/NfCrm/proj/upload.do";
+			$.ajax({
+				url : url,
+				type : 'POST',
+				data : formData,
+				processData : false,
+				contentType : false,
+				datetype : "json",
+				success : function(
+						responseStr) {
+					swal({title: "系统提示",text: "更新项目信息成功！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+	        		},
+	        		function(){
+	        			window.location = "/NfCrm/proj/selectallpro.do";
+	        		});
+				},
+				error : function(
+						responseStr) {
+					alert("失败:"+ JSON.stringify(responseStr));// 将json对象转成json字符串。
+				}
+			});
+		},
+		error : function(rec) {
+			swal({title: "系统提示",text: "网络连接失败！",type: "warning",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+    		},
+    		function(){
+    			
+    		});
+		}
+	});
+	}
+</script>
+<style>
+.white_content {
+	display: none;
+	width: 50%;
+	border: 12px solid #D6E9F1;
+	z-index: 1002;
+	width: 30%;
+	height: 28%;
+	left: 40%;
+	top: 40%;
+	background-color: #fff;
+	margin-left: -168px;
+	margin-top: -140px;
+	position: fixed;
+	margin-left: -168px;
+}
+
+.black_overlay {
+	display: none;
+	background-color: #f5f5f5;
+	z-index: 1001;
+	-moz-opacity: 0.8;
+	opacity: .80;
+	filter: alpha(opacity = 80);
+	width: 100%;
+	height: 100%;
+	left: 0%;
+	top: 0%;
+	right: 0%;
+	bottom: 0%;
+	position: fixed;
+}
+
+.close {
+	float: right;
+	clear: both;
+	width: 100%;
+	text-align: right;
+	margin: 0 0 6px 0
+}
+
+.close a {
+	color: #333;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 700
+}
+
+#con {
+	margin-left: 70px;
+}
+</style>
+</head>
+<body>
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>项目详情</strong>
+		</div>
+		<div class="body-content">
+			<form method="get" class="form-x" action="">
+				<div class="form-group">
+					<div class="label">
+						<label>项目类别：</label>
+					</div>
+					<div class="field w50" style="width: 44%">
+						<select id="protype" class="input w50" disabled="disabled">
+						<option value="">请选择分类</option>
+							<option value="0">个人项目</option>
+							<option value="1">公司项目</option>
+						</select> <input id="cert_type" value="${prodetail.pro_type}"
+							name="pro_type" type="hidden" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>项目名称：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${prodetail.pro_name}"
+							name="pro_name" data-validate="required:请输入正确格式"
+							style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>项目编号：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${prodetail.pro_no}" disabled="disabled"
+							name="pro_no" data-validate="required:请输入正确格式"
+							style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>铺型：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${prodetail.spread_type}" name="spread_type"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>所在区域：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${prodetail.region}"
+							name="region" data-validate="required:请输入正确格式"
+							style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>价格范围：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${prodetail.price_range}" name="price_range"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>实际价格：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50"
+							value="${prodetail.actual_price}" name="actual_price"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>面积范围：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${prodetail.area_range}" name="area_range"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>实际面积：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50"
+							value="${prodetail.actual_area}" name="actual_area"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>类型：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${prodetail.p_type}"
+							name="p_type" data-validate="required:请输入正确格式"
+							style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>行业：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50"
+							value="${prodetail.profession}" name="profession"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>特色：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${prodetail.features}"
+							name="features" data-validate="required:请输入正确格式"
+							style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>楼盘地址：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${prodetail.address}"
+							name="address" data-validate="required:请输入正确格式"
+							style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>所在楼层：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${prodetail.floor}"
+							name="floor" data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>物业费：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50"
+							value="${prodetail.property_price}" name="property_price"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>装修：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${prodetail.decoration}" name="decoration"
+							data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>重餐饮：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${prodetail.food}"
+							name="food" data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>电话：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${prodetail.phone}"
+							name="phone" data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>座机电话：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="${prodetail.tel}"
+							name="tel" data-validate="required:请输入正确格式" style="width: auto" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="label">
+						<label>报备模板：</label>
+					</div>
+					<div class="field" style="width: 44%">
+						<select name="pro_template" id="temple"  class="input w50">
+							<option value="" >请选择模板</option>
+						</select>
+						<div class="tips"></div>
+					</div>
+				</div>
+				
+				
+				<div class="form-group">
+					<div class="label">
+						<label>配套设施：</label>
+					</div>
+					<div class="field">
+						<#if (conf1?size>0)> <#list conf1 as proOne> <input type="text" 
+						style='width:120px; float:left;' id='facilities' name='confi'
+							value="${proOne}" class="input"><a style='float:left'>&nbsp;&nbsp;</a> </#list> <#else> </#if>
+						<div style="float: left; margin-top: 10px;" id="facilitiess"></div>
+						<button name="addnewconfig" type="button" onclick="addfacilities()"
+							class="button bg-green">+新增</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>适合经营：</label>
+					</div>
+					<div class="field">
+						<#if (conf2?size>0)> <#list conf2 as proTwo> <input type="text"
+						style='width:120px; float:left;' id='operate' name='confi'
+							value="${proTwo}" class="input"><a style='float:left'>&nbsp;&nbsp;</a> </#list> <#else> </#if>
+						<div style="float: left; margin-top: 10px;" id="operates"></div>
+						<button  name="addnewconfig"  type="button" onclick="addoperate()"
+							class="button bg-green">+新增</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>社会工作措施：</label>
+					</div>
+					<div class="field">
+						<#if (conf3?size>0)> <#list conf3 as proThree><input type="text"
+						style='width:120px;  float:left;' id='workstep' name='confi'
+							value="${proThree}" class="input"><a style='float:left'>&nbsp;&nbsp;</a></#list> <#else> </#if>
+						<div style="float: left; margin-top: 10px;" id="worksteps"></div>
+						<button type="button"  name="addnewconfig"  onclick="addworkstep()" 
+							class="button bg-green">+新增</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>室内图：</label>
+					</div>
+					<div class="field">
+						<#if (img1?size>0)> <#list img1 as imgOne> <img src="${imgOne.img_source}" name="prephoto" title="${imgOne.img_remark}" id="${imgOne.img_id}" style="width: 300px;height:300px;"> </#list> <#else>无 </#if>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>平铺图：</label>
+					</div>
+					<div class="field">
+						<#if (img2?size>0)> <#list img2 as imgTwo>  <img
+							src="${imgTwo.img_source}" name="prephoto" title="${imgTwo.img_remark}" id="${imgTwo.img_id}" style="width: 300px;height:300px;"> </#list> <#else>无 </#if>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>展示图：</label>
+					</div>
+					<div class="field">
+						<#if (img3?size>0)> <#list img3 as imgThree> <img src="${imgThree.img_source}" title="${imgThree.img_remark}"  name="prephoto" id="${imgThree.img_id}" style="width: 300px;height:300px;"> </#list> <#else>无 </#if>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>环境图：</label>
+					</div>
+					<div class="field">
+						<#if (img4?size>0)> <#list img4 as imgfour> <img src="${imgfour.img_source}" title="${imgfour.img_remark}" name="prephoto" id="${imgfour.img_id}" style="width: 300px;height:300px;"> </#list> <#else>无 </#if>
+					</div>
+				</div>
+				</form>
+				<div class="form-group">
+				<div class="label">
+					<label></label>
+				</div>
+				<div class="a">
+					<form enctype='multipart/form-data' id='upform' name='upimg'>
+						<div id="extra" style="margin-left: 15%;"></div>
+
+						<button  name="addnewconfig"  style="margin-left: 15%;" id="addlineBtn" type="button"
+							class="button bg-green" onclick="addoneline()">添加图片</button>
+					</form>
+				</div>
+			</div>
+			<div class="form-group" style="margin-left: 15%">
+				<div class="label">
+					<label></label>
+				</div>
+				<div class="a">
+					<button class="button bg-main icon-check-square-o" type="button"
+							onclick="updateBtn()">提交</button>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+					<a class="button bg-main" href="/NfCrm/proj/selectallpro.do" type="button">返回</a>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+
+
+
+<script type="text/javascript">
+	
+if('${code}'=="000"){
+	alert("规则添加成功");
+}
+</script>
+</head>
+<body> 
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>审批	<a href="/NfCrm/approvenTestIndex.html">首页</a>
+			</strong>
+		</div>
+		<div class="body-content">
+			<form method="post" class="form-x" action="/NfCrm/admin/approven/approvenFunctionRuleAdd.do">
+			<input type="hidden" value="${pkId}"  name="approvenFunctionId" >
+			<input type="hidden" value="1"  name="ruleIsOrderly" >
+			<input type="hidden" value="rule"  name="type" >
+			<input type="hidden" value="${pkId}"  name="pkId" >
+			<input type="hidden" value="${pkName}"  name="pkName" >
+				
+				<div class="form-group">
+					<div class="label">
+						<label>类型：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50"  value="${pkName}" name="approvenFunctionName"
+							data-validate="required:请输入正确格式的数据"   />
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>审批规则名称：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50"  value="" name="approvenRuleName"
+							data-validate="required:请输入正确格式的数据"   />
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>审批规描述：</label>
+					</div>
+					<div class="field">
+						<textarea name="approvenRemark" rows="10" cols="50"></textarea>
+						<div class="tips"></div>
+					</div>
+				</div>
+				 
+				<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="field">
+						<button class="button bg-main icon-check-square-o" type="submit">提交审核</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>

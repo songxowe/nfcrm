@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/proj/project.css">
+</head>
+<body>
+
+	<script type="text/javascript">
+		/**
+		 * 提交更新内容
+		 */
+		$(document)
+				.ready(
+						function() {
+
+							$("#submit")
+									.click(
+											function() {
+												var role_name = $(
+														"input[name='role_name']")
+														.val();
+												var basic_salary = $(
+														"input[name='basic_salary']")
+														.val();
+												var subsidy = $(
+														"input[name='subsidy']")
+														.val();
+												var first_monad = $(
+														"input[name='first_monad']")
+														.val();
+												var second_monad = $(
+														"input[name='second_monad']")
+														.val();
+												var third_monad = $(
+														"input[name='third_monad']")
+														.val();
+												var fourth_monad = $(
+														"input[name='fourth_monad']")
+														.val();
+												var fifth_monad = $(
+														"input[name='fifth_monad']")
+														.val();
+												var sixth_monad = $(
+														"input[name='sixth_monad']")
+														.val();
+												var seventh_monad = $(
+														"input[name='seventh_monad']")
+														.val();
+												var eighth_monad = $(
+														"input[name='eighth_monad']")
+														.val();
+												var ninth_monad = $(
+														"input[name='ninth_monad']")
+														.val();
+												var tenth_monad = $(
+														"input[name='tenth_monad']")
+														.val();
+												var eleventh_monad = $(
+														"input[name='eleventh_monad']")
+														.val();
+												var eleven_more = $(
+														"input[name='eleven_more']")
+														.val();
+												var integral_reward_first = $(
+														"input[name='integral_reward_first']")
+														.val();
+												var integral_reward_second = $(
+														"input[name='integral_reward_second']")
+														.val();
+												var take_look_num = $(
+														"input[name='take_look_num']")
+														.val();
+												var take_look_amount = $(
+														"input[name='take_look_amount']")
+														.val();
+												var take_look_singlegroup = $(
+														"input[name='take_look_singlegroup']")
+														.val();
+												var bill_award_first = $(
+														"input[name='bill_award_first']")
+														.val();
+												var bill_award_third = $(
+														"input[name='bill_award_third']")
+														.val();
+												var bill_award_second = $(
+														"input[name='bill_award_second']")
+														.val();
+												var bill_award_fourth = $(
+														"input[name='bill_award_fourth']")
+														.val();
+												var bill_award_fifth = $(
+														"input[name='bill_award_fifth']")
+														.val();
+												var bill_award_sixth = $(
+														"input[name='bill_award_sixth']")
+														.val();
+
+												if (role_name == ""
+														|| basic_salary == ""
+														|| subsidy == ""
+														|| first_monad == ""
+														|| second_monad == ""
+														|| third_monad == ""
+														|| fourth_monad == ""
+														|| fifth_monad == ""
+														|| sixth_monad == ""
+														|| seventh_monad == ""
+														|| eighth_monad == ""
+														|| ninth_monad == ""
+														|| tenth_monad == ""
+														|| eleventh_monad == ""
+														|| eleven_more == ""
+														|| integral_reward_first == ""
+														|| integral_reward_second == ""
+														|| take_look_num == ""
+														|| take_look_singlegroup == ""
+														|| bill_award_first == ""
+														|| bill_award_third == ""
+														|| bill_award_second == ""
+														|| bill_award_fourth == ""
+														|| bill_award_fifth == ""
+														|| bill_award_sixth == "") {
+													swal({
+														title : "温馨提醒",
+														text : "信息还未填写完整啦~",
+														type : "warning",
+														showCancelButton : false,
+														confirmButtonColor : "#DD6B55",
+														confirmButtonText : "确定"
+													})
+												} else {
+
+													var data = {
+														rolesalary_id : $(
+																"input[name='rolesalary_id']")
+																.val(),
+														role_id : $(
+																"input[name='role_id']")
+																.val(),
+														role_name : $(
+																"input[name='role_name']")
+																.val(),
+														basic_salary : $(
+																"input[name='basic_salary']")
+																.val(),
+														subsidy : $(
+																"input[name='subsidy']")
+																.val(),
+														first_monad : $(
+																"input[name='first_monad']")
+																.val(),
+														second_monad : $(
+																"input[name='second_monad']")
+																.val(),
+														third_monad : $(
+																"input[name='third_monad']")
+																.val(),
+														fourth_monad : $(
+																"input[name='fourth_monad']")
+																.val(),
+														fifth_monad : $(
+																"input[name='fifth_monad']")
+																.val(),
+														sixth_monad : $(
+																"input[name='sixth_monad']")
+																.val(),
+														seventh_monad : $(
+																"input[name='seventh_monad']")
+																.val(),
+														eighth_monad : $(
+																"input[name='eighth_monad']")
+																.val(),
+														ninth_monad : $(
+																"input[name='ninth_monad']")
+																.val(),
+														tenth_monad : $(
+																"input[name='tenth_monad']")
+																.val(),
+														eleventh_monad : $(
+																"input[name='eleventh_monad']")
+																.val(),
+														eleven_more : $(
+																"input[name='eleven_more']")
+																.val(),
+														integral_reward_first : $(
+																"input[name='integral_reward_first']")
+																.val(),
+														integral_reward_second : $(
+																"input[name='integral_reward_second']")
+																.val(),
+														take_look_num : $(
+																"input[name='take_look_num']")
+																.val(),
+														take_look_amount : $(
+																"input[name='take_look_amount']")
+																.val(),
+														take_look_singlegroup : $(
+																"input[name='take_look_singlegroup']")
+																.val(),
+														bill_award_first : $(
+																"input[name='bill_award_first']")
+																.val(),
+														bill_award_third : $(
+																"input[name='bill_award_third']")
+																.val(),
+														bill_award_second : $(
+																"input[name='bill_award_second']")
+																.val(),
+														bill_award_fourth : $(
+																"input[name='bill_award_fourth']")
+																.val(),
+														bill_award_fifth : $(
+																"input[name='bill_award_fifth']")
+																.val(),
+														bill_award_sixth : $(
+																"input[name='bill_award_sixth']")
+																.val()
+
+													};
+
+													$
+															.ajax({
+																type : "POST",
+																url : "/NfCrm/salary/updateroleSalary.do",
+																data : data,
+																async : true,
+																dataType : "json",
+																success : function(
+																		data) {
+																	swal(
+																			{
+																				title : "系统提示",
+																				text : "信息提交成功了啦~",
+																				type : "success",
+																				showCancelButton : false,
+																				confirmButtonColor : "#DD6B55",
+																				confirmButtonText : "确定"
+																			},
+																			function() {
+																				window.location = "/NfCrm/salary/queryAllRole.do";
+																			});
+																},
+																error : function(
+																		rec) {
+																	alert("信息提交失败了啦~");
+
+																}
+															});
+												}
+
+											});
+
+						});
+	</script>
+
+
+
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>编辑角色工资</strong>
+		</div>
+		<div class="body-content">
+			<div class="form-x">
+				<div class="form-group">
+					<div class="label">
+						<label>角色名称：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${roleinfo.role_name}" name="role_name"
+							data-validate="required:请输入正确格式" style="width: auto" />
+						<div class="tips"></div>
+					</div>
+
+				</div>
+
+				<div class="form-group" style="display: none;">
+					<div class="label">
+						<label>角色ID：</label>
+					</div>
+					<div class="a">
+						<input type="text" disabled="disabled" class="input w50"
+							value="${roleinfo.role_id}" name="role_id"
+							data-validate="required:请输入正确格式" style="width: auto" />
+						<div class="tips"></div>
+					</div>
+
+				</div>
+
+				<div class="form-group" style="display: none;">
+					<div class="label">
+						<label>主键id：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.rolesalary_id}"
+							name="rolesalary_id" style="width: auto" />
+						<div class="tips"></div>
+					</div>
+
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>底薪：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.basic_salary}"
+							name="basic_salary" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>补贴：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.subsidy}"
+							name="subsidy" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>提成：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.first_monad}"
+							name="first_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第一单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.second_monad}"
+							name="second_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第二单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.third_monad}"
+							name="third_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第三单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.fourth_monad}"
+							name="fourth_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第四单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.fifth_monad}"
+							name="fifth_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第五单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.sixth_monad}"
+							name="sixth_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第六单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.seventh_monad}"
+							name="seventh_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第七单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.eighth_monad}"
+							name="eighth_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第八单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.ninth_monad}"
+							name="ninth_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第九单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.tenth_monad}"
+							name="tenth_monad" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第十单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.eleventh_monad}" name="eleventh_monad"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;第十一单</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.eleven_more}"
+							name="eleven_more" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">%&nbsp;&nbsp;十一单以上</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>积分奖：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.integral_reward_first}"
+							name="integral_reward_first" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元&nbsp;&nbsp;(0~15分)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.integral_reward_second}"
+							name="integral_reward_second" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元&nbsp;&nbsp;(15分以上)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>带看奖：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="${role.take_look_num}"
+							name="take_look_num" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;带看数量</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.take_look_singlegroup}"
+							name="take_look_singlegroup" data-validate="required:请输入正确格式"
+							style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">元&nbsp;&nbsp;单组金额</span>
+					</div>
+				</div>
+
+				<div class="form-group" style="display: block;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.take_look_amount}" name="take_look_amount"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">&nbsp;&nbsp;奖励金额</span>
+					</div>
+				</div>
+
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label>开单奖：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.bill_award_first}" name="bill_award_first"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(0~50万元)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.bill_award_third}" name="bill_award_third"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(51~100万元)</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.bill_award_second}" name="bill_award_second"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(101~200万元)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.bill_award_fourth}" name="bill_award_fourth"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(201~300万元)</span>
+					</div>
+				</div>
+
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 15%;">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.bill_award_fifth}" name="bill_award_fifth"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(301~500万元)</span>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"
+							value="${role.bill_award_sixth}" name="bill_award_sixth"
+							data-validate="required:请输入正确格式" style="width: auto" /> <span
+							style="margin-top: 12px; margin-left: 5px; float: left;">(500万元以上)</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" style="margin-left: 30%">
+				<div class="label">
+					<label></label>
+				</div>
+				<div class="a">
+					<button class="button bg-main icon-check-square-o" type="button"
+						id="submit">提交</button>
+					&nbsp;&nbsp;&nbsp;&nbsp; <a class="button bg-main"
+						href="/NfCrm/salary/queryAllRole.do" type="button">返回</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

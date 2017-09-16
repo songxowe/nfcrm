@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.TemplateInfoMapper">
+
+	<resultMap type="com.sd.farmework.pojo.TemplateInfo" id="templateMap">
+		<id column="t_id" property="t_id" />
+		<result column="template_name" property="template_name" />
+		<result column="status" property="status" />
+		
+		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+
+	</resultMap>
+	
+	<resultMap type="com.sd.farmework.pojo.TemplateContentInfo" id="templatecontentMap">
+		<id column="t_content_id" property="t_content_id" />
+		<result column="t_id" property="t_id" />
+		<result column="template_name" property="template_name" />
+		<result column="key_name" property="key_name" />
+		<result column="key_source_id" property="key_source_id" />
+		<result column="value" property="value" />
+		<result column="value_source_id" property="value_source_id" />
+		<result column="seque" property="seque" />
+		
+		 		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+
+	</resultMap>
+	<select id="queryById" parameterType="com.sd.farmework.pojo.TemplateInfo" resultMap="templateMap"> 
+		select * from crm_template
+		where t_id=#{t_id}
+		
+	</select>
+	
+	<select id="queryContentById" parameterType="com.sd.farmework.pojo.TemplateContentInfo" resultMap="templatecontentMap"> 
+		select 
+			t_content_id,
+			t_id,
+			template_name,
+			key_name,
+			key_source_id,
+			value,
+			value_source_id,
+			seque
+		from crm_template_content
+		where t_id=#{t_id}
+	</select>
+	<select id="queryList" parameterType="com.sd.farmework.pojo.TemplateInfo" resultMap="templateMap"> 
+		select * from crm_template
+		where 
+		1=1
+		<if test="template_name != null and template_name != ''"> 
+			   AND template_name like CONCAT('%','${template_name}','%' )  
+		</if>	 
+		order by t_id desc
+		LIMIT #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryALL" parameterType="com.sd.farmework.pojo.TemplateInfo" resultMap="templateMap"> 
+		select * from crm_template
+	</select>
+	
+	
+	<select id="queryMulti" parameterType="java.util.List"  resultMap="templatecontentMap">
+		select *
+ 		from crm_template_content
+		where t_id=#{t_id}
+	</select>
+	
+	<select id="queryTempId" parameterType="com.sd.farmework.pojo.TemplateInfo" resultType="java.lang.String">
+		select t_id from crm_template
+		where template_name=#{template_name}
+	</select>
+	
+	<insert id="add" useGeneratedKeys="true" keyProperty="t_id"
+	 parameterType="com.sd.farmework.pojo.TemplateInfo">
+		insert into crm_template(
+			template_name,
+			create_time,
+			create_user_id
+		) 
+		values(#{template_name},now(),#{createUserId})
+	</insert>
+	
+	<insert id="addTempContent" parameterType="com.sd.farmework.pojo.TemplateContentInfo">
+		insert into crm_template_content(
+			t_id,
+			template_name,
+			key_name,
+			key_source_id,
+			value,
+			value_source_id,
+			create_time,
+			create_user_id
+		) 
+		values(#{t_id},#{template_name},#{key_name},#{key_source_id},#{value},#{value_source_id},now(),#{createUserId})
+	</insert>
+	
+	<update id="update" >
+		update crm_template set
+			template_name=#{template_name}
+		where t_id=#{t_id}
+	</update>
+	
+	<update id="updateByTempId">
+		update crm_template_content set
+			template_name=#{template_name},
+			key_name=#{key_name},
+			value=#{value}
+		where t_id=#{t_id}
+	</update>
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.TemplateInfo"  resultType="java.lang.Integer">
+		  select   
+		  count(*)
+		  from crm_template 
+		  where 
+			1=1
+		<if test="template_name != null and template_name != ''"> 
+			   AND template_name like CONCAT('%','${template_name}','%' )  
+		</if>
+		order by t_id desc
+	</select>
+	
+	<insert id="addBatch"  parameterType="java.util.List">  
+    	 insert into crm_template_content(
+			t_id,
+			template_name,
+			key_name,
+			value,
+			create_time,
+			create_user_id
+		)
+		values
+		
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.t_id},#{item.template_name},#{item.key_name},#{item.value},now(),#{createUserId})
+		</foreach>
+		
+	</insert>
+	<update id="updateTempContent">
+		update crm_template_content set
+			template_name=#{template_name},
+			key_name=#{key_name},
+			value=#{value}
+		where t_content_id=#{t_content_id}
+	</update>
+	
+	<delete id="deleteTempContent">
+		delete from crm_template_content
+		where t_content_id=#{t_content_id}
+	</delete>
+</mapper>

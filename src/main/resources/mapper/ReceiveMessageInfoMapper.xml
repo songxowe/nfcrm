@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.ReceiveMessageInfoMapper">
+
+	<resultMap type="com.sd.farmework.pojo.ReceiveMessageInfo"
+		id="receiveMap">
+		<id column="receive_id" property="receive_id" />
+		<result column="pos_name" property="pos_name" />
+		<result column="employee" property="employee" />
+		<result column="employee_no" property="employee_no" />
+		<result column="recipient" property="recipient" />
+		<result column="recipient_no" property="recipient_no" />
+		<result column="send_time" property="send_time" />
+		<result column="status" property="status" />
+		<result column="context" property="context" />
+
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+
+	<resultMap type="com.sd.farmework.pojo.SendMessageInfo" id="sendMap">
+		<id column="send_id" property="send_id" />
+		<result column="send_person" property="send_person" />
+		<result column="recipient_id" property="recipient_id" />
+		<result column="recipient" property="recipient" />
+		<result column="title" property="title" />
+		<result column="context" property="context" />
+
+		<result column="create_time" property="createTime" />
+		<result column="create_user_id" property="createUserId" />
+		<result column="create_user_name" property="createUserName" />
+		<result column="last_update_time" property="lastUpdateTime" />
+		<result column="last_update_user_id" property="lastUpdateUserId" />
+		<result column="last_update_user_name" property="lastUpdateUserName" />
+	</resultMap>
+	<!-- -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.ReceiveMessageInfo"
+		resultMap="receiveMap">
+		select *
+		from crm_receive_message
+		where 1=1
+		and employee=#{employee}
+		<if test="recipient != null and recipient != ''">
+			AND recipient like CONCAT('%','${recipient}','%' )
+		</if>
+		<if test="pos_name != null and pos_name != ''">
+			AND pos_name like CONCAT('%','${pos_name}','%' )
+		</if>
+		LIMIT #{startRecod},#{pageSize}
+	</select>
+
+	<select id="queryCheckDesig" parameterType="com.sd.farmework.pojo.ReceiveMessageInfo"
+		resultMap="receiveMap">
+		select
+		receive_id,
+		pos_name,
+		recipient,
+		context,
+		send_time,
+		status
+		from crm_receive_message
+		where receive_id=#{receive_id}
+	</select>
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.ReceiveMessageInfo"
+		resultType="java.lang.Integer">
+		select count(*)
+		from crm_receive_message
+		where 1=1
+		and
+		employee=#{employee}
+		<if test="employee_no != null and employee_no != ''">
+			AND employee_no like CONCAT('%','${employee_no}','%' )
+		</if>
+		<if test="send_time != null and send_time != ''">
+			AND send_time like CONCAT('%','${send_time}','%' )
+		</if>
+	</select>
+
+	<select id="querySendList" parameterType="com.sd.farmework.pojo.SendMessageInfo"
+		resultMap="sendMap">
+		select
+		send_id,
+		send_person,
+		recipient_id,
+		recipient,
+		title,
+		context
+		from crm_send_message
+		where send_id=#{send_id}
+	</select>
+	<select id="queryBySendPerson" parameterType="com.sd.farmework.pojo.SendMessageInfo"
+		resultMap="sendMap">
+		select
+		send_id,
+		send_person,
+		recipient_id,
+		recipient,
+		title,
+		context
+		from
+		(select
+		send_id,
+		send_person,
+		recipient_id,
+		recipient,
+		title,
+		context from
+		crm_send_message order by send_id desc)
+		send_message
+		where
+		send_person=#{send_person}
+		<if test="title != null and title != ''">
+			AND title like CONCAT('%','${title}','%' )
+		</if>
+		<if test="recipient != null and recipient != ''">
+			AND recipient like CONCAT('%','${recipient}','%' )
+		</if>
+		LIMIT #{startRecod},#{pageSize}
+
+	</select>
+	<select id="queryCountBySendPerson" parameterType="com.sd.farmework.pojo.SendMessageInfo"
+		resultType="java.lang.Integer">
+		select count(*)
+		from (select *
+		from crm_send_message order by send_id
+		desc)
+		send_message
+		where send_person=#{send_person}
+		<if test="title != null and title != ''">
+			AND title like CONCAT('%','${title}','%' )
+		</if>
+		<if test="recipient != null and recipient != ''">
+			AND recipient like CONCAT('%','${recipient}','%' )
+		</if>
+	</select>
+
+	<select id="queryCountBySendlogin" parameterType="String"
+		resultType="com.sd.farmework.pojo.SendMessageInfo">
+		select * from crm_receive_message where
+		status='0'
+		and
+		employee_no=#{obj}
+
+	</select>
+
+	<insert id="add">
+		insert into crm_send_message(
+		send_person,
+		recipient_id,
+		recipient,
+		title,
+		context,
+		create_user_id,
+		create_time)
+		values
+		(#{send_person},#{recipient_id},#{recipient},#{title},#{context},#{createUserId},now())
+	</insert>
+	<insert id="addRecMsg">
+		insert into crm_receive_message(
+		employee,
+		employee_no,
+		recipient,
+		recipient_no,
+		send_time,
+		pos_name,
+		context,
+		status,
+		create_user_id,
+		create_time)
+		values
+		(#{employee},#{employee_no},#{recipient},
+		#{recipient_no},NOW(),#{pos_name},
+		#{context},#{status},#{createUserId},NOW())
+	</insert>
+	<update id="changeState">
+		update crm_receive_message
+		set status=1
+		where
+		receive_id=#{receive_id}
+	</update>
+
+
+</mapper>

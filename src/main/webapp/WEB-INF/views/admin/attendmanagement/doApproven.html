@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet"
+	href="/NfCrm/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>审批 </strong>
+		</div>
+		<div class="body-content">
+			<form method="post" class="form-x" id="approvenFrm">
+				<input type="hidden" value="${obj.taskId}" name="taskId">
+
+				<div class="form-group">
+					<div class="label">
+						<label>任务名称：</label>
+					</div>
+					<div class="field">
+						<span style="margin-top: 9px; float: left;">${obj.taskName}</span>
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>申请原因：</label>
+					</div>
+					<div class="field">
+						<span style="margin-top: 9px; float: left;">${obj.approvenResult}</span>
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>是否通过：</label>
+					</div>
+					<div class="field">
+						<select name="approvenResult">
+							<option value="1">通过</option>
+							<option value="2">不通过</option>
+						</select>
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>审批意见：</label>
+					</div>
+					<div class="field">
+						<textarea name="approvenRemark" rows="10" cols="50"></textarea>
+						<div class="tips"></div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="field">
+						<button class="button bg-main icon-check-square-o" type="button"
+							onclick="doApproven()">提交审核</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>
+<script type="text/javascript">
+	function doApproven() {
+		$.ajax({
+			url : "/NfCrm/leave/doApprovenSave.do",
+			method : "POST",
+			data : $('#approvenFrm').serialize(),
+			success : function(data) {
+				swal({
+					title : "系统提示",
+					text : "审核成功！！",
+					type : "success",
+					showCancelButton : false,
+					confirmButtonColor : "#DD6B55",
+					confirmButtonText : "确定"
+				}, function() {
+					window.opener.location.href = window.opener.location.href;
+					window.close();
+				});
+			}
+		});
+
+	}
+</script>

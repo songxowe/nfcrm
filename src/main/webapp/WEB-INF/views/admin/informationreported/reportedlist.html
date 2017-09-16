@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link type="text/css" rel="stylesheet" href="/NfCrm/resources/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">报备列表</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+        
+      	<form action="/NfCrm/reporte/reportedInfoList.do" method="get">
+      	
+      	<li>报备业务员
+      		<input name="reported_yw" value="" class="input"  style="width:80px; line-height:17px; display:inline-block"/>
+      	</li>
+      	<li>报备客户
+      	<input name="reported_customer" type="text" value="" class="input"   style="width:80px; line-height:17px;display:inline-block"/>
+      	  &nbsp;&nbsp;
+          	前三后四
+          <input name="remark" type="text" class="input" value="" style="width:80px; line-height:17px;display:inline-block"/>
+         </li>
+        <li>报备号码
+          <input name="reported_no" type="text" class="input" value="" style="width:80px; line-height:17px;display:inline-block"/>
+        </li>
+        <li>项目名称
+          <input name="pro_name" type="text" class="input" value="" style="width:80px; line-height:17px;display:inline-block"/>
+        </li>
+        <li>时间
+           <input id="d4311" name="reported_time" class="input" value="" readonly="readonly" class="Wdate" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'d4312\')}'})"
+				style="width:100px; line-height:17px;display:inline-block" />~															
+			<input id="d4312" name="end_time" class="input" value="" readonly="readonly" class="Wdate" onclick="WdatePicker({minDate:'#F{$dp.$D(\'d4311\')}'})"
+				style="width:100px; line-height:17px;display:inline-block" />
+        </li>
+        <li>
+        <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1 >
+        <button class="button border-main icon-search" > 查询</button>
+        </#if>
+        </li>
+        
+        </form>
+        
+      </ul>
+    </div>
+    <table class="table table-hover text-center">
+      <tr>
+        <th width="100" style="text-align:left; padding-left:20px;">序号</th>
+        <th>报备业务员</th>
+        <th>报备时间</th>
+        <th>报备客户</th>
+        <th>项目名</th>
+        <th>前三后四</th>
+        <th>报备号码</th>
+        <th>操作</th>
+      </tr>
+      <#list list as reporte>
+        <tr>
+          <td style="text-align:left; padding-left:20px;">
+           ${reporte_index+1}</td>
+          <td>${reporte.reported_yw}</td>
+          <td>${reporte.reported_time}</td>
+          <td>${reporte.reported_customer}</td>
+          <td>${reporte.pro_name}</td>
+          <td><font color="#00CC99">${reporte.remark}</font></td>
+          <td>${reporte.reported_no}</td>
+          <td>
+          </td>
+        </tr>
+      </#list>
+        <tr>
+	        <td colspan="8" style="text-align:left;padding-left:20px;">
+	        	<ul class="pagination" id="pagination"></ul>
+	     	</td>
+     	</tr>
+    </table>
+  </div>
+<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="reportedInfoList.do?currPage="+num;
+        	}
+        }
+        
+    });
+</script>	
+
+</body>
+</html>

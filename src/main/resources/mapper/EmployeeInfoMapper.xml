@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.EmployeeInfoMapper">
+
+	<resultMap type="com.sd.farmework.pojo.EmployeeInfo" id="employeeMap">
+		<id column="level_id" property="level_id"/>
+		<result column="customer_level" property="customer_level"/>
+		<result column="remark" property="remark"/>
+		<result column="job_date" property="job_date"/>
+		<result column="birthday" property="birthday"/>
+		<result column="education" property="education"/>
+		<result column="tel" property="tel"/>
+		<result column="qq_no" property="qq_no"/>
+		<result column="wx_no" property="wx_no"/>
+		<result column="interview_time" property="interview_time"/>
+		<result column="interview_job" property="interview_job"/>
+		<result column="probation_job" property="probation_job"/>
+		
+		<result column="probation_time" property="probation_time"/>
+		<result column="official_job" property="official_job"/>
+		<result column="official_time" property="official_time"/>
+		<result column="resignation_time" property="resignation_time"/>
+		<result column="work_time" property="work_time"/>
+		<result column="status" property="status"/>
+		<result column="ancestral_home" property="ancestral_home"/>
+		<result column="address" property="address"/>
+		<result column="work_experience" property="work_experience"/>
+		<result column="hobbies" property="hobbies"/>
+		<result column="work_direction" property="work_direction"/>
+		<result column="electronic_resume_url" property="electronic_resume_url"/>
+		<result column="electronic_photshop_url" property="electronic_photshop_url"/>
+		
+	<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+	</resultMap>
+	<!-- 员工查询 -->
+	<select id="queryList"  parameterType="com.sd.farmework.pojo.EmployeeInfo"  resultMap="employeeMap">
+		    select 
+		    	level_id,
+		    	customer_level
+		    from crm_employee_info 
+	</select>
+	<!--查询某些字段的值  通过字典表中的字段拼接-->
+	<select id="queryByOneString" parameterType="com.sd.farmework.pojo.EmployeeInfo"
+		resultType="java.lang.String">
+		select 
+		${oneString}
+		from
+		crm_employee_info 
+		where
+		level_id=#{level_id}
+	</select>
+	<!-- 新增员工 -->
+	<insert id="add" parameterType="com.sd.farmework.pojo.EmployeeInfo">
+		insert into crm_employee_info (customer_level,remark,job_date,birthday,education,tel,qq_no,wx_no,
+		interview_time,interview_job,probation_job,probation_time,official_job,official_time,resignation_time,work_time,status,
+		ancestral_home,address,work_experience,hobbies,work_direction,electronic_resume_url,electronic_photshop_url,
+		create_time,create_user_id,create_user_name,last_update_time,last_update_user_id,last_update_user_name)
+		
+		values(#{customer_level},#{remark},#{job_date},#{birthday},#{education},#{tel},#{qq_no},
+		#{wx_no},#{interview_time},#{interview_job},#{probation_job},#{probation_time},#{official_job},
+		#{official_time},#{resignation_time},#{work_time},0,#{ancestral_home},#{address},#{work_experience},
+		#{hobbies},#{work_direction},#{electronic_resume_url},#{electronic_photshop_url},now(),
+		#{createUserId},#{createUserName},NOW(),#{lastUpdateUserId},#{lastUpdateUserName})
+	</insert>
+	
+	<!-- 查询员工id -->
+	<select id="queryById"  parameterType="com.sd.farmework.pojo.EmployeeInfo"  resultMap="employeeMap">
+		    select *
+		     from crm_employee_info 
+		     where level_id=#{level_id}
+	</select>
+	
+	<!-- 修改员工 -->
+	<update id="update" parameterType="com.sd.farmework.pojo.EmployeeInfo">
+		UPDATE crm_employee_info SET  
+			customer_level=#{customer_level},
+			remark=#{remark},
+			job_date=#{job_date},
+			birthday=#{birthday},
+			education=#{education},
+			tel=#{tel},
+			qq_no=#{qq_no},
+			wx_no=#{wx_no},
+			interview_time=#{interview_time},
+			interview_job=#{interview_job},
+			probation_job=#{probation_job},
+			probation_time=#{probation_time},
+			official_job=#{official_job},
+			official_time=#{official_time},
+			resignation_time=#{resignation_time},
+			work_time=#{work_time},
+			status=#{status},
+			ancestral_home=#{ancestral_home},
+			address=#{address},
+			work_experience=#{work_experience},
+			hobbies=#{hobbies},
+			work_direction=#{work_direction},
+			electronic_resume_url=#{electronic_resume_url},
+			electronic_photshop_url=#{electronic_photshop_url}
+			
+		WHERE level_id=#{level_id}
+	</update>
+	
+		<sql id="empSQL">		
+				<where>		 
+				  1=1
+				<if test="customer_level != null and customer_level != ''"> 
+			   AND customer_level like CONCAT('%','${customer_level}','%' )  
+			  </if>
+			  <if test="level_id != null and level_id != ''"> 
+			   AND level_id like CONCAT('%','${level_id}','%' )  
+			  </if>
+			  <if test="status != null and status != ''"> 
+			   AND status like CONCAT('%','${status}','%' )  
+			  </if>
+			  <if test="job_date != null and job_date != ''"> 
+			   AND job_date like CONCAT('%','${job_date}','%' )  
+			  </if>	 
+			  </where>
+	    </sql>
+	
+	
+	
+	<!-- 分页查询 -->
+	<select id="queryEmployeeInfo" parameterType="com.sd.farmework.pojo.EmployeeInfo" resultMap="employeeMap">
+		
+					SELECT   
+							level_id,
+							customer_level,
+							remark,
+							job_date,
+							birthday,
+							education,
+							tel,
+							qq_no,
+							wx_no,
+							interview_time,
+							interview_job,
+							probation_job,
+							probation_time,
+							official_job,
+							official_time,
+							resignation_time,
+							work_time,
+							status,
+							ancestral_home,
+							address,
+							work_experience,
+							hobbies,
+							work_direction,
+							electronic_resume_url,
+							electronic_photshop_url
+						FROM crm_employee_info
+					<include refid="empSQL"></include>	
+						
+				 order by level_id DESC
+			   LIMIT #{startRecod},#{pageSize} 
+			   
+	</select>
+						
+			  
+			  
+	<select id="queryCount"  parameterType="com.sd.farmework.pojo.EmployeeInfo"  resultType="java.lang.Integer">
+ 		   select    count(*)
+					from crm_employee_info 
+			<include refid="empSQL"></include> 
+			  order by level_id DESC
+	</select>
+	
+	<update id="changeTryOut"  parameterType="com.sd.farmework.pojo.EmployeeInfo">
+		update crm_employee_info set 
+		status=0
+		where level_id=#{level_id}
+	</update>
+	
+	<update id="changeForMal"  parameterType="com.sd.farmework.pojo.EmployeeInfo">
+		update crm_employee_info set 
+		status=1
+		where level_id=#{level_id}
+	</update>
+	
+	<update id="changeLeav"  parameterType="com.sd.farmework.pojo.EmployeeInfo">
+		update crm_employee_info set 
+		status=2
+		where level_id=#{level_id}
+	</update>
+</mapper>

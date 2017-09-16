@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="/NfCrm/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script type="text/javascript"
+	src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong class="icon-reorder">考勤信息</strong> <a href=""
+				style="float: right; display: none;">添加字段</a>
+		</div>
+		<div class="padding border-bottom">
+			<ul class="search" style="padding-left: 10px;">
+				<li>&nbsp;&nbsp;&nbsp;</li>
+				<form action="findattend.do" method="post">
+					<li>姓名 <input name="employee_name" class="input"
+						value="${obj.employee_name}" onchange="changesearch()"
+						style="width: 120px; line-height: 17px; display: inline-block" />
+						&nbsp;&nbsp; 编号 <input name="employee_no" type="text"
+						class="input" value="${obj.employee_no}" onchange="changesearch()"
+						style="width: 120px; line-height: 17px; display: inline-block" />
+						&nbsp;&nbsp; 打卡时间&nbsp;&nbsp;<input name="punch_time" type="text"
+						class="input" onClick="WdatePicker({readOnly:true})"
+						readOnly="readonly" value="${obj.punch_time}"
+						style="width: 120px; line-height: 17px; display: inline-block" />
+					</li> <#if
+					sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1
+					>
+					<button type="submit" class="button border-main icon-search"
+						onclick="changesearch()">查询</button>
+					</#if>
+				</form>
+
+			</ul>
+		</div>
+		<table class="table table-hover text-center">
+			<tr>
+				<th>序号</th>
+				<th>员工姓名</th>
+				<th>员工编号</th>
+				<th>打卡时间</th>
+				<th width="310">操作</th>
+			</tr>
+			<#list allAttendInfoMsg as item>
+			<tr>
+				<td>${item.atte_id}</td>
+				<td>${item.employee_name}</td>
+				<td>${item.employee_no}</td>
+				<td>${item.punch_time}</td>
+				<td>
+					<div class="button-group">
+
+						<#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000444")!=-1
+						> <a class="button border-red"
+							href="findattenddetail.do?employee_no=${item.employee_no}"> <span
+							class="border-main icon-search"></span>查看
+						</a> </#if>
+					</div>
+				</td>
+
+			</tr>
+			</#list>
+		</table>
+		<ul class="pagination" id="pagination"></ul>
+	</div>
+	<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="findattend.do?currPage="+num+"&employee_no=${obj.employee_no}"+"&employee_name=${obj.employee_name}"+"&punch_time=${obj.punch_time}";
+        	}
+        }
+    });
+	</script>
+</body>
+</html>

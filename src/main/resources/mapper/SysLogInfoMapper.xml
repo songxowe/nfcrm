@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.SysLogInfoMapper">
+
+	<resultMap type="com.sd.farmework.pojo.SysLogInfo" id="logMap">
+		<id column="log_id" property="log_id"/>
+		<result column="operate_person_id" property="operate_person_id"/>
+		<result column="operate_person_name" property="operate_person_name"/>
+		<result column="function_name" property="function_name"/>
+		<result column="create_time" property="create_time"/>
+	</resultMap>
+	<select id="queryList" parameterType="com.sd.farmework.pojo.SysLogInfo" resultMap="logMap">
+	SELECT operate_person_id,
+	operate_person_name,
+	 function_name,
+	  create_time 
+	  from sys_log_info order by create_time desc limit #{startRecod},#{pageSize} 
+	 </select>
+	<select id="queryCount" parameterType="com.sd.farmework.pojo.SysLogInfo" resultType="java.lang.Integer">
+	SELECT count(*) 
+	  from sys_log_info
+	</select>
+	<insert id="add" parameterType="com.sd.farmework.pojo.SysLogInfo">
+		INSERT INTO  sys_log_info 
+		(operate_person_id,operate_person_name,function_name,create_time) 
+		VALUES 
+		(#{operate_person_id},#{operate_person_name},#{function_name},NOW())
+	
+	
+	</insert>
+	
+	
+</mapper>

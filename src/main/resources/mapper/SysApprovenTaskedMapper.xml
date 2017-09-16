@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.SysApprovenTaskedMapper">
+	<resultMap type="com.sd.farmework.pojo.SysApprovenTask" id="sysApprovenTaskMap">
+		<id column="task_id" property="taskId"/>
+		<result column="task_name" property="taskName"/>
+		<result column="approven_person_id" property="approvenPersonId"/>
+		<result column="approven_rule_id" property="approvenRuleId"/>
+		<result column="approven_rule_name" property="approvenRuleName"/>
+		<result column="approven_function_id" property="approvenFunctionId"/>
+		<result column="approven_function_name" property="approvenFunctionName"/>
+		<result column="approven_user_id" property="approvenUserId"/>
+ 		<result column="approven_user_name" property="approvenUserName"/>
+		<result column="rule_order" property="ruleOrder"/>
+		<result column="approven_send_time" property="approvenSendTime"/>
+		<result column="approven_end_time" property="approvenEndTime"/>
+		<result column="approven_status" property="approvenStatus"/>
+		<result column="approven_result" property="approvenResult"/>
+		<result column="source_table" property="sourceTable"/>
+		<result column="source_table_pk_column_name" property="sourceTablePkColumnName"/>
+ 		<result column="source_table_pk_column_value" property="sourceTablePkColumnValue"/>
+ 		 
+ 		 <result column="approven_remark" property="approvenRemark"/>
+ 		 
+ 		  		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+	</resultMap>
+	<!-- -->
+	<select id="queryList"   resultMap="sysApprovenTaskMap" >
+		select task_id , task_name , approven_person_id , approven_rule_id,approven_rule_name,approven_function_id,approven_function_name,approven_user_id,approven_user_name,rule_order,approven_send_time,approven_end_time,approven_result,approven_status,source_table,source_table_pk_column_name,source_table_pk_column_value,approven_remark from sys_approven_tasked
+		 where approven_rule_id = #{approvenRuleId}   
+		 <if test="taskName != null and taskName != ''"> 
+		AND task_name like CONCAT('%','${taskName}','%' )  
+	  </if>
+	   <if test="approvenSendTime != null and approvenSendTime != ''"> 
+		AND approven_send_time like CONCAT('%','${approvenSendTime}','%' )
+	  </if>
+		  order by create_time desc  
+		   LIMIT #{startRecod},#{pageSize}  
+	</select>
+	<select id="queryCount"    parameterType="com.sd.farmework.pojo.SysApprovenTask"  resultType="java.lang.Integer">
+		select count(*) from sys_approven_tasked
+		 where approven_rule_id = #{approvenRuleId}   
+		 <if test="taskName != null and taskName != ''"> 
+		AND task_name like CONCAT('%','${taskName}','%' )  
+	  </if>
+	   <if test="approvenSendTime != null and approvenSendTime != ''"> 
+		AND approven_send_time like CONCAT('%','${approvenSendTime}','%' )
+	  </if>
+	</select>
+		<select id="query"   resultMap="sysApprovenTaskMap" >
+		select task_id , task_name , approven_person_id , approven_rule_id,approven_rule_name,approven_function_id,approven_function_name,approven_user_id,approven_user_name,rule_order,approven_send_time,approven_end_time,approven_result,approven_status,source_table,source_table_pk_column_name,source_table_pk_column_value,approven_remark from sys_approven_tasked
+		
+		where task_id = #{taskId}
+
+	</select>
+	
+	 <delete id="delete"  parameterType="com.sd.farmework.pojo.SysApprovenTask">
+	     delete from sys_approven_tasked where  task_id = #{taskId}
+	 </delete>
+	 
+	 
+</mapper>

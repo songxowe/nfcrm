@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.UserPermissionMapper">
+	<resultMap type="com.sd.farmework.pojo.RoleInfo" id="roleMap">
+		<id column="role_id" property="role_id"/>
+		<result column="role_name" property="role_name"/>
+		<result column="function_ids" property="function_ids"/>
+		<result column="function_operate_ids" property="function_operate_ids"/>
+		<result column="function_desc" property="function_desc"/>
+		<result column="status" property="status"/>
+		<result column="create_user_id" property="create_user_id"/>
+		<result column="create_person" property="create_person"/>
+		<result column="create_time" property="create_time"/>
+		<result column="last_update_id" property="last_update_id"/>
+		<result column="last_update_person" property="last_update_person"/>
+		<result column="last_update_time" property="last_update_time"/>
+		
+		 		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+	</resultMap>
+
+	<!-- 查询角色id -->
+	<select id="queryById"  parameterType="com.sd.farmework.pojo.RoleInfo"  resultMap="roleMap">
+		    SELECT p.role_id,
+					p.role_name,
+					p.function_ids,
+					p.function_operate_ids,
+					p.function_desc,
+					p.status
+				FROM sys_user_permission p
+				WHERE p.role_id=#{role_id}
+	</select>
+	<!-- 编辑角色 -->
+	<update id="update" parameterType="com.sd.farmework.pojo.RoleInfo" >
+		UPDATE sys_user_permission 
+		SET role_name =#{role_name},
+			function_desc=#{function_desc},
+			function_ids=#{function_ids},
+			function_operate_ids=#{function_operate_ids},
+			STATUS=#{status},
+			create_time=NOW(),
+			create_user_id=#{createUserId},
+			last_update_user_id=#{lastUpdateUserId},
+			last_update_user_name=#{lastUpdateUserName},
+			last_update_time=NOW()
+		WHERE role_id=#{role_id}
+	</update>
+	
+</mapper>

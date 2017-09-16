@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml">  
+<head>  
+	<meta charset="UTF-8">
+    <title>Flow</title>  
+    	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/icon.css">
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+
+</head>  
+<body>  
+    <div class="easyui-layout" id="mainLayout" border="false">  
+        <div id="topPanel" data-options="region:'north',split:true" title="审批功能类别">  
+       <IFRAME ID="topIframe"
+					Name="topIframe"  FRAMEBORDER="0" SCROLLING="AUTO" width="100%"
+					height="290px" SRC="/NfCrm/admin/approven/approvenFunctionList.do"></IFRAME>      
+        </div>  
+        <div id="centerPanel" data-options="region:'center',split:true" title="审批流规则">  
+        <IFRAME ID="centerIframe"
+					Name="centerIframe"  FRAMEBORDER="0" SCROLLING="AUTO" width="100%"
+					height=290px SRC="/NfCrm/admin/approven/approvenFunctionRuleList.do"></IFRAME>      
+        </div>  
+        <div id="bottomPanel" data-options="region:'south',split:true" title="审批人员">  
+       <IFRAME ID="bottomframe"
+					Name="bottomframe" FRAMEBORDER="0" SCROLLING="AUTO" width="100%"
+					height="590px" SRC="/NfCrm/admin/approven/approvenFunctionRulePersonList.do"></IFRAME>      
+        </div>  
+    </div>  
+    <script type="text/javascript">  
+        window.customResize = function () {  
+            var width = $(window).width() - 10;  
+            var height = $(window).height()-20;  
+            var panelHeight = parseInt(height / 3); //每个1/3高度  
+            $('#topPanel').panel('resize', { width: width, height: panelHeight-90 });  
+            $('#centerPanel').panel('resize', { width: width, height: panelHeight-50 });  
+            $('#bottomPanel').panel('resize', { width: width, height: panelHeight+150 });  
+            $('#mainLayout').layout('resize', { width: width, height: height });  
+        };  
+        
+       
+        
+    </script>  
+    <script type="text/javascript">  
+        //窗口缩放时，重绘布局控件尺寸   
+        $(function () {  
+            redraw();  
+        });  
+  
+        $(window).resize(function () {  
+            redraw();  
+        });  
+  
+        function redraw() {  
+            if (window.customResize) {  
+                customResize(); //自定义缩放函数，页面若使用多个布局控件，需自定义缩放函数处理  
+            } else {  
+                var width = $(window).width();  
+                var height = $(window).height();  
+  
+                //没有自定义缩放函数时，默认对panel，layout，treegrid，datagrid等控件进行调整  
+                $('.easyui-panel').panel('resize', { width: width, height: height });  
+                $('.easyui-layout').layout('resize', { width: width, height: height });  
+                $('.easyui-treegrid').treegrid('resize', { width: width, height: height });  
+                $('.easyui-datagrid').datagrid('resize', { width: width, height: height });  
+            }  
+        }   
+    </script>  
+    
+    
+    
+     <script type="text/javascript">  
+         function mainOpen(type,pkId,pkName,pk2Id,pk2Name){
+        	 window.open("/NfCrm/admin/approven/addTurnTo.do?type="+type+"&pkId="+pkId+"&pkName="+pkName+"&pk2Id="+pk2Id+"&pk2Name="+pk2Name,"child","width=800px,height=510px,resizable=no,scroll=no,status=no");
+        	 
+         }
+    </script>  
+    
+</body>  
+</html>

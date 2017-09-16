@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span>详情</strong></div>
+  <div class="body-content">
+    <div class="form-x" > 
+      <#list templist as list>
+      <div class="form-group">
+        <div class="label">
+          <label>${list.key}:</label>
+        </div>
+        <div class="field">
+        
+          <input type="text" class="input" disabled="disabled" style="width:35%;" name="title" value="${list.value}" />
+          
+          <div class="tips"></div>
+        </div>
+      </div>
+      </#list>
+    </div>
+  </div>
+</div>
+
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="/NfCrm/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script type="text/javascript"
+	src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong class="icon-reorder">员工工资列表</strong> <a href=""
+				style="float: right; display: none;">添加字段</a>
+		</div>
+		<div class="padding border-bottom">
+			<ul class="search" style="padding-left: 10px;">
+				<li>&nbsp;&nbsp;&nbsp;</li>
+				<form action="../salary/userRoleList.do" method="post">
+					<li>角色 <input name="role_name" value="${userRole.role_name}"
+						class="input"
+						style="width: 120px; line-height: 17px; display: inline-block" />
+					</li>
+					<li>账号名 <input name="user_name" value="${userRole.user_name}"
+						class="input"
+						style="width: 120px; line-height: 17px; display: inline-block" />
+					</li>
+					<li><#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1
+						>
+						<button class="button border-main icon-search" type="submit">
+							查询</button> </#if>
+					</li>
+				</form>
+
+			</ul>
+		</div>
+		<table class="table table-hover text-center">
+			<tr>
+				<th width="100" style="text-align: left; padding-left: 20px;">编号</th>
+				<th>账号名</th>
+				<th>角色</th> <#if
+				sessionRole.function_operate_ids?index_of(function_id+"_00000000444")!=-1>
+				<th width="310">操作</th></#if>
+			</tr>
+
+			<#list rolelist as rolelistinfo>
+			<tr>
+				<td style="text-align: left; padding-left: 20px;">
+					${rolelistinfo_index+1}</td>
+				<td>${rolelistinfo.user_name}</td>
+				<td>${rolelistinfo.role_name}</td>
+				<td>
+					<div class="button-group">
+						<#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1
+						> <a class="button border-main"
+							href="../salary/employeeSalaryUI.do?user_id=${rolelistinfo.user_id}">
+							<span class="icon-edit"></span>编辑
+						</a> </#if> <#if
+						sessionRole.function_operate_ids?index_of(function_id+"_00000000444")!=-1
+						> <a class="button border-main"
+							href="../salary/selectSalary.do?user_id=${rolelistinfo.user_id}">
+							<span class="icon-edit"></span>详情
+						</a> </#if>
+					</div>
+				</td>
+			</tr>
+			</#list>
+
+		</table>
+		<ul class="pagination" id="pagination"></ul>
+	</div>
+
+	<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="userRoleList.do?currPage="+num+"&role_name=${userRole.role_name}&user_name=${userRole.user_name}&function_id=${function_id}";
+        	}
+        }
+    });
+</script>
+</body>
+</html>

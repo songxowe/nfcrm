@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+<script>
+
+	
+$(document).ready(function(){ 
+	
+	//上传简历
+	$("#upresume").click(function(){
+		var formData = new FormData($("#upform1")[0]);
+		var resume=$("input[name='file2']").val();
+		var resumestr=resume.substring(12);
+		$.ajax({ 
+            type: "POST",
+            url: "/NfCrm/employee/upload.do",
+            data:formData,
+            processData : false,
+			contentType : false,
+			datetype : "json",
+            success: function(data){
+            	
+            	swal({title: "系统提示",text: "上传成功！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+        		},
+        		function(){
+        			var dat=JSON.parse(data);
+        			var date=dat[0].filePath;
+        			var str="../";
+        			var resu=str+date;
+        			$("#preview").attr('href',resu);
+        		});
+            },error:function(rec){
+           	      console.info("网络异常,请稍后再试");
+            }
+        });
+		
+	});
+	//上传图片
+	$("#up_button").click(function(){
+		var photo=$("input[name='file1']").val();
+		var phostr=photo.substring(12);
+		var formData = new FormData($("#upform")[0]);
+		$.ajax({ 
+            type: "POST",
+            url: "/NfCrm/employee/upload.do",
+            data:formData,
+            processData : false,
+			contentType : false,
+			datetype : "json",
+            success: function(data){
+            	swal({title: "系统提示",text: "上传成功！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+        		},
+        		function(){
+        			var dat=JSON.parse(data);
+        			var date=dat[0].filePath;
+        			var str="../";
+        			var pho=str+date;
+        			$("#pho").attr('src',pho);
+        			
+        		});
+            },error:function(rec){
+           	      console.info("网络异常,请稍后再试");
+            }
+        });
+		
+	});
+	
+	
+	
+	
+	$("#submit").click(function(){
+	
+		var data={
+			customer_level:$("input[name='customer_level']").val(),
+			remark:$("input[name='remark']").val(),
+			birthday:$("input[name='birthday']").val(),
+			address:$("input[name='address']").val(),
+			ancestral_home:$("input[name='ancestral_home']").val(),
+			education:$("#education option:selected").val(),
+			tel:$("input[name='tel']").val(),
+			qq_no:$("input[name='qq_no']").val(),
+			wx_no:$("input[name='wx_no']").val(),
+			hobbies:$("input[name='hobbies']").val(),
+			interview_time:$("input[name='interview_time']").val(),
+			interview_job:$("input[name='interview_job']").val(),
+			probation_time:$("input[name='probation_time']").val(),
+			probation_job:$("input[name='probation_job']").val(),
+			official_time:$("input[name='official_time']").val(),
+			official_job:$("input[name='official_job']").val(),
+			job_date:$("input[name='job_date']").val(),
+			work_time:$("input[name='work_time']").val(),
+			resignation_time:$("input[name='resignation_time']").val(),
+			work_direction:$("input[name='work_direction']").val(),
+			work_experience:$("#work_experience").val(),
+			electronic_photshop_url:$("#pho").attr("src"),
+			electronic_resume_url:$("#preview").attr("href")
+		}
+		
+		$.ajax({ 
+            type: "POST",
+            url: "/NfCrm/employee/addEmployee.do",
+            data:data,
+			datetype : "json",
+            success: function(data){
+            	
+            	if(data.code=="000"){
+            		swal({title: "系统提示",text: "添加成功！",type: "success",showCancelButton: false,confirmButtonColor: "#DD6B55",confirmButtonText: "确定"
+            		},
+            		function(){
+            			window.location="../employee/queryEmployeeInfo.do";
+            		});
+            	}
+            	
+            },error:function(rec){
+           	      console.info("网络异常,请稍后再试");
+            }
+        }); 
+	});
+}); 
+
+
+
+	function click_file() {
+		$(".file_con").click();
+	}
+	
+	function checkPhone(){ 
+	    var phone = $("input[name='tel']").val();
+	    if(!(/^1(3|4|5|7|8)\d{9}$/.test(phone))){ 
+	        alert("手机号码有误，请重填");  
+	        $("input[name='tel']").val("");
+	        return false; 
+	    } else{
+	    	return true;
+	    }
+	}
+	function checkQQ(){ 
+	    var qq = $("input[name='qq_no']").val();
+	    if(!(/^[1-9]\d{0,10}$/.test(qq))){ 
+	        alert("qq号码有误，请重填");  
+	        $("input[name='qq_no']").val("");
+	        return false; 
+	    } else{
+	    	return true;
+	    }
+	}
+	function checkWX(){ 
+	    var wx = $("input[name='wx_no']").val();
+	    if(!(/^[a-zA-Z\d_]{5,}$/.test(wx))){ 
+	        alert("微信号码有误，请重填"); 
+	        $("input[name='wx_no']").val();
+	        return false; 
+	    } else{
+	    	return true;
+	    }
+	}
+	
+</script>
+<style type="text/css">
+.phone {
+	position: absolute;
+	top: 10%;
+	left: 80%;
+}
+
+#up_button {
+	margin-top: 20px;
+}
+
+#up_text {
+	width: 100%;
+	height: 100%;
+	vertical-align: middle;
+	text-align: center;
+}
+
+#phone_up {
+	width: 140px;
+	height: 140px;
+	border: 1px;
+}
+.label{
+	width: 20%; 
+}
+</style>
+</head>
+<body>
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>新增员工信息</strong>
+		</div>
+		<div class="body-content">
+		<!-- action="/NfCrm/employee/addEmployee.do" -->
+			<div  class="form-x" >
+				<div class="form-group" style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>姓名：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50"  name="customer_level" data-validate="required:请输入姓名！" style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block;width: 50%; float: left;">
+					<div class="label">
+						<label>别名：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50"  name="remark" style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>出生日期：</label>
+					</div>
+					<div class="a">
+					<input name="birthday" type="text" class="input w50" onclick="WdatePicker({readOnly:true})"
+						style=" line-height: 17px; display: inline-block" data-validate="required:请输入出生年月！" />
+						
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" >
+						<label>现住址：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="address"
+							data-validate="required:请输入住址！"  style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>祖籍：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="ancestral_home" style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" >
+						<label>学历：</label>
+					</div>
+					<div class="field">
+						<select class="input w50"  id="education" data-validate="required:请输入学历！" style=" line-height: 17px; display: inline-block">
+							<option value="请选择">请选择</option>
+							<option value="高中及以下">高中及以下</option>
+							<option value="专科">专科</option>
+							<option value="本科">本科</option>
+							<option value="硕士">硕士</option>
+							<option value="博士">博士</option>
+						</select>	
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>手机号码：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" name="tel"
+							data-validate="required:请输入手机号码！" onchange="checkPhone()" style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>QQ号码：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="qq_no" onchange="checkQQ()" style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>微信号：</label>
+					</div>
+					<div class="a">
+						<input type="text" class="input w50" value="" onchange="checkWX()" name="wx_no"  style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>爱好：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="hobbies" style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>面试时间：</label>
+					</div>
+					<div class="a">
+					<input name="interview_time" readonly="readonly" id="d4309" type="text" class="input w50" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'d4310\')}'})"
+						style=" line-height: 17px; display: inline-block" data-validate="required:请输入面试时间！" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" >
+						<label>面试岗位：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="interview_job"
+							data-validate="required:请输入面试岗位！"  style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>试用时间：</label>
+					</div>
+					<div class="a">
+						<select class="input w50"  id="probation_time" data-validate="required:请输入时间！" style=" line-height: 17px; display: inline-block">
+							<option value="请选择">请选择</option>
+							<option value="3个月">3个月</option>
+							
+						</select>	
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" >
+						<label>试用岗位：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="probation_job" style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>入职时间：</label>
+					</div>
+					<div class="a">
+					<input name="job_date"  type="text" readonly="readonly" id="d4310" class="input w50" onclick="WdatePicker({minDate:'#F{$dp.$D(\'d4309\')}',maxDate:'#F{$dp.$D(\'d4311\')}'})"
+						style="line-height: 17px; display: inline-block" />
+						
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" >
+						<label>转正岗位：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value=""
+							name="official_job"  style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>转正时间：</label>
+					</div>
+					<div class="a">
+					
+					<input name="official_time"  type="text" readonly="readonly" id="d4311" class="input w50" onclick="WdatePicker({maxDate:'#F{$dp.$D(\'d4312\')}',minDate:'#F{$dp.$D(\'d4310\')}'})"
+						style=" line-height: 17px; display: inline-block" />
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label">
+						<label>在职时长：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="work_time" style=" line-height: 17px; display: inline-block"/>
+					</div>
+				</div>
+				<div class="phone">
+				 <form enctype='multipart/form-data' id='upform' name='upimg'>
+					<div id="phone_up">
+						<div id="up_text">
+							<img id="pho" src="" style="width:141px;height: 141px;" >
+						</div>
+					</div>
+					<input type="file" class="file_con" name="file1" style="display: block" />
+					<button class="button bg-main icon-check-square-o" type="button"
+						 id="up_button">图片上传</button>				
+				</form>		 
+				</div>
+				<div class="form-group"
+					style="display: block; width: 50%; float: left;">
+					<div class="label" style="margin-left: 20%;">
+						<label>离职日期：</label>
+					</div>
+					<div class="a">
+					<input name="resignation_time" readonly="readonly" id="d4312" type="text" class="input w50" onclick="WdatePicker({minDate:'#F{$dp.$D(\'d4311\')}'})"
+						style=" line-height: 17px; display: inline-block" />
+						
+					</div>
+				</div>
+				
+				<div class="form-group" style="display: block; width: 50%; float: left;">
+					<div class="label" >
+						<label>工作意向：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input w50" value="" name="work_direction" style=" line-height: 17px; display: inline-block"/>
+						
+					</div>
+				</div>
+				
+				<div class="form-group" style="margin-left: 6%;">
+					<div class="label" >
+						<label>工作经历：</label>
+					</div>
+					<div class="field">
+						<textarea class="input" id="work_experience" style="height: 90px;width: 60%;" data-validate="required:工作经历必填！" ></textarea>
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group"
+					style="display: block; width: 100%; margin-left: 225px;">
+				<form enctype='multipart/form-data' id='upform1' name='upresume'>
+					<div style="float: left;">
+						<input type="file" class="file_con" name="file2" style="display: block" />
+					</div>	
+					<div style="float: left;margin-right: 30px;">
+						<button class="button bg-main" type="button"
+							id="upresume" >上传简历</button>
+					</div>
+				</form>	
+					<div style="float: left;" >
+						<a href="" id="preview" class="button bg-main" type="button">预览</a>
+					</div>
+				</div>
+				<div class="form-group" >
+					<div style="text-align: center;">
+						<input id="submit" class="button bg-main icon-check-square-o" value="提交" type="button" />
+						<a class="button bg-main icon-check-square-o" href="/NfCrm/employee/queryEmployeeInfo.do">返回</a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

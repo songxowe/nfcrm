@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<style type="text/css">
+.black_overlay {
+	display: none;
+	width: 30%;
+	border: 2px solid #D6E9F1;
+	z-index: 1002;
+	height: 70%;
+	left: 45%;
+	top: 36%;
+	background-color: #fff;
+	margin-left: -168px;
+	margin-top: -140px;
+	position: fixed;
+	margin-left: -168px;
+}
+#tab{
+	margin: 0px auto;
+}
+</style>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span>短信详情</strong></div>
+  <div class="body-content">
+    <div  class="form-x" >   
+    <#list sms as smslist>
+     <div class="form-group">
+        <div class="label">
+          <label>客户姓名：</label>
+        </div>
+        <div class="field">
+          <input name="customer_name" readonly="readonly" value="${smslist.customer_name}" type="text" class="input"  style="width:25%;float:left; line-height:17px;display:inline-block"/>
+          
+        </div>
+      </div>
+       <div class="form-group">
+        <div class="label">
+          <label>客服名称：</label>
+        </div>
+        <div class="field">
+       	  <input name="service_person" readonly="readonly" type="text" class="input" value="${smslist.service_person}"  style="width:25%;float:left; line-height:17px;display:inline-block"/>
+        </div>
+      </div>
+      <div class="form-group">
+      	 <div class="label">
+          <label>固定号码：</label>
+        </div>
+        <div class="field">
+          <input name="s_isvouch" readonly="readonly" value="13599648288" type="text" class="input"  style="width:25%;float:left; line-height:17px;display:inline-block"/>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="label">
+          <label>主题：</label>
+        </div>
+        <div class="field">
+          <input type="text" readonly="readonly" class="input" style="width:35%;" name="topic" value="${smslist.topic}" />
+          <div class="tips"></div>
+        </div>
+      </div>
+     
+      <div class="form-group">
+        <div class="label">
+          <label>内容：</label>
+        </div>
+        <div class="field">
+          <textarea id="content" readonly="readonly" name="context" style="width:50%;height:160px;"  placeholder="(不少于80字)">${smslist.context}</textarea>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        </#list>
+        
+        <div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div style="text-align: center;">
+						<a class="button bg-main icon-check-square-o" href="/NfCrm/sms/smsList.do">返回</a>
+					</div>
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body></html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Basic DataGrid - jQuery EasyUI Demo</title>
+<link rel="stylesheet" type="text/css"
+	href="/NfCrm/resources/jquery-easyui-1.4.3/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="/NfCrm/resources/jquery-easyui-1.4.3/themes/icon.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+<script type="text/javascript"
+	src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+</head>
+<body>
+	<table id="list_data" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<th data-options="field:'user_id',width:250">用户编号</th>
+				<th data-options="field:'user_name',width:250">用户名称</th>
+				<th data-options="field:'ruleOrder',width:250">审批顺序</th>
+			</tr>
+		</thead>
+	</table>
+</body>
+</html>
+<script type="text/javascript">
+	$(function() {
+		$('#dlg').dialog('close');
+		$('#list_data')
+				.datagrid(
+						{
+							iconCls : 'icon-edit',//图标 
+							width : 800,
+							height : 200,
+							nowrap : false,
+							striped : true,
+							border : true,
+							collapsible : true,//是否可折叠的 
+							fit : true,//自动大小 
+							url : '/NfCrm/admin/approven/queryUserList.do?approvenRuleId=${approvenRuleId}',
+							//sortName: 'code', 
+							//sortOrder: 'desc', 
+							remoteSort : false,
+							pageSize : 5,//每页显示的记录条数，默认为10 
+							pageList : [ 5, 10, 15 ],//可以设置每页记录条数的列表 
+							idField : 'user_id',
+							singleSelect : true,//是否单选 
+							pagination : true,//分页控件 
+							rownumbers : true,//行号 
+							onClickRow : function(index, data) {
+								var row = $('#list_data').datagrid(
+										'getSelected');
+							},
+							toolbar : [ {
+								text : '保存',
+								iconCls : 'icon-add',
+								handler : function() {
+									var row = $('#list_data').datagrid(
+											'getSelected');
+
+									var approvenRuleId = "${pkId}";
+									var approvenRuleName = "${pkName}";
+									var approvenFunctionId = "${pk2Id}";
+									var approvenFunctionName = "${pk2Name}";
+									var approvenUserId = row.user_id;
+									var approvenUserName = row.user_name;
+									var ruleOrder = 1;
+
+									var data = {
+										approvenRuleId : approvenRuleId,
+										approvenRuleName : approvenRuleName,
+										approvenFunctionId : approvenFunctionId,
+										approvenFunctionName : approvenFunctionName,
+										approvenUserId : approvenUserId,
+										approvenUserName : approvenUserName,
+										ruleOrder : ruleOrder,
+										ruleExp : 1,
+										ruleType : 1
+									};
+
+									$
+											.ajax({
+												url : "/NfCrm/admin/approven/approvenFunctionRulePersonAdd.do",
+												method : "POST",
+												data : data,
+												success : function() {
+													alert("保存成功");
+													$('#list_data').datagrid(
+															'reload');
+												}
+											});
+
+								}
+							} ]
+						});
+
+		//设置分页控件 
+		var p = $('#list_data').datagrid('getPager');
+
+		$(p).pagination({
+			method : 'POST',
+			loading : true,
+			beforePageText : '第',//页数文本框前显示的汉字 
+			afterPageText : '页    共 {pages} 页',
+			displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+			onBeforeRefresh : function() {
+				$(this).pagination('loading');
+				alert('before refresh');
+				$(this).pagination('loaded');
+			},
+			onRefresh : function() {
+				$(this).pagination('loading');
+				alert('before onRefresh');
+				$(this).pagination('loaded');
+
+			}
+		});
+		$(p).pagination('loading');
+
+	});
+</script>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<link type="text/css" rel="stylesheet" href="/NfCrm/resources/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">角色列表</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+         <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000440")!=-1 >
+        <li> <a class="button border-main icon-plus-square-o" href="../menu/roleManager.do">添加角色</a> </li>
+        </#if>
+      	<li>&nbsp;&nbsp;&nbsp;</li>
+      	<form action="../admin/queryAllPermList.do" method="post">
+        <li>角色
+          <input name="role_name" value="${obj.role_name}" class="input"  style="width:120px; line-height:17px; display:inline-block"/>
+        </li>
+       
+        <li>
+        <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000441")!=-1 >
+          <button class="button border-main icon-search" type="submit"> 查询</button>
+          </#if>
+        </li>
+        </form>
+        
+      </ul>
+    </div>
+    <table class="table table-hover text-center">
+      <tr>
+        <th width="100" style="text-align:left; padding-left:20px;">ID</th>
+        <th>角色</th>
+        <th width="10%">描述</th>
+        <th width="310">操作</th>
+      </tr>
+      <volist name="list" id="vo"> </volist>
+
+      <#list allPermList as item>
+      
+        <tr>
+       
+          <td style="text-align:left; padding-left:20px;">
+           ${item_index+1}</td>
+            
+          <td>${item.role_name}</td>
+          <td>${item.function_desc}</td>
+          <td>
+	          <div class="button-group"> 
+	          <#if sessionRole.function_operate_ids?index_of(function_id+"_00000000442")!=-1 >
+	          	<a class="button border-main" href="redirectRolePanel.do?role_id=${item.role_id}">
+	          		<span class="icon-edit"></span>编辑
+	          	</a> 
+	          </#if>
+	          	
+	          	<a class="button border-main" href="redirectOperatePanel.do?role_id=${item.role_id}">
+	          		<span class="icon-edit"></span>操作权限
+	          	</a>
+	          </div>
+          </td>
+        </tr>
+       
+        </#list>
+
+     <form method="post" action="" id="listform"></from>
+     </form> 
+    </table>
+    <ul class="pagination" id="pagination"></ul></div>
+
+	<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="queryAllPermList.do?currPage="+num;
+        	}
+        }
+    });
+</script>
+</body>
+</html>

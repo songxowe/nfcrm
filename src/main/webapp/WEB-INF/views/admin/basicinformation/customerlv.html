@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong class="icon-reorder">客户等级信息</strong></div>
+  <div class="padding border-bottom">  
+  <button type="button" class="button border-yellow" onclick="window.location.href='#add'"><span class="icon-plus-square-o"></span>新增客户等级</button>
+  </div>
+  <table class="table table-hover text-center">
+    <tr>
+      <th width="20%">ID</th>
+      <th width="20%">客户等级</th>
+      <th width="35%">备注</th>
+      <th width="25%">操作</th>
+    </tr>
+   
+    <tr>
+      <td style="text-align:left; padding-left:86px;"><input type="checkbox" name="id[]" value="" />
+      	1
+      </td>    
+      <td>A</td>     
+      <td>购置1000万</td>
+      <td>
+	      <div class="button-group">
+		      <a class="button border-main" href="javascript:void(0)"><span class="icon-edit"></span> 修改</a>
+		      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
+	      </div>
+      </td>
+    </tr>
+    
+   <tr>
+      <td style="text-align:left; padding-left:86px;"><input type="checkbox" name="id[]" value="" />
+      	1
+      </td>    
+      <td>A</td>     
+      <td>购置1000万</td>
+      <td>
+	      <div class="button-group">
+		      <a class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span> 修改</a>
+		      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
+	      </div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td style="text-align:left; padding-left:86px;"><input type="checkbox" name="id[]" value="" />
+      	1
+      </td>    
+      <td>A</td>     
+      <td>购置1000万</td>
+      <td>
+	      <div class="button-group">
+		      <a class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span> 修改</a>
+		      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
+	      </div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td style="text-align:left; padding-left:86px;"><input type="checkbox" name="id[]" value="" />
+      	1
+      </td>    
+      <td>A</td>     
+      <td>购置1000万</td>
+      <td>
+	      <div class="button-group">
+		      <a class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span> 修改</a>
+		      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
+	      </div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td style="text-align:left; padding-left:86px;"><input type="checkbox" name="id[]" value="" />
+      	1
+      </td>    
+      <td>A</td>     
+      <td>购置1000万</td>
+      <td>
+	      <div class="button-group">
+		      <a class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span> 修改</a>
+		      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
+	      </div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td style="text-align:left; padding-left:86px;"><input type="checkbox" name="id[]" value="" />
+      	1
+      </td>    
+      <td>A</td>     
+      <td>购置1000万</td>
+      <td>
+	      <div class="button-group">
+		      <a class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span> 修改</a>
+		      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
+	      </div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td style="text-align:left; padding-left:86px;"><input type="checkbox" name="id[]" value="" />
+      	1
+      </td>    
+      <td>A</td>     
+      <td>购置1000万</td>
+      <td>
+	      <div class="button-group">
+		      <a class="button border-main" href="javascript:void(0);"><span class="icon-edit"></span> 修改</a>
+		      <a class="button border-red" href="javascript:void(0)" onclick="return del(1,1)"><span class="icon-trash-o"></span> 删除</a>
+	      </div>
+      </td>
+    </tr>
+    
+    <tr>
+     <td style="text-align:left; padding:19px 0;padding-left:107px;">
+        <input type="checkbox" id="checkall"/>
+          	全选
+        </td>
+        <td  colspan="3" style="text-align:left;">
+	        <a href="javascript:void(0)" class="button border-red icon-trash-o" style="padding:5px 15px;" onclick="DelSelect()"> 
+	        	删除
+	        </a> 
+	        <a href="javascript:void(0)" style="padding:5px 15px; margin:0 10px;" class="button border-blue icon-edit" onclick="sorts()"> 
+	        	排序
+	        </a> 
+        </td>
+     </tr>     
+     
+     
+      <tr>
+        <td colspan="4">
+        	<div class="pagelist"> 
+        		<a href="">上一页</a> 
+        		<span class="current">1</span>
+        		<a href="">2</a><a href="">3</a>
+        		<a href="">下一页</a>
+        		<a href="">尾页</a> 
+        	</div>
+        </td>
+      </tr>
+     
+  </table>
+</div>
+<script type="text/javascript">
+function del(id,mid){
+	if(confirm("您确定要删除吗?")){
+	
+	}
+}
+</script>
+<div class="panel admin-panel margin-top" id="add">
+  <div class="panel-head"><strong><span class="icon-pencil-square-o"></span> 增加内容</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="">    
+      <div class="form-group">
+        <div class="label">
+          <label>客户等级：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="title" data-validate="required:请输入标题" />
+          <div class="tips"></div>
+        </div>
+      </div>
+      
+      
+      <div class="form-group">
+        <div class="label">
+          <label>备注：</label>
+        </div>
+        <div class="field">
+          <textarea type="text" class="input" name="note" style="height:120px;" value=""></textarea>
+          <div class="tips"></div>
+        </div>
+      </div>
+     
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</body></html>

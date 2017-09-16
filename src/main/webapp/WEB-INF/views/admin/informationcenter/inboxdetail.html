@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+<script type="text/javascript"
+	src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+</head>
+<body>
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong><span class="icon-pencil-square-o"></span>查看详情</strong>
+		</div>
+		<div class="body-content">
+			<div class="form-x">
+				<#list inboxlist as list>
+				<div class="form-group">
+					<div class="label">
+						<label>发件人：</label>
+					</div>
+					<div class="field">
+						<input type="hidden" name="receive_id" value="${list.receive_id}" />
+						<input type="hidden" name="status" id="status"
+							value="${list.status}" /> <input type="text" disabled="disabled"
+							name="recipient" class="input tips"
+							style="width: 25%; float: left;" value="${list.recipient}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>邮件名称：</label>
+					</div>
+					<div class="field">
+						<input type="text" disabled="disabled" class="input"
+							style="width: 35%;" name="pos_name" value="${list.pos_name}" />
+						<div class="tips"></div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>内容：</label>
+					</div>
+					<div class="field">
+						<textarea disabled="disabled" name="content">${list.context}</textarea>
+						<div class="tips"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label>发件时间：</label>
+					</div>
+					<div class="field">
+						<input type="text" disabled="disabled" class="input"
+							style="width: 20%;" name="title" value="${list.send_time}" />
+						<div class="tips"></div>
+					</div>
+				</div>
+				</#list>
+				<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+
+					<div class="field">
+
+						<button id="submit" class="button bg-main icon-check-square-o"
+							type="submit">处理</button>
+						<a class="button bg-main icon-check-square-o" id="fh"
+							href="/NfCrm/receivemessage/receiveMessageList.do?function_id=00000000027"
+							style="display: none">返回</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$("#submit")
+				.click(
+						function() {
+							var rid = $("input[name='receive_id']").val();
+							var data = {
+								rid : rid
+							};
+
+							$
+									.ajax({
+										type : "POST",
+										url : "/NfCrm/receivemessage/changeState.do",
+										dataType : "json",
+										data : data,
+										success : function(data) {
+											if (data.code == "ok") {
+												swal(
+														{
+															title : "系统提示",
+															text : "处理成功！",
+															type : "success",
+															showCancelButton : false,
+															confirmButtonColor : "#DD6B55",
+															confirmButtonText : "确定"
+														},
+														function() {
+															window.location = "/NfCrm/receivemessage/receiveMessageList.do";
+														});
+											}
+										},
+										error : function() {
+											swal({
+												title : "系统提示",
+												text : "处理失败！",
+												type : "success",
+												showCancelButton : false,
+												confirmButtonColor : "#DD6B55",
+												confirmButtonText : "确定"
+											})
+										}
+									});
+						});
+		$(document).ready(function() {
+			if ($("#status").val() == 1) {
+				$("#submit").css("display", "none");
+				$("#fh").css("display", "block");
+			}
+		})
+	</script>
+</body>
+</html>

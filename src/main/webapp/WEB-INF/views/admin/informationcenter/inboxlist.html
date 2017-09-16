@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+
+<link type="text/css" rel="stylesheet" href="/NfCrm/resources/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="/NfCrm/resources/css/reset.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/content.css" />
+<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+<script src="/NfCrm/resources/js/jquery.min.js"></script>
+<script src="/NfCrm/resources/js/pintuer.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js/jqPaginator.js"></script>
+<script type="text/javascript" src="/NfCrm/resources/js-date/WdatePicker.js"></script>
+</head>
+<body>
+
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">收件箱</strong> <a href="" style="float:right; display:none;">添加字段</a></div>
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+      
+      	<li>&nbsp;&nbsp;&nbsp;</li>
+      	<form action="/NfCrm/receivemessage/receiveMessageList.do" method="post">
+      	<li>
+      	  &nbsp;&nbsp;
+          	发件人
+          <input name="recipient" value="" type="text" class="input"  style="width:100px; line-height:17px;display:inline-block"/>
+         </li>
+        <li>发件时间
+        	<input name="send_time" value=""  type="text" class="input" onclick="WdatePicker({readOnly:true})"
+				style="width: 100px; line-height: 17px; display: inline-block" />
+        </li>
+       
+        <li>
+          <button type="submit" class="button border-main icon-search" > 查询</button>
+          
+        </li>
+        </form>
+        
+      </ul>
+    </div>
+    <table class="table table-hover text-center">
+      <tr>
+        <th width="100" style="text-align:left; padding-left:20px;">序号</th>
+        <th>邮件名称</th>
+        <th>发件人编号</th>
+        <th>发件人</th>
+        <th>发件时间</th>
+        <th>状态</th>
+        <th>查看</th>
+      </tr>
+      <#list list as receive>
+        <tr>
+          <td style="text-align:left; padding-left:20px;">
+           ${receive_index+1}</td>
+          <td>${receive.pos_name}</td>
+          <td>${receive.recipient_no}</td>
+          <td>${receive.recipient}</td>
+          <td>${receive.send_time}</td>
+          <#if receive.status==0>
+          	<td><font color="#00CC99">未处理</font></td>
+          </#if>
+          <#if receive.status==1>
+          	<td><font color="#00CC99">已处理</font></td>
+          </#if>
+          <td>
+	          <div class="button-group"> 
+	          	<a class="button border-main" href="/NfCrm/receivemessage/inboxDetail.do?receive_id=${receive.receive_id}">
+	          		<span class="icon-edit"></span>查看
+	          	</a> 
+	          	
+	          </div>
+          </td>
+        </tr>
+      </#list>
+         
+        <td colspan="8" style="text-align:left; padding:19px 0;padding-left:20px;">
+         <ul class="pagination" id="pagination"></ul> 
+        </td>
+    </table>
+  </div>
+
+<script type="text/javascript">
+    
+    $.jqPaginator('#pagination', {
+        totalPages: ${totalCount},
+        visiblePages: 10,
+        currentPage: ${currPage},
+        prev: '<li class="prev"><a href="javascript:;">上一页</a></li>',
+        next: '<li class="next"><a href="javascript:;">下一页</a></li>',
+        page: '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+        onPageChange: function (num, type) {
+        	console.info(type);
+        	if(type!='init'){
+        		window.location.href="receiveMessageList.do?currPage="+num;
+        	}
+        }
+        
+    });
+</script>	
+</body>
+</html>

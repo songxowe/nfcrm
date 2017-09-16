@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>CheckBox Tree - jQuery EasyUI Demo</title>
+	<link href="/NfCrm/resources/css/power/index.css" rel="stylesheet">
+	<link href="/NfCrm/resources/css/power/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="/NfCrm/resources/jquery-easyui-1.4.3/demo/demo.css">
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.min.js"></script>
+	<script type="text/javascript" src="/NfCrm/resources/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/NfCrm/resources/alert/sweet-alert.min.js"></script>
+	<link rel="stylesheet" href="/NfCrm/resources/css/pintuer.css">
+	<link rel="stylesheet" href="/NfCrm/resources/css/admin.css">
+	<link rel="stylesheet" href="/NfCrm/resources/alert/sweet-alert.css">
+	<script type="text/javascript" src="/NfCrm/resources/admin/systemmanagement/updateOperate.js"></script>
+</head>
+<body>
+<form action="" method="post">
+<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>编辑操作权限</strong>
+		</div>
+<div style="margin-top: 10px;">
+<div style="width: 40%; float: left">
+	<div class="form_list"><label class="lable_title">角&nbsp;色&nbsp;I&nbsp;D</label><input class="form_input" type="text" value="${rspObj.role_id}" id="role_id" disabled="disabled"/></div>
+	<div class="form_list"><label class="lable_title">角色名称</label><input class="form_input" type="text" value="${rspObj.role_name}" id="role_name" disabled="disabled"/></div>
+ 	<div class="form_list" style="height: 90px;"><label class="lable_title">角色描述</label><textarea rows="5" cols="5" class="form_input"  id="function_desc" disabled="disabled">${rspObj.function_desc}</textarea></div>
+ 	<div class="form_list" style="margin-top: 105px;" id="wrap"><label class="lable_title">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 	<#if rspObj.status == "Y" >
+ 		<input type="radio" name="zhuangtai" value="Y" checked="checked">&nbsp;&nbsp;启用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 	</#if>
+ 	<#if rspObj.status == "N" >
+ 		<input type="radio" name="zhuangtai" value="N" checked="checked">&nbsp;&nbsp;禁用
+ 	</#if>
+ 	</div>
+ 	<div style="color: red">温馨提示：请在右边勾选角色对应的按钮!</div>
+</div>
+
+<div style="width: 50%;float: left">
+<!--  
+	<div style="margin:20px 0;">
+		<a href="#" class="easyui-linkbutton" onclick="getChecked()">GetChecked</a> 
+	</div>-->
+	<div class="easyui-panel" style="padding:5px">
+		<ul id="tt" class="easyui-tree" data-options="url:'/NfCrm/admin/updateOperate.do?role_id=${rspObj.role_id}',method:'get',animate:true,checkbox:true"></ul>
+	</div>
+</div>
+<div class="head-l" style="clear: left; float: left">
+			
+			<input class="button button-little bg-green" type="button" value="保存" id="updateOperate" style="width: 100px;text-align: center;"/>
+			<a class="button button-little bg-green" href="../admin/queryAllPermList.do" style="width: 100px;text-align: center;">返回</a>
+</div>
+</div>
+</form>
+</body>
+</html>

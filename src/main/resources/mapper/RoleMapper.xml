@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.RoleMapper">
+	<resultMap type="com.sd.farmework.pojo.RoleInfo" id="roleMap">
+		<id column="role_id" property="role_id"/>
+		<result column="role_name" property="role_name"/>
+		<result column="function_ids" property="function_ids"/>
+		<result column="function_operate_ids" property="function_operate_ids"/>
+		<result column="function_desc" property="function_desc"/>
+		<result column="status" property="status"/>
+		
+		 		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+	</resultMap>
+	
+	<resultMap type="com.sd.farmework.pojo.UserRole" id="roleuserMap">
+		<id column="user_id" property="user_id"/>
+		<result column="role_id" property="role_id"/>
+		<result column="role_name" property="role_name"/>
+		<result column="user_name" property="user_name"/>
+	</resultMap>
+	<!-- 角色查询 -->
+	<select id="queryList" parameterType="com.sd.farmework.pojo.RoleInfo" resultMap="roleMap">
+		
+				SELECT p.role_id,
+					p.role_name,
+					p.function_ids,
+					p.function_operate_ids,
+					p.function_desc
+				FROM sys_user_permission p
+	</select>
+	<!-- 角色所有查询 -->
+	<select id="queryAllList" parameterType="com.sd.farmework.pojo.RoleInfo" resultMap="roleMap">
+		
+				SELECT p.role_id,
+					p.role_name,
+					p.function_ids,
+					p.function_operate_ids,
+					p.function_desc
+				FROM sys_user_permission p
+				WHERE 1=1
+				<if test="role_name != null and role_name != ''"> 
+			   		AND role_name like CONCAT('%','${role_name}','%' )  
+			  	</if>
+				LIMIT #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryCount"  parameterType="com.sd.farmework.pojo.RoleInfo"  resultType="java.lang.Integer">
+ 		   select    count(*)
+					from sys_user_permission 
+					where 1=1
+			<if test="role_name != null and role_name != ''"> 
+		   		AND role_name like CONCAT('%','${role_name}','%' )  
+		  	</if>
+			  
+	</select>
+	<!-- 新增角色 -->
+	<insert id="add"  parameterType="com.sd.farmework.pojo.RoleInfo">
+		INSERT INTO sys_user_permission(
+     			    role_name,
+					function_ids,
+					function_operate_ids,
+					function_desc,
+					status,
+					create_time,
+					create_user_id,
+					create_user_name, 
+					last_update_time,
+					last_update_user_id,
+					last_update_user_name
+					)
+					VALUES 
+					(	
+				    #{role_name},
+					#{function_ids},
+					#{function_operate_ids},
+					#{function_desc},
+					#{status},
+					NOW(),
+					#{createUserId},
+					#{createUserName},
+					NOW(),
+					#{lastUpdateUserId},
+					#{lastUpdateUserName}
+					)
+	
+	</insert>
+	<!-- 更新操作按钮权限 -->
+	<update id="update" parameterType="com.sd.farmework.pojo.RoleInfo">
+		update sys_user_permission set
+		function_operate_ids=#{function_operate_ids} where role_id=#{role_id}
+	</update>
+	
+	<select id="queryById"  parameterType="com.sd.farmework.pojo.RoleInfo"  resultMap="roleMap">
+ 		   select  
+ 		   		role_id,
+ 		   	 	role_name,
+				function_ids,
+				function_operate_ids,
+				function_desc,
+				status,
+				create_time,
+				create_user_id,
+				create_user_name, 
+				last_update_time,
+				last_update_user_id,
+				last_update_user_name
+				from sys_user_permission 
+			where role_id=#{role_id}
+			  
+	</select>
+	<select id="queryAllUserAndRole" parameterType="com.sd.farmework.pojo.UserRole"  resultMap="roleuserMap">
+ 		   select sui.user_id,sui.user_name,sup.role_id, sup.role_name
+		   from sys_user_roles sur ,sys_user_permission sup,sys_user_info sui
+		   where sup.role_id=sur.role_id and sui.user_id=sur.user_id
+	
+		   <if test="role_name != null and role_name != ''"> 
+			   		AND role_name like CONCAT('%','${role_name}','%' )  
+		   </if>
+		   <if test="user_name != null and user_name != ''"> 
+			   		AND user_name like CONCAT('%','${user_name}','%' )  
+		   </if>
+		   LIMIT #{startRecod},#{pageSize} 
+	</select>
+	<select id="queryCountByUserAndRole" parameterType="com.sd.farmework.pojo.UserRole" resultType="java.lang.Integer">
+ 		   select count(*)
+		   from sys_user_roles sur ,sys_user_permission sup,sys_user_info sui
+		   where sup.role_id=sur.role_id and sui.user_id=sur.user_id
+
+		   <if test="role_name != null and role_name != ''"> 
+			   		AND role_name like CONCAT('%','${role_name}','%' )  
+		   </if>
+		   <if test="user_name != null and user_name != ''"> 
+			   		AND user_name like CONCAT('%','${user_name}','%' )  
+		   </if>
+		   
+	</select>
+
+	<select id="queryByRoNo" parameterType="com.sd.farmework.pojo.UserRole"  resultMap="roleuserMap">
+ 		   select sup.role_id
+		   from sys_user_roles sur ,sys_user_permission sup,sys_user_info sui
+		   where sup.role_id=sur.role_id and sui.user_id=sur.user_id
+		   and sui.user_id=#{user_id}
+	</select>
+</mapper>

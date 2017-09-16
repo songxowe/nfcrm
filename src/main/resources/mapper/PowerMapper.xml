@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sd.farmework.mapper.PowerMapper">
+	<resultMap type="com.sd.farmework.pojo.PowerMenu" id="powerMenuMap">
+		<id column="funciton_id" property="funciton_id"/>
+		<result column="function_name" property="function_name"/>
+		<result column="function_desc" property="function_desc"/>
+		<result column="parent_function_id" property="parent_function_id"/>
+		<result column="remark" property="remark"/>
+		<result column="function_seque" property="function_seque"/>
+		<result column="status" property="status"/>
+		
+		<result column="function_url" property="function_url"/>
+		
+		 		<result column="create_time" property="createTime"/>
+		<result column="create_user_id" property="createUserId"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="last_update_time" property="lastUpdateTime"/>
+		<result column="last_update_user_id" property="lastUpdateUserId"/>
+		<result column="last_update_user_name" property="lastUpdateUserName"/>
+	</resultMap>
+	<!-- 用户查询 -->
+	<select id="queryList"  parameterType="com.sd.farmework.pojo.PowerMenu"  resultMap="powerMenuMap">
+		    SELECT funciton_id ,
+				 function_name,
+				 function_desc,
+				 parent_function_id ,
+				 remark,
+				 function_seque,
+				 STATUS,
+				 function_url,
+				 function_style
+			 FROM sys_function_info 
+			 WHERE STATUS='Y'  and parent_function_id=#{parent_function_id}
+	</select>
+	
+	<!-- 查询所有 -->
+	<select id="queryAllList"  parameterType="com.sd.farmework.pojo.PowerMenu"  resultMap="powerMenuMap">
+		    SELECT funciton_id ,
+				 function_name,
+				 function_desc,
+				 parent_function_id ,
+				 remark,
+				 function_seque,
+				 STATUS,				  
+				 function_url,
+				 function_style
+			 FROM sys_function_info 
+			 WHERE STATUS='Y'  
+	</select>
+	
+	
+</mapper>
